@@ -42,7 +42,7 @@ rho = np.matrix([[1,1],[1,1]])*1/2. # Start in |+> state
 
 class simulation(object):
     def __init__(self, cycleTime, iterations, separation, size):
-        self.cycleTime = cycleTime
+        self.cycleTime = cycleTime # The time of one cycle
         self.iterations = iterations
         self.h = self.cycleTime / self.iterations
         self.separation = separation # Separation between the overhead and the body, initial value
@@ -118,7 +118,7 @@ class simulation(object):
         return -1j*self.commutator(np.kron(self.sigmaz, self.sigmaz),system)
 
     def Lindblad(self, system):
-        return -1j*self.commutator(self.Hamiltonian(self.muB, self.Bfield, self.g1, self.g2, self.J), system)
+        return -1j*self.commutator(self.Hamiltonian(self.muB, 100, self.g1, self.g2, self.J), system)
 
     # First implement the simple Hamiltonian
 
@@ -129,22 +129,29 @@ class simulation(object):
     def evolve_system(self):
         time = 0.0
         ProbeQubit = self.initialise_qubit(self.ptheta, self.pphi) # Initialise qubits
-        print ProbeQubit
         DataQubit = self.initialise_qubit(self.dtheta, self.dphi)
         system = np.kron(ProbeQubit, DataQubit) #Starting state - separable
-        plt.plot()
+        all_probes = []
+        all_data = []
+        self.rProbe = np.array([0.0,0.,0.])
         # Start iteration
         for i in range(0,int(self.iterations)):
             dy = self.RK4(self.Lindblad, system, self.h) # Invke solver
             system = system + dy # This should also be a global variables
             time = time + self.h #Only useful for the plotting
-            plt.scatter(time, system[0,2], color = 'blue') # Plot the other off-diagonal element
-            plt.scatter(time, system[2,0], color = 'red')
+            all_probes.append(partial_trace(system,0))
+            all_data.append(partial_trace(system,1))
+            #plt.scatter(time, system[0,2], color = 'blue') # Plot the other off-diagonal element
+            #plt.scatter(time, system[2,0], color = 'red')
             #self.update_circ_orbit(time) # Calculate new point in orbit
             #self.update_geometry(rProbe, rData) # update the other geomtry parameters
             # Ideally, we only want the Hamiltonian and other Lindblad operators to be calculated once.
         # Trace out system and store it
-        plt.show()
+        #subsystems = decompose(system) # partial trace of subsystems
+
+        #bloch_plot(all_probes) # Plot position on Bloch sphere
+        bloch_plot(all_probes)
+        #plt.show()
 
     def plotting(self):
         return 0
@@ -175,6 +182,6 @@ class simulation(object):
 # Maybe it would make more sense to turn this into two classes - one class that creates and handles the system, and one that performs operations on it.
 
 # try to enter units in nm
-class_object = simulation(5.0, 100.0, 40, 10000)
+class_object = simulation(0.01, 100.0, 40, 10000)
 
 class_object.evolve_system()
