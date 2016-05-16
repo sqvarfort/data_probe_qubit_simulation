@@ -20,7 +20,9 @@ import numpy as np
 from math import sin, cos, sqrt, pi
 from cmath import exp
 import matplotlib.pyplot as plt
-import qutip
+import qutip as qt
+from PartialTrace import * # Take partial trace and decompose 4*4 density matrix
+from BlochPlot import *
 
 rData = np.array([0,0,0])
 rProbe = np.array([0,0,0])
