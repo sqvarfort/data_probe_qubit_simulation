@@ -10,7 +10,7 @@ def partial_trace(dm,qubit_index=0):
 	1: Second qubit in Kronecker product
 	'''
 	
-	Qobj qt.Qobj(dm,[[2,2], [2,2]])) # Initialise a Qobj representing dm of 2 qubits
+	Qobj = qt.Qobj(dm,[[2,2], [2,2]]) # Initialise a Qobj representing dm of 2 qubits
 	Qobj = Qobj.ptrace(qubit_index)
 	output_dm = Qobj.data.todense() # Retrieve Qobj data as np.matrix
 	

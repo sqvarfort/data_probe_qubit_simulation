@@ -20,6 +20,7 @@ import numpy as np
 from numpy import exp
 from math import exp, sin, cos
 from PartialTrace import * # Take partial trace and decompose 4*4 density matrix
+from BlochPlot import *
 
 rData = np.array([0,0,0])
 rProbe = np.array([0,0,0])
