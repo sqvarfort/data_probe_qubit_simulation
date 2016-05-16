@@ -9,8 +9,8 @@ def partial_trace(dm,qubit_index=0):
 	0: First qubit in Kronecker product
 	1: Second qubit in Kronecker product
 	'''
-	Qobj = qt.tensor(0.5*qt.identity(2),0.5*qt.identity(2)) # Initialise a 2-qubit Qobj
-	Qobj.data = sp.sparse.csr_matrix(dm,dtype=complex, copy=True) # Rewrite Qobj DM
+	
+	Qobj qt.Qobj(dm,[[2,2], [2,2]])) # Initialise a Qobj representing dm of 2 qubits
 	Qobj = Qobj.ptrace(qubit_index)
 	output_dm = Qobj.data.todense() # Retrieve Qobj data as np.matrix
 	
@@ -29,7 +29,7 @@ def decompose(dm):
 	
 	
 	
-# Some example code that successfully traces out to retrieve original matrices
+# Some example code that traces out 4x4 matrix dm to retrieve original matrices
 # dm_a = np.array([[1,0],[0,0]])
 # dm_b = np.array([[0,0],[0,1]])
 
