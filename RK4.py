@@ -99,7 +99,7 @@ class simulation(object):
     def Hamiltonian(self, muB, Bfield, g1, g2, J):
         return Bfield * np.kron(self.sigmax,self.identity)
 
-    def RK4(self, time, Lindblad, system, h): # RK4 solver. Get global variables from class
+    def RK4(self, Lindblad, time, system, h): # RK4 solver. Get global variables from class
         k1 = Lindblad(time, system)
         k2 = Lindblad(time + h/2., system + h/2.*k1)
         k3 = Lindblad(time + h/2., system + h/2.*k2)
@@ -138,7 +138,7 @@ class simulation(object):
     def Heisenberg(self, system): # Very simple Hamiltonian
         return -1j*self.commutator(np.kron(self.sigmaz, self.sigmaz),system)
 
-    def Lindblad(self, system):
+    def Lindblad(self, time, system):
         return -1j*self.commutator(self.Hamiltonian(self.muB, self.Bfield, self.g1, self.g2, self.J), system)
 
     # First implement the simple Hamiltonian
@@ -160,7 +160,7 @@ class simulation(object):
 #        self.update_geometry(rProbe, rData)
         # Start iteration
         for i in range(0,int(self.iterations)):
-            dy = self.RK4(self.Lindblad, system, self.h) # Invke solver
+            dy = self.RK4(self.Lindblad, time, system, self.h) # Invke solver
             system = system + dy # This should also be a global variables
             time = time + self.h #Only useful for the plotting
             all_probes.append(partial_trace(system,0))
