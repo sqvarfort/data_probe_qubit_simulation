@@ -50,21 +50,21 @@ class simulation(object):
         self.orbit_radius = self.size/sqrt(2.) # Calculate the orbit radius
         it_no = self.cycleTime/(self.h*4.) # Number of iterations per cycle. We only execute 1/4 cycles.
 
-        self.g1,self.g2 = 1.,1.
+        self.g1,self.g2 = 1.0,0.01 # REQUIRE SUFFICIENTLY DIFFERENT g-FACTORS
         #self.velocity = it_no / new distance point
         # Distance will always be the same
         #Geometry
         self.rData = np.array([0.0, 0.0, 0.0]) # Position data qubit in the middle of the sample, which is also the origin. Need to keep this to model displacement of the data qubit from its intended position.
         self.rProbe = np.array([- self.size/2., self.orbit_radius - self.size/2., self.separation]) # PLaces
-        self.rProbe = np.array([0.0,0.0,20.0]) # Fix probe qubit position
+        self.rProbe = np.array([0.0,0.0,0.37]) # Fix probe qubit position
         self.distance = np.linalg.norm(self.rProbe - self.rData)
         self.rtheta = np.arccos(self.rProbe[2]/self.distance) # Work out angles between data-qubit and probe-qubit
         self.rphi = np.arctan(self.rProbe[1]/self.rProbe[0]) # Raises warning (not exception) for div/0
         if np.isnan(self.rphi):
             self.rphi = 0 # Check for div by 0 in phi
-        self.Bfield =  50.0
+        self.Bfield =  100
         self.muB = 1. # Set to unity, Only relationship that matters is relationship between J and B
-        self.J = 10.
+        self.J = 1.
 
         self.sigmax = np.matrix([[0,1], [1,0]])
         self.sigmay = np.matrix([[0,-1j], [1j, 0]])
@@ -75,7 +75,7 @@ class simulation(object):
         # Initialise qubits, all in the |0> state
         self.ptheta = pi/2
         self.pphi = 0
-        self.dtheta = pi/3
+        self.dtheta = pi
         self.dphi = 0
 
 
@@ -181,10 +181,10 @@ class simulation(object):
         #subsystems = decompose(system) # partial trace of subsystems
         
         # TESTING CODE FOR PHASE GATE CONVERSION
-        system = self.convert_to_phase_gate(system) # Makes operation phase gate on probe (only if operation is pi/2 rotation)
-        bloch_plot(decompose(system))
+        #system = self.convert_to_phase_gate(system) # Makes operation phase gate on probe (only if operation is pi/2 rotation)
+        #bloch_plot(decompose(system))
         
-        #bloch_plot(all_probes)
+        bloch_plot(all_probes)
         #plt.show()
 
     def plotting(self):
@@ -217,7 +217,7 @@ class simulation(object):
 
 # try to enter units in nm
 
-class_object = simulation(0.0158, 50.0, 40, 10000) # time for a ~pi/2 pulse
+class_object = simulation(0.0125, 100.0, 40, 10000) # time for a ~pi/2 pulse
 
 #class_object = simulation(0.5, 100.0, 40, 10000)
 
