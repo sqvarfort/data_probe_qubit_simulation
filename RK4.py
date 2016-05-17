@@ -56,13 +56,15 @@ class simulation(object):
         #Geometry
         self.rData = np.array([0, 0, 0]) # Position data qubit in the middle of the sample, which is also the origin. Need to keep this to model displacement of the data qubit from its intended position.
         self.rProbe = np.array([- self.size/2., self.orbit_radius - self.size/2., self.separation]) # PLaces
+        self.rProbe = np.array([0.0,0.0,20.0]) # Fix probe qubit position
         self.distance = np.linalg.norm(self.rProbe - self.rData)
         self.rtheta = np.arccos(self.rProbe[2]/self.distance) # Work out angles between data-qubit and probe-qubit
         self.rphi = np.arctan(self.rProbe[1]/self.rProbe[0])
-        self.rProbe = np.array([0.0,0.,0.])
-        self.Bfield =  1.0
+        if np.isnan(self.rphi):
+            self.rphi = 0 # Check for div by 0 in phi
+        self.Bfield =  50.0
         self.muB = 1. # Set to unity, Only relationship that matters is relationship between J and B
-        self.J = 1.
+        self.J = 10.
 
         self.sigmax = np.matrix([[0,1], [1,0]])
         self.sigmay = np.matrix([[0,-1j], [1j, 0]])
@@ -71,10 +73,10 @@ class simulation(object):
 
 
         # Initialise qubits, all in the |0> state
-        self.ptheta = pi/2.
-        self.pphi = 0.
-        self.dtheta = pi
-        self.dphi = 0.0
+        self.ptheta = pi/2
+        self.pphi = pi/4
+        self.dtheta = pi/2
+        self.dphi = pi/4
 
 
 
@@ -91,10 +93,11 @@ class simulation(object):
         self.rphi = np.arctan(rProbe[1]/rProbe[0])
 
 
-    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Make sure to update the distance before H is calculated at each point
-        return muB * Bfield *(g1 * np.kron(self.sigmaz, self.identity) + g2*np.kron(self.identity, self.sigmaz))  #+ J/(self.distance**3) *        (np.kron(self.sigmax, self.sigmax) + np.kron(self.sigmay, self.sigmay) + np.kron(self.sigmaz, self.sigmaz) - 3*(sin(self.rtheta)*cos(self.rphi)*np.kron(self.sigmax, self.identity) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.sigmay, self.identity) + cos(self.rtheta) * np.kron(self.sigmaz, self.identity))          *     (sin(self.rtheta)*cos(self.rphi) * np.kron(self.identity, self.sigmax) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.identity, self.sigmay) + cos(self.rtheta)*np.kron(self.identity, self.sigmaz)))
+#    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Make sure to update the distance before H is calculated at each point
+#       return muB * Bfield *(g1 * np.kron(self.sigmaz, self.identity) + g2*np.kron(self.identity, self.sigmaz))  + J/(self.distance**3) *        (np.kron(self.sigmax, self.sigmax) + np.kron(self.sigmay, self.sigmay) + np.kron(self.sigmaz, self.sigmaz) - 3*(sin(self.rtheta)*cos(self.rphi)*np.kron(self.sigmax, self.identity) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.sigmay, self.identity) + cos(self.rtheta) * np.kron(self.sigmaz, self.identity))          *     (sin(self.rtheta)*cos(self.rphi) * np.kron(self.identity, self.sigmax) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.identity, self.sigmay) + cos(self.rtheta)*np.kron(self.identity, self.sigmaz)))
 
-
+    def Hamiltonian(self, muB, Bfield, g1, g2, J):
+        return Bfield * np.kron(self.sigmax,self.identity)
 
     def RK4(self, Lindblad, system, h): # RK4 solver. Get global variables from class
         k1 = Lindblad(system)
@@ -152,7 +155,6 @@ class simulation(object):
         # Trace out system and store it
         #subsystems = decompose(system) # partial trace of subsystems
 
-        #bloch_plot(all_probes) # Plot position on Bloch sphere
         bloch_plot(all_probes)
         #plt.show()
 
@@ -185,7 +187,7 @@ class simulation(object):
 # Maybe it would make more sense to turn this into two classes - one class that creates and handles the system, and one that performs operations on it.
 
 # try to enter units in nm
-class_object = simulation(0.01, 50.0, 40, 10000)
+class_object = simulation(0.05, 50.0, 40, 10000)
 
 
 class_object.evolve_system()
