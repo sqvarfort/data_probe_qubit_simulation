@@ -59,7 +59,7 @@ class simulation(object):
         self.rProbe = np.array([0.0,0.0,20.0]) # Fix probe qubit position
         self.distance = np.linalg.norm(self.rProbe - self.rData)
         self.rtheta = np.arccos(self.rProbe[2]/self.distance) # Work out angles between data-qubit and probe-qubit
-        self.rphi = np.arctan(self.rProbe[1]/self.rProbe[0])
+        self.rphi = np.arctan(self.rProbe[1]/self.rProbe[0]) # Raises warning (not exception) for div/0
         if np.isnan(self.rphi):
             self.rphi = 0 # Check for div by 0 in phi
         self.Bfield =  50.0
@@ -96,7 +96,7 @@ class simulation(object):
 #    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Make sure to update the distance before H is calculated at each point
 #        return muB * Bfield *(g1 * np.kron(self.sigmaz, self.identity) + g2*np.kron(self.identity, self.sigmaz))  + J/(self.distance**3) *        (np.kron(self.sigmax, self.sigmax) + np.kron(self.sigmay, self.sigmay) + np.kron(self.sigmaz, self.sigmaz) - 3*(sin(self.rtheta)*cos(self.rphi)*np.kron(self.sigmax, self.identity) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.sigmay, self.identity) + cos(self.rtheta) * np.kron(self.sigmaz, self.identity))          *     (sin(self.rtheta)*cos(self.rphi) * np.kron(self.identity, self.sigmax) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.identity, self.sigmay) + cos(self.rtheta)*np.kron(self.identity, self.sigmaz)))
 
-    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Rewritten by Gavin, just in case. Seems to have same behaviour as Sophia's 
+    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Rewritten by Gavin, just in case. Seems to have same behaviour as Sofia's 
         return muB * Bfield * (g1 * np.kron(self.sigmaz, self.identity) + g2 * np.kron(self.identity, self.sigmaz) )   +   ( J / self.distance**3 ) * ( ( np.kron(self.sigmax,self.sigmax) + np.kron(self.sigmay,self.sigmay) + np.kron(self.sigmaz,self.sigmaz) ) - 3*( sin(self.rtheta) * cos(self.rphi) * np.kron(self.sigmax,self.identity) + sin(self.rtheta) * sin(self.rphi) * np.kron(self.sigmay,self.identity) + cos(self.rtheta) * np.kron(self.sigmaz,self.identity) )*( sin(self.rtheta) * cos(self.rphi) * np.kron(self.identity,self.sigmax) + sin(self.rtheta) * sin(self.rphi) * np.kron(self.identity,self.sigmay) + cos(self.rtheta) * np.kron(self.identity,self.sigmaz) ) )
        
 #    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Simple test Hamiltonian
@@ -105,7 +105,7 @@ class simulation(object):
     def RK4(self, Lindblad, time, system, h): # RK4 solver. Get global variables from class
         k1 = Lindblad(time, system)
         k2 = Lindblad(time + h/2., system + h/2.*k1)
-        k3 = Lindblad(time + h/2., system + h/2.*k2)s
+        k3 = Lindblad(time + h/2., system + h/2.*k2)
         k4 = Lindblad(time + h, system + h*k3)
         return (k1 + 2.*k2 + 2.*k3 + k4)*h/6.
 
@@ -211,7 +211,7 @@ class simulation(object):
 
 #class_object = simulation(0.0158, 50.0, 40, 10000) # time for a ~pi/2 pulse
 
-class_object = simulation(0.5, 50.0, 40, 10000)
+class_object = simulation(0.5, 100.0, 40, 10000)
 
-class_object.test_RK4()
-#class_object.evolve_system()
+#class_object.test_RK4() # this is broken, probably from addition of time parameter
+class_object.evolve_system()
