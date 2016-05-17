@@ -54,7 +54,7 @@ class simulation(object):
         #self.velocity = it_no / new distance point
         # Distance will always be the same
         #Geometry
-        self.rData = np.array([0, 0, 0]) # Position data qubit in the middle of the sample, which is also the origin. Need to keep this to model displacement of the data qubit from its intended position.
+        self.rData = np.array([0.0, 0.0, 0.0]) # Position data qubit in the middle of the sample, which is also the origin. Need to keep this to model displacement of the data qubit from its intended position.
         self.rProbe = np.array([- self.size/2., self.orbit_radius - self.size/2., self.separation]) # PLaces
         self.rProbe = np.array([0.0,0.0,20.0]) # Fix probe qubit position
         self.distance = np.linalg.norm(self.rProbe - self.rData)
@@ -74,9 +74,9 @@ class simulation(object):
 
         # Initialise qubits, all in the |0> state
         self.ptheta = pi/2
-        self.pphi = pi/4
-        self.dtheta = pi/2
-        self.dphi = pi/4
+        self.pphi = 0
+        self.dtheta = pi
+        self.dphi = 0
 
 
 
@@ -94,10 +94,13 @@ class simulation(object):
 
 
 #    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Make sure to update the distance before H is calculated at each point
-#       return muB * Bfield *(g1 * np.kron(self.sigmaz, self.identity) + g2*np.kron(self.identity, self.sigmaz))  + J/(self.distance**3) *        (np.kron(self.sigmax, self.sigmax) + np.kron(self.sigmay, self.sigmay) + np.kron(self.sigmaz, self.sigmaz) - 3*(sin(self.rtheta)*cos(self.rphi)*np.kron(self.sigmax, self.identity) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.sigmay, self.identity) + cos(self.rtheta) * np.kron(self.sigmaz, self.identity))          *     (sin(self.rtheta)*cos(self.rphi) * np.kron(self.identity, self.sigmax) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.identity, self.sigmay) + cos(self.rtheta)*np.kron(self.identity, self.sigmaz)))
+#        return muB * Bfield *(g1 * np.kron(self.sigmaz, self.identity) + g2*np.kron(self.identity, self.sigmaz))  + J/(self.distance**3) *        (np.kron(self.sigmax, self.sigmax) + np.kron(self.sigmay, self.sigmay) + np.kron(self.sigmaz, self.sigmaz) - 3*(sin(self.rtheta)*cos(self.rphi)*np.kron(self.sigmax, self.identity) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.sigmay, self.identity) + cos(self.rtheta) * np.kron(self.sigmaz, self.identity))          *     (sin(self.rtheta)*cos(self.rphi) * np.kron(self.identity, self.sigmax) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.identity, self.sigmay) + cos(self.rtheta)*np.kron(self.identity, self.sigmaz)))
 
-    def Hamiltonian(self, muB, Bfield, g1, g2, J):
-        return Bfield * np.kron(self.sigmax,self.identity)
+    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Rewritten by Gavin, just in case. Seems to have same behaviour as Sophia's 
+        return muB * Bfield * (g1 * np.kron(self.sigmaz, self.identity) + g2 * np.kron(self.identity, self.sigmaz) )   +   ( J / self.distance**3 ) * ( ( np.kron(self.sigmax,self.sigmax) + np.kron(self.sigmay,self.sigmay) + np.kron(self.sigmaz,self.sigmaz) ) - 3*( sin(self.rtheta) * cos(self.rphi) * np.kron(self.sigmax,self.identity) + sin(self.rtheta) * sin(self.rphi) * np.kron(self.sigmay,self.identity) + cos(self.rtheta) * np.kron(self.sigmaz,self.identity) )*( sin(self.rtheta) * cos(self.rphi) * np.kron(self.identity,self.sigmax) + sin(self.rtheta) * sin(self.rphi) * np.kron(self.identity,self.sigmay) + cos(self.rtheta) * np.kron(self.identity,self.sigmaz) ) )
+       
+#    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Simple test Hamiltonian
+#        return Bfield * np.kron(self.sigmax,self.sigmax)
 
     def RK4(self, Lindblad, system, h): # RK4 solver. Get global variables from class
         k1 = Lindblad(system)
@@ -154,7 +157,7 @@ class simulation(object):
             # Ideally, we only want the Hamiltonian and other Lindblad operators to be calculated once.
         # Trace out system and store it
         #subsystems = decompose(system) # partial trace of subsystems
-
+        
         bloch_plot(all_probes)
         #plt.show()
 
@@ -187,7 +190,7 @@ class simulation(object):
 # Maybe it would make more sense to turn this into two classes - one class that creates and handles the system, and one that performs operations on it.
 
 # try to enter units in nm
-class_object = simulation(0.05, 50.0, 40, 10000)
+class_object = simulation(0.0158, 50.0, 40, 10000)
 
 
 class_object.evolve_system()
