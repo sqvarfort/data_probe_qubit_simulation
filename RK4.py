@@ -59,7 +59,7 @@ class simulation(object):
         self.distance = np.linalg.norm(self.rProbe - self.rData)
         self.rtheta = np.arccos(self.rProbe[2]/self.distance) # Work out angles between data-qubit and probe-qubit
         self.rphi = np.arctan(self.rProbe[1]/self.rProbe[0])
-
+        self.rProbe = np.array([0.0,0.,0.])
         self.Bfield =  1.0
         self.muB = 1. # Set to unity, Only relationship that matters is relationship between J and B
         self.J = 1.
@@ -73,7 +73,7 @@ class simulation(object):
         # Initialise qubits, all in the |0> state
         self.ptheta = pi/2.
         self.pphi = 0.
-        self.dtheta = 0.0
+        self.dtheta = pi
         self.dphi = 0.0
 
 
@@ -92,7 +92,7 @@ class simulation(object):
 
 
     def Hamiltonian(self, muB, Bfield, g1, g2, J): # Make sure to update the distance before H is calculated at each point
-        return muB * Bfield *(g1 * np.kron(self.sigmaz, self.identity) + g2*np.kron(self.identity, self.sigmaz))  + J/(self.distance**3) *        (np.kron(self.sigmax, self.sigmax) + np.kron(self.sigmay, self.sigmay) + np.kron(self.sigmaz, self.sigmaz) - 3*(sin(self.rtheta)*cos(self.rphi)*np.kron(self.sigmax, self.identity) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.sigmay, self.identity) + cos(self.rtheta) * np.kron(self.sigmaz, self.identity))          *     (sin(self.rtheta)*cos(self.rphi) * np.kron(self.identity, self.sigmax) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.identity, self.sigmay) + cos(self.rtheta)*np.kron(self.identity, self.sigmaz)))
+        return muB * Bfield *(g1 * np.kron(self.sigmaz, self.identity) + g2*np.kron(self.identity, self.sigmaz))  #+ J/(self.distance**3) *        (np.kron(self.sigmax, self.sigmax) + np.kron(self.sigmay, self.sigmay) + np.kron(self.sigmaz, self.sigmaz) - 3*(sin(self.rtheta)*cos(self.rphi)*np.kron(self.sigmax, self.identity) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.sigmay, self.identity) + cos(self.rtheta) * np.kron(self.sigmaz, self.identity))          *     (sin(self.rtheta)*cos(self.rphi) * np.kron(self.identity, self.sigmax) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.identity, self.sigmay) + cos(self.rtheta)*np.kron(self.identity, self.sigmaz)))
 
 
 
@@ -118,9 +118,11 @@ class simulation(object):
         return -1j*self.commutator(np.kron(self.sigmaz, self.sigmaz),system)
 
     def Lindblad(self, system):
-        return -1j*self.commutator(self.Hamiltonian(self.muB, 100, self.g1, self.g2, self.J), system)
+        return -1j*self.commutator(self.Hamiltonian(self.muB, self.Bfield, self.g1, self.g2, self.J), system)
 
     # First implement the simple Hamiltonian
+
+
 
 
 
@@ -133,7 +135,8 @@ class simulation(object):
         system = np.kron(ProbeQubit, DataQubit) #Starting state - separable
         all_probes = []
         all_data = []
-        self.rProbe = np.array([0.0,0.,0.])
+
+#        self.update_geometry(rProbe, rData)
         # Start iteration
         for i in range(0,int(self.iterations)):
             dy = self.RK4(self.Lindblad, system, self.h) # Invke solver
@@ -182,6 +185,7 @@ class simulation(object):
 # Maybe it would make more sense to turn this into two classes - one class that creates and handles the system, and one that performs operations on it.
 
 # try to enter units in nm
-class_object = simulation(0.01, 100.0, 40, 10000)
+class_object = simulation(0.01, 50.0, 40, 10000)
+
 
 class_object.evolve_system()
