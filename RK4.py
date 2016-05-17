@@ -102,7 +102,7 @@ class simulation(object):
     def RK4(self, Lindblad, time, system, h): # RK4 solver. Get global variables from class
         k1 = Lindblad(time, system)
         k2 = Lindblad(time + h/2., system + h/2.*k1)
-        k3 = Lindblad(time + h/2., system + h/2.*k2)
+        k3 = Lindblad(time + h/2., system + h/2.*k2)s
         k4 = Lindblad(time + h, system + h*k3)
         return (k1 + 2.*k2 + 2.*k3 + k4)*h/6.
 
