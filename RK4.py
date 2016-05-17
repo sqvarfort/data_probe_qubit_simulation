@@ -75,7 +75,7 @@ class simulation(object):
         # Initialise qubits, all in the |0> state
         self.ptheta = pi/2
         self.pphi = 0
-        self.dtheta = pi
+        self.dtheta = 0
         self.dphi = 0
 
 
@@ -147,7 +147,11 @@ class simulation(object):
     # First implement the simple Hamiltonian
 
 
-
+    def convert_to_phase_gate(self, system): # See page 3 of paper
+        V_dagger = np.matrix([[1,0],[0,-1j]])
+        #operator = np.kron(V_dagger,V_dagger) # Apply to both data and probe (don't think this is what paper means)
+        operator = np.kron(self.identity,V_dagger) # Apply to data qubit only
+        return operator*system*operator.getH() # Density matrices are annoying
 
 
 
@@ -198,7 +202,7 @@ class simulation(object):
 
     def run_full_cycle(): #Runs four iterations.
         for i in range(0,3):
-            system = tensordot(ProbeQubit, DataQubit)
+            system = np.kron(ProbeQubit, DataQubit)
             evolve_system()
             # Include plotting stuff
             # Trace out probe qubit
@@ -209,9 +213,9 @@ class simulation(object):
 
 # try to enter units in nm
 
-#class_object = simulation(0.0158, 50.0, 40, 10000) # time for a ~pi/2 pulse
+class_object = simulation(0.0158, 50.0, 40, 10000) # time for a ~pi/2 pulse
 
-class_object = simulation(0.5, 100.0, 40, 10000)
+#class_object = simulation(0.5, 100.0, 40, 10000)
 
 #class_object.test_RK4() # this is broken, probably from addition of time parameter
 class_object.evolve_system()
