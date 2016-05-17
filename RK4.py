@@ -102,12 +102,30 @@ class simulation(object):
 #    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Simple test Hamiltonian
 #        return Bfield * np.kron(self.sigmax,self.sigmax)
 
-    def RK4(self, Lindblad, system, h): # RK4 solver. Get global variables from class
-        k1 = Lindblad(system)
-        k2 = Lindblad(system + h/2.*k1)
-        k3 = Lindblad(system + h/2.*k2)
-        k4 = Lindblad(system + h*k3)
+    def RK4(self, time, Lindblad, system, h): # RK4 solver. Get global variables from class
+        k1 = Lindblad(time, system)
+        k2 = Lindblad(time + h/2., system + h/2.*k1)
+        k3 = Lindblad(time + h/2., system + h/2.*k2)
+        k4 = Lindblad(time + h, system + h*k3)
         return (k1 + 2.*k2 + 2.*k3 + k4)*h/6.
+
+    def test_RK4_theory(self, x):
+        return (x**2 + 4.)**2 /16.
+
+    def test_function(self, x, y):
+        return x*sqrt(y)
+
+    def test_RK4(self):
+        print self.h
+        time = 0.
+        y = 1.
+        for i in range(0,20):
+            y = y + self.RK4(time, self.test_function, y, self.h)
+            time = time + self.h
+            print "%4.3f %10.5f %+12.4e" % (time, y, y - (4 + time * time)**2 / 16.)
+
+
+
 
 
 
@@ -190,7 +208,10 @@ class simulation(object):
 # Maybe it would make more sense to turn this into two classes - one class that creates and handles the system, and one that performs operations on it.
 
 # try to enter units in nm
-class_object = simulation(0.0158, 50.0, 40, 10000)
 
+#class_object = simulation(0.0158, 50.0, 40, 10000) # time for a ~pi/2 pulse
 
-class_object.evolve_system()
+class_object = simulation(0.5, 50.0, 40, 10000)
+
+class_object.test_RK4()
+#class_object.evolve_system()
