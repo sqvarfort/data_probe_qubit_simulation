@@ -75,7 +75,7 @@ class simulation(object):
         # Initialise qubits, all in the |0> state
         self.ptheta = pi/2
         self.pphi = 0
-        self.dtheta = 0
+        self.dtheta = pi/3
         self.dphi = 0
 
 
@@ -180,7 +180,11 @@ class simulation(object):
         # Trace out system and store it
         #subsystems = decompose(system) # partial trace of subsystems
         
-        bloch_plot(all_probes)
+        # TESTING CODE FOR PHASE GATE CONVERSION
+        system = self.convert_to_phase_gate(system) # Makes operation phase gate on probe (only if operation is pi/2 rotation)
+        bloch_plot(decompose(system))
+        
+        #bloch_plot(all_probes)
         #plt.show()
 
     def plotting(self):
