@@ -50,21 +50,44 @@ class simulation(object):
         self.orbit_radius = self.size/sqrt(2.) # Calculate the orbit radius
         it_no = self.cycleTime/(self.h*4.) # Number of iterations per cycle. We only execute 1/4 cycles.
 
-        self.g1,self.g2 = 1.0,0.01 # REQUIRE SUFFICIENTLY DIFFERENT g-FACTORS
+        
         #self.velocity = it_no / new distance point
         # Distance will always be the same
         #Geometry
         self.rData = np.array([0.0, 0.0, 0.0]) # Position data qubit in the middle of the sample, which is also the origin. Need to keep this to model displacement of the data qubit from its intended position.
         self.rProbe = np.array([- self.size/2., self.orbit_radius - self.size/2., self.separation]) # PLaces
-        self.rProbe = np.array([0.0,0.0,0.37]) # Fix probe qubit position
+        self.rProbe = np.array([0.0,0.0,40e-9]) # Fix probe qubit position
         self.distance = np.linalg.norm(self.rProbe - self.rData)
         self.rtheta = np.arccos(self.rProbe[2]/self.distance) # Work out angles between data-qubit and probe-qubit
         self.rphi = np.arctan(self.rProbe[1]/self.rProbe[0]) # Raises warning (not exception) for div/0
         if np.isnan(self.rphi):
             self.rphi = 0 # Check for div by 0 in phi
-        self.Bfield =  100
-        self.muB = 1. # Set to unity, Only relationship that matters is relationship between J and B
-        self.J = 1.
+            
+        
+        self.ge = 1.99875
+        self.gP = 1.9985 # Phosphorus g-factor
+        self.gBi = 2.0003 # Bismuth g-factor
+        self.muB = 9.27e-24
+        self.mu0 = 1.2566e-6
+        self.hbar = 1.0545718e-34
+        
+        self.Bfield = 300.e-3
+        self.g1 = self.gP #self.g1,self.g2 = 100.0,1 # REQUIRE SUFFICIENTLY DIFFERENT g-FACTORS
+        self.g2 = self.gBi
+        self.J = self.mu0 * self.ge**2 * self.muB **2 / (4*pi)
+        print self.J
+        
+        # GO TO A REFERENCE FRAME THAT SUBSUMES THE CONTINUOUS ZEEMAN EVOLUTION
+        #g = (self.g1+self.g2)/2. # SUBSUME THE AVERAGE (not very useful)
+        g = self.g1 # SUBSUME THE PROBE (very, very useful)
+        self.g1 = self.g1 - g
+        self.g2 = self.g2 - g
+        
+        
+        
+        #self.Bfield =  1.0
+        #self.muB = 1. # Set to unity, Only relationship that matters is relationship between J and B
+        #self.J = 1.
 
         self.sigmax = np.matrix([[0,1], [1,0]])
         self.sigmay = np.matrix([[0,-1j], [1j, 0]])
@@ -93,8 +116,6 @@ class simulation(object):
         self.rphi = np.arctan(rProbe[1]/rProbe[0])
 
 
-#    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Make sure to update the distance before H is calculated at each point
-#        return muB * Bfield *(g1 * np.kron(self.sigmaz, self.identity) + g2*np.kron(self.identity, self.sigmaz))  + J/(self.distance**3) *        (np.kron(self.sigmax, self.sigmax) + np.kron(self.sigmay, self.sigmay) + np.kron(self.sigmaz, self.sigmaz) - 3*(sin(self.rtheta)*cos(self.rphi)*np.kron(self.sigmax, self.identity) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.sigmay, self.identity) + cos(self.rtheta) * np.kron(self.sigmaz, self.identity))          *     (sin(self.rtheta)*cos(self.rphi) * np.kron(self.identity, self.sigmax) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.identity, self.sigmay) + cos(self.rtheta)*np.kron(self.identity, self.sigmaz)))
 
     def Hamiltonian(self, muB, Bfield, g1, g2, J): # Rewritten by Gavin, just in case. Seems to have same behaviour as Sofia's 
         return muB * Bfield * (g1 * np.kron(self.sigmaz, self.identity) + g2 * np.kron(self.identity, self.sigmaz) )   +   ( J / self.distance**3 ) * ( ( np.kron(self.sigmax,self.sigmax) + np.kron(self.sigmay,self.sigmay) + np.kron(self.sigmaz,self.sigmaz) ) - 3*( sin(self.rtheta) * cos(self.rphi) * np.kron(self.sigmax,self.identity) + sin(self.rtheta) * sin(self.rphi) * np.kron(self.sigmay,self.identity) + cos(self.rtheta) * np.kron(self.sigmaz,self.identity) )*( sin(self.rtheta) * cos(self.rphi) * np.kron(self.identity,self.sigmax) + sin(self.rtheta) * sin(self.rphi) * np.kron(self.identity,self.sigmay) + cos(self.rtheta) * np.kron(self.identity,self.sigmaz) ) )
@@ -139,10 +160,10 @@ class simulation(object):
         return np.dot(A,B) - np.dot(B,A)
 
     def Heisenberg(self, system): # Very simple Hamiltonian
-        return -1j*self.commutator(np.kron(self.sigmaz, self.sigmaz),system)
+        return -(1j/self.hbar)*self.commutator(np.kron(self.sigmaz, self.sigmaz),system)
 
     def Lindblad(self, time, system):
-        return -1j*self.commutator(self.Hamiltonian(self.muB, self.Bfield, self.g1, self.g2, self.J), system)
+        return -(1j/self.hbar)*self.commutator(self.Hamiltonian(self.muB, self.Bfield, self.g1, self.g2, self.J), system)
 
     # First implement the simple Hamiltonian
 
@@ -184,7 +205,8 @@ class simulation(object):
         #system = self.convert_to_phase_gate(system) # Makes operation phase gate on probe (only if operation is pi/2 rotation)
         #bloch_plot(decompose(system))
         
-        bloch_plot(all_probes)
+        
+        bloch_plot(decompose(system))
         #plt.show()
 
     def plotting(self):
@@ -217,7 +239,7 @@ class simulation(object):
 
 # try to enter units in nm
 
-class_object = simulation(0.0125, 100.0, 40, 10000) # time for a ~pi/2 pulse
+class_object = simulation(78.0e-6, 3000, 40.0e-9, 400.0e-9) # time for a ~pi/2 pulse
 
 #class_object = simulation(0.5, 100.0, 40, 10000)
 
