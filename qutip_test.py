@@ -1,6 +1,7 @@
 from qutip import *
 from pylab import *
 from scipy import constants as cp
+from numpy import random
 
 
 def qubit_state(theta,phi):
@@ -31,7 +32,7 @@ r=array([0,0,separation])
 
 # intial state
 #               probe |+>               data
-psi0 = tensor(qubit_state(pi/2.,0), qubit_state(pi,0,))    
+psi0 = tensor(qubit_state(pi/2.,0), qubit_state(pi,0,))
 # operators
 sigma1z  = tensor(sigmaz(), qeye(2))
 sigma2z = tensor(qeye(2), sigmaz())
@@ -50,62 +51,76 @@ sigmazy = tensor(sigmaz(), sigmay())
 # total time tau (for whole circle like in paper)
 tau=1.2e-3 #e.g. 1ms
 
-def Hxyz_coeff(t, args):
-    r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
-    return J/norm(r)**3 
+# Standard deviation for path fluctuations
+rstd = 1e-9
 
-Hxyz=sigmaxx + sigmayy + sigmazz 
+def calc_r(t):
+    r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
+    r_rand = rOffset + array([random.normal(size/sqrt(2)*sin(2*pi/tau * t), rstd), random.normal(size/sqrt(2)*cos(2*pi/tau * t), rstd), random.normal(0,rstd)])
+    return r_rand
+
+test_time = 0
+
+for i in range(0,100):
+    calc_r(test_time)
+
+
+def Hxyz_coeff(t, args):
+    r = calc_r(t)
+    return J/norm(r)**3
+
+Hxyz=sigmaxx + sigmayy + sigmazz
 
 def Hxx_coeff(t, args):
-    r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
-    return -3*J/norm(r)**5 * r[0]**2 
+    r=calc_r(t)
+    return -3*J/norm(r)**5 * r[0]**2
 
 Hxx=sigmaxx
 
 def Hyy_coeff(t, args):
-    r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
-    return -3*J/norm(r)**5 * r[1]**2 
+    r=calc_r(t)
+    return -3*J/norm(r)**5 * r[1]**2
 
 Hyy=sigmayy
 
 def Hzz_coeff(t, args):
-    r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
-    return -3*J/norm(r)**5 * r[2]**2 
+    r=calc_r(t)
+    return -3*J/norm(r)**5 * r[2]**2
 
 Hzz=sigmazz
 
 def Hxy_coeff(t, args):
-    r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
+    r=calc_r(t)
     return -3*J/norm(r)**5 * r[0]*r[1]
 
 Hxy=sigmaxy
 
 def Hxz_coeff(t, args):
-    r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
+    r=calc_r(t)
     return -3*J/norm(r)**5 * r[0]*r[2]
 
 Hxz=sigmaxz
 
 def Hyx_coeff(t, args):
-    r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
-    return -3*J/norm(r)**5 * r[0]*r[1] 
+    r=calc_r(t)
+    return -3*J/norm(r)**5 * r[0]*r[1]
 
 Hyx=sigmayx
 
 def Hyz_coeff(t, args):
-    r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
+    r=calc_r(t)
     return -3*J/norm(r)**5 * r[1]*r[2]
 
 Hyz=sigmayz
 
 def Hzx_coeff(t, args):
-    r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
+    r=calc_r(t)
     return -3*J/norm(r)**5 * r[0]*r[2]
 
 Hzx=sigmazx
 
 def Hzy_coeff(t, args):
-    r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
+    r=calc_r(t)
     return -3*J/norm(r)**5 * r[2]*r[1]
 
 Hzy=sigmazy
@@ -144,4 +159,3 @@ for t in range(0,len(result.states),100):
     db.add_states(result.states[t].ptrace(0), kind='point')
     db.add_states(result.states[t].ptrace(1), kind='point')
 db.show()
-    
