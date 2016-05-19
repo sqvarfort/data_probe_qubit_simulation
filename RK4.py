@@ -50,19 +50,44 @@ class simulation(object):
         self.orbit_radius = self.size/sqrt(2.) # Calculate the orbit radius
         it_no = self.cycleTime/(self.h*4.) # Number of iterations per cycle. We only execute 1/4 cycles.
 
-        self.g1,self.g2 = 1.,1.
+        
         #self.velocity = it_no / new distance point
         # Distance will always be the same
         #Geometry
-        self.rData = np.array([0, 0, 0]) # Position data qubit in the middle of the sample, which is also the origin. Need to keep this to model displacement of the data qubit from its intended position.
+        self.rData = np.array([0.0, 0.0, 0.0]) # Position data qubit in the middle of the sample, which is also the origin. Need to keep this to model displacement of the data qubit from its intended position.
         self.rProbe = np.array([- self.size/2., self.orbit_radius - self.size/2., self.separation]) # PLaces
+        self.rProbe = np.array([0.0,0.0,40e-9]) # Fix probe qubit position
         self.distance = np.linalg.norm(self.rProbe - self.rData)
         self.rtheta = np.arccos(self.rProbe[2]/self.distance) # Work out angles between data-qubit and probe-qubit
-        self.rphi = np.arctan(self.rProbe[1]/self.rProbe[0])
-        self.rProbe = np.array([0.0,0.,0.])
-        self.Bfield =  1.0
-        self.muB = 1. # Set to unity, Only relationship that matters is relationship between J and B
-        self.J = 1.
+        self.rphi = np.arctan(self.rProbe[1]/self.rProbe[0]) # Raises warning (not exception) for div/0
+        if np.isnan(self.rphi):
+            self.rphi = 0 # Check for div by 0 in phi
+            
+        
+        self.ge = 1.99875
+        self.gP = 1.9985 # Phosphorus g-factor
+        self.gBi = 2.0003 # Bismuth g-factor
+        self.muB = 9.27e-24
+        self.mu0 = 1.2566e-6
+        self.hbar = 1.0545718e-34
+        
+        self.Bfield = 300.e-3
+        self.g1 = self.gP #self.g1,self.g2 = 100.0,1 # REQUIRE SUFFICIENTLY DIFFERENT g-FACTORS
+        self.g2 = self.gBi
+        self.J = self.mu0 * self.ge**2 * self.muB **2 / (4*pi)
+        print self.J
+        
+        # GO TO A REFERENCE FRAME THAT SUBSUMES THE CONTINUOUS ZEEMAN EVOLUTION
+        #g = (self.g1+self.g2)/2. # SUBSUME THE AVERAGE (not very useful)
+        g = self.g1 # SUBSUME THE PROBE (very, very useful)
+        self.g1 = self.g1 - g
+        self.g2 = self.g2 - g
+        
+        
+        
+        #self.Bfield =  1.0
+        #self.muB = 1. # Set to unity, Only relationship that matters is relationship between J and B
+        #self.J = 1.
 
         self.sigmax = np.matrix([[0,1], [1,0]])
         self.sigmay = np.matrix([[0,-1j], [1j, 0]])
@@ -71,10 +96,10 @@ class simulation(object):
 
 
         # Initialise qubits, all in the |0> state
-        self.ptheta = pi/2.
-        self.pphi = 0.
+        self.ptheta = pi/2
+        self.pphi = 0
         self.dtheta = pi
-        self.dphi = 0.0
+        self.dphi = 0
 
 
 
@@ -91,17 +116,37 @@ class simulation(object):
         self.rphi = np.arctan(rProbe[1]/rProbe[0])
 
 
-    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Make sure to update the distance before H is calculated at each point
-        return muB * Bfield *(g1 * np.kron(self.sigmaz, self.identity) + g2*np.kron(self.identity, self.sigmaz))  #+ J/(self.distance**3) *        (np.kron(self.sigmax, self.sigmax) + np.kron(self.sigmay, self.sigmay) + np.kron(self.sigmaz, self.sigmaz) - 3*(sin(self.rtheta)*cos(self.rphi)*np.kron(self.sigmax, self.identity) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.sigmay, self.identity) + cos(self.rtheta) * np.kron(self.sigmaz, self.identity))          *     (sin(self.rtheta)*cos(self.rphi) * np.kron(self.identity, self.sigmax) + sin(self.rtheta)*sin(self.rphi)*np.kron(self.identity, self.sigmay) + cos(self.rtheta)*np.kron(self.identity, self.sigmaz)))
 
+    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Rewritten by Gavin, just in case. Seems to have same behaviour as Sofia's 
+        return muB * Bfield * (g1 * np.kron(self.sigmaz, self.identity) + g2 * np.kron(self.identity, self.sigmaz) )   +   ( J / self.distance**3 ) * ( ( np.kron(self.sigmax,self.sigmax) + np.kron(self.sigmay,self.sigmay) + np.kron(self.sigmaz,self.sigmaz) ) - 3*( sin(self.rtheta) * cos(self.rphi) * np.kron(self.sigmax,self.identity) + sin(self.rtheta) * sin(self.rphi) * np.kron(self.sigmay,self.identity) + cos(self.rtheta) * np.kron(self.sigmaz,self.identity) )*( sin(self.rtheta) * cos(self.rphi) * np.kron(self.identity,self.sigmax) + sin(self.rtheta) * sin(self.rphi) * np.kron(self.identity,self.sigmay) + cos(self.rtheta) * np.kron(self.identity,self.sigmaz) ) )
+       
+#    def Hamiltonian(self, muB, Bfield, g1, g2, J): # Simple test Hamiltonian
+#        return Bfield * np.kron(self.sigmax,self.sigmax)
 
-
-    def RK4(self, Lindblad, system, h): # RK4 solver. Get global variables from class
-        k1 = Lindblad(system)
-        k2 = Lindblad(system + h/2.*k1)
-        k3 = Lindblad(system + h/2.*k2)
-        k4 = Lindblad(system + h*k3)
+    def RK4(self, Lindblad, time, system, h): # RK4 solver. Get global variables from class
+        k1 = Lindblad(time, system)
+        k2 = Lindblad(time + h/2., system + h/2.*k1)
+        k3 = Lindblad(time + h/2., system + h/2.*k2)
+        k4 = Lindblad(time + h, system + h*k3)
         return (k1 + 2.*k2 + 2.*k3 + k4)*h/6.
+
+    def test_RK4_theory(self, x):
+        return (x**2 + 4.)**2 /16.
+
+    def test_function(self, x, y):
+        return x*sqrt(y)
+
+    def test_RK4(self):
+        print self.h
+        time = 0.
+        y = 1.
+        for i in range(0,20):
+            y = y + self.RK4(time, self.test_function, y, self.h)
+            time = time + self.h
+            print "%4.3f %10.5f %+12.4e" % (time, y, y - (4 + time * time)**2 / 16.)
+
+
+
 
 
 
@@ -115,15 +160,19 @@ class simulation(object):
         return np.dot(A,B) - np.dot(B,A)
 
     def Heisenberg(self, system): # Very simple Hamiltonian
-        return -1j*self.commutator(np.kron(self.sigmaz, self.sigmaz),system)
+        return -(1j/self.hbar)*self.commutator(np.kron(self.sigmaz, self.sigmaz),system)
 
-    def Lindblad(self, system):
-        return -1j*self.commutator(self.Hamiltonian(self.muB, self.Bfield, self.g1, self.g2, self.J), system)
+    def Lindblad(self, time, system):
+        return -(1j/self.hbar)*self.commutator(self.Hamiltonian(self.muB, self.Bfield, self.g1, self.g2, self.J), system)
 
     # First implement the simple Hamiltonian
 
 
-
+    def convert_to_phase_gate(self, system): # See page 3 of paper
+        V_dagger = np.matrix([[1,0],[0,-1j]])
+        #operator = np.kron(V_dagger,V_dagger) # Apply to both data and probe (don't think this is what paper means)
+        operator = np.kron(self.identity,V_dagger) # Apply to data qubit only
+        return operator*system*operator.getH() # Density matrices are annoying
 
 
 
@@ -139,7 +188,7 @@ class simulation(object):
 #        self.update_geometry(rProbe, rData)
         # Start iteration
         for i in range(0,int(self.iterations)):
-            dy = self.RK4(self.Lindblad, system, self.h) # Invke solver
+            dy = self.RK4(self.Lindblad, time, system, self.h) # Invke solver
             system = system + dy # This should also be a global variables
             time = time + self.h #Only useful for the plotting
             all_probes.append(partial_trace(system,0))
@@ -151,9 +200,13 @@ class simulation(object):
             # Ideally, we only want the Hamiltonian and other Lindblad operators to be calculated once.
         # Trace out system and store it
         #subsystems = decompose(system) # partial trace of subsystems
-
-        #bloch_plot(all_probes) # Plot position on Bloch sphere
-        bloch_plot(all_probes)
+        
+        # TESTING CODE FOR PHASE GATE CONVERSION
+        #system = self.convert_to_phase_gate(system) # Makes operation phase gate on probe (only if operation is pi/2 rotation)
+        #bloch_plot(decompose(system))
+        
+        
+        bloch_plot(decompose(system))
         #plt.show()
 
     def plotting(self):
@@ -175,7 +228,7 @@ class simulation(object):
 
     def run_full_cycle(): #Runs four iterations.
         for i in range(0,3):
-            system = tensordot(ProbeQubit, DataQubit)
+            system = np.kron(ProbeQubit, DataQubit)
             evolve_system()
             # Include plotting stuff
             # Trace out probe qubit
@@ -185,7 +238,10 @@ class simulation(object):
 # Maybe it would make more sense to turn this into two classes - one class that creates and handles the system, and one that performs operations on it.
 
 # try to enter units in nm
-class_object = simulation(0.01, 50.0, 40, 10000)
 
+class_object = simulation(78.0e-6, 3000, 40.0e-9, 400.0e-9) # time for a ~pi/2 pulse
 
+#class_object = simulation(0.5, 100.0, 40, 10000)
+
+#class_object.test_RK4() # this is broken, probably from addition of time parameter
 class_object.evolve_system()
