@@ -30,8 +30,8 @@ rOffset=array([-size/2.,-size/2, separation])
 r=array([0,0,separation])
 
 # intial state
-#               data        probe |+>
-psi0 = tensor(qubit_state(0,0), qubit_state(pi/2.,0))    
+#               probe |+>               data
+psi0 = tensor(qubit_state(pi/2.,0), qubit_state(pi,0,))    
 # operators
 sigma1z  = tensor(sigmaz(), qeye(2))
 sigma2z = tensor(qeye(2), sigmaz())
@@ -110,8 +110,8 @@ def Hzy_coeff(t, args):
 
 Hzy=sigmazy
 
-# go into probe Zeeman referemce frame, here proe is 2nd qubit!
-g=g2
+# go into probe Zeeman referemce frame, here proe is 1st qubit!
+g=g1
 g1=g1-g
 g2=g2-g
 
@@ -129,18 +129,18 @@ H=[Hz,[Hxyz, Hxyz_coeff],[Hxx, Hxx_coeff],[Hyy, Hyy_coeff],[Hzz, Hzz_coeff],[Hxy
 
 
 # use time independent staying on top of each other 2*78e-6 does the pi/2 rotation we want!
-#tlist=linspace(0, 2*78e-6, 3000) #one simulation is only a quarter of the turn!
-#result = mesolve(Hz+Hi, psi0, tlist, [], [])#, options=Odeoptions(nsteps=100000))
+tlist=linspace(0, 2*78e-6, 3000) #one simulation is only a quarter of the turn!
+result = mesolve(Hz+Hi, psi0, tlist, [], [])#, options=Odeoptions(nsteps=100000))
 
 # use time dependent
-tlist=linspace(0, tau/4., 40000) #one simulation is only a quarter of the turn!
-result = mesolve(H, psi0, tlist, [], [])#, options=Odeoptions(nsteps=100000))
+#tlist=linspace(0, tau/4., 40000) #one simulation is only a quarter of the turn!
+#result = mesolve(H, psi0, tlist, [], [])#, options=Odeoptions(nsteps=100000))
 
 qsave(result.states, 'states')
 
 db=Bloch()
 
-for t in range(0,len(result.states),1000):
+for t in range(0,len(result.states),100):
     db.add_states(result.states[t].ptrace(0), kind='point')
     db.add_states(result.states[t].ptrace(1), kind='point')
 db.show()
