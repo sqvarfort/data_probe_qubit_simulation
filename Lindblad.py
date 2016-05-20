@@ -3,6 +3,20 @@ import numpy as np
 from qutip import *
 
 class Lindblad():
+    '''
+    Lindblad generating class
+    
+    Call with Lindblad(x) where x is the number of qubits in the system (default 1)
+    
+    Generate a Lindblad 'lindblad' with Lindblad.[operation name](rate,qubit).
+    Rate gives exponential decay rate of relevant expectation value
+    Qubit addresses which qubit operation is to be applied on (first qubit is 0)
+    
+    Generating a Lindblad this way returns the lindblad Qobj, and also
+    appends the lindblad Qobj to Lindblad.lindblads list
+    
+    If no Lindblads have been generated, Lindblad.lindblads is empty list
+    '''
     def __init__(self,qubits=1):
         self.lindblads = []
         self.qubits = qubits
