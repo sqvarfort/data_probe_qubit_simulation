@@ -133,6 +133,7 @@ g2=g2-g
 # Zeeman Hamitonian
 Hz= muB * Bfield * ( g1*sigma1z + g2*sigma2z  )
 
+# all simulations using Hi are wrong because 10⁻12*sigmazz=0 precision problem. Using H is woking!
 Hi= J/norm(r)**3 * ( sigmaxx + sigmayy + sigmazz -3/norm(r)**2 * ( r[0]**2 * sigmaxx + r[1]**2 * sigmayy + r[2]**2 * sigmazz + r[0]*r[1] * sigmaxy + r[0]*r[2] * sigmaxz + r[1]*r[0]* sigmayx + r[1]*r[2] * sigmayz + r[2]*r[0] * sigmazx + r[2]*r[1]* sigmazy  ) )
 
 
