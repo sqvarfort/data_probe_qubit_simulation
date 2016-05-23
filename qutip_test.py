@@ -180,15 +180,34 @@ sim.run(8*78e-6,12000) # total time, total steps, num of cycles (default 4)
 result_states = sim.last_run_all
 metadata = sim.last_run_metadata
 step_data = sim.last_run_quarter_cycle
+final_states = []
+final_states.append(sim.last_run_all[-1])
 
+""" Code-block for extracting states from the simulation runs and putting them in an array
+final_states = []
+final_states.append(sim.last_run_all[-1])
 
+iterations = 1000
+tau = 8*78e-6
+
+for i in range(0,sim_no):
+    sim.run(tau,iteration)
+    result_states = sim.last_run_all
+    step_data = sim.last_run_quarter_cycle
+    final_states.append(sim.last_run_all[-1])
+
+"""
 qsave(result_states, 'states')
 
+colors = ["g"]#,"r","g","#CC6600"]#,"r","g","#CC6600"]
+
 db=Bloch()
+db.point_color = colors
+db.point_marker = ['o']
 
 for t in range(0,len(result_states),100):
     db.add_states(result_states[t].ptrace(0), kind='point')
     db.add_states(result_states[t].ptrace(1), kind='point')
 db.show()
 
-Plotter(result.states, 'something')
+Plotter(result_states, 'something')
