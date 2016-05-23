@@ -97,7 +97,7 @@ for i in range(len(taulist)):
     tlist=linspace(0, taulist[i]/4., 300)#40000) #one simulation is only a quarter of the turn!
     args['cOpts']['tau']=taulist[i]
     result = mesolve(H_RWA, psi0, tlist, [], [], args)#,options=Odeoptions(nsteps=100000))
-    statelist.append(result.states[-1])
+    statelist.append(result.states[-1].ptrace(0))
     philist[i]=extract_phi(bloch_vector(statelist[i]))
     print philist[i]
 
@@ -122,3 +122,5 @@ plot(r[0], r[1])
 show()
 """
 
+
+#my_plot = Plotter(result.states, 'something')
