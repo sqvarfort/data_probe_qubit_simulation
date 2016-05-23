@@ -2,6 +2,7 @@ from qutip import *
 from pylab import *
 from scipy import constants as cp
 from numpy import random
+from Plotter import Plotter
 
 
 def qubit_state(theta,phi):
@@ -61,15 +62,16 @@ Hz= Delta*sigma2z
 args={'Hz': Hz, 'Hd': tensor(sigmaz(), sigmaz()), 'H12': Qobj([[0,0,0,0],[0,0,0,0],[0,1,0,0],[0,0,0,0]]), 'H21': Qobj([[0,0,0,0],[0,0,1,0],[0,0,0,0],[0,0,0,0]])}
 
 # specify simulation arguments
-args.update({'J': J, 'Delta': Delta, 'r': array([0,0,d]), 'circ': True, 'cOpts': {'pJit': False, 'rstd': 1.e-9, 'cOffset': zeros(3), 'tau': tau, 'd': d, 'D': D} })
+args.update({'J': J, 'Delta': Delta, 'r': array([0,0,d]), 'circ': False, 'cOpts': {'pJit': False, 'rstd': 1.e-9, 'cOffset': zeros(3), 'tau': tau, 'd': d, 'D': D} })
 
 # intial state
 #               probe |+>               data
-psi0 = tensor(qubit_state(pi/2.,0), qubit_state(0.,0,))  
+psi0 = tensor(qubit_state(pi/2.,0), qubit_state(0.,0,))
 
+tau=1.5e-3 #e.g. 1ms
 # use time independent staying on top of each other 2*78e-6 does the pi/2 rotation we want!
 #tlist=linspace(0, 2*78e-6, 100) #one simulation is only a quarter of the turn!
-tlist=linspace(0, tau/4., 300)#40000) #one simulation is only a quarter of the turn!
+tlist=linspace(0, tau/4., 100)#40000) #one simulation is only a quarter of the turn!
 result = mesolve(H_RWA, psi0, tlist, [], [], args)
 
 
@@ -89,3 +91,6 @@ r=circ_motion(tlist, args['cOpts'])
 plot(r[0], r[1])
 show()
 """
+
+
+my_plot = Plotter(result.states, 'something')
