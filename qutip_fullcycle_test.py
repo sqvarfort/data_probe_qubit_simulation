@@ -144,9 +144,10 @@ Hi= J/norm(r)**3 * ( sigmaxx + sigmayy + sigmazz -3/norm(r)**2 * ( r[0]**2 * sig
 H=[Hz,[Hxyz, Hxyz_coeff],[Hxx, Hxx_coeff],[Hyy, Hyy_coeff],[Hzz, Hzz_coeff],[Hxy, Hxy_coeff],[Hxz, Hxz_coeff],[Hyx, Hyx_coeff],[Hyz, Hyz_coeff],[Hzx, Hzx_coeff],[Hzy, Hzy_coeff]]
 
 
-
-sim = Simulation(Hz+Hi)
-sim.run_cycles(4,psi0,8*78e-6,12000)
+initial_states = [(pi/2.0,0),(0,0),(0,0),(0,0),(0,0)]
+sim = Simulation(Hz+Hi,initial_states,[])
+#sim.lind.dephasing(1.0e3,0) # example of adding Lindblad operators (dephase probe)
+sim.run_cycles(4,8*78e-6,12000)
 result = sim.last_run
 
 

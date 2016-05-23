@@ -5,14 +5,15 @@ from scipy import constants as cp
 from Lindblad import Lindblad
 
 class Simulation():
-    def __init__(self,hamiltonian):
+    def __init__(self,hamiltonian,initial_states,mesolve_args):
         self.hamiltonian = hamiltonian
+        self.mesolve_args = mesolve_args
         self.final_states = []
         self.last_run = []
         self.lind = Lindblad(2) # Add Lindblads with eg Simulation.lind.dephasing(1.0e3,0)
         
-        initial_states = [(pi/2.0,0),(0,0),(0,0),(0,0),(0,0)]
-        self.full_state = self.full_system_state(initial_states)
+        self.initial_states = initial_states
+        self.full_state = self.full_system_state(self.initial_states)
     
     def qubit_state(self,theta,phi):
         return Qobj([[cos(theta/2.)], [exp(1j*phi) * sin(theta/2.)]])
@@ -28,11 +29,11 @@ class Simulation():
     
     def _run_quarter_cycle(self,state,time=2*78e-6,steps=3000):
         tlist=linspace(0, time, steps) #one simulation is only a quarter of the turn!
-        it_res = mesolve(self.hamiltonian, state, tlist, self.lind.lindblads, [])
+        it_res = mesolve(self.hamiltonian, state, tlist, self.lind.lindblads, self.mesolve_args)
         for state in it_res.states: self.last_run.append(state)
         return it_res.states[-1] # return last Qobj
         
-    def run_cycles(self,cycles,state,time=8*78e-6,steps=12000):
+    def run_cycles(self,cycles,time=8*78e-6,steps=12000):
         self.last_run = []
         cycle_time = time/cycles
         cycle_steps = steps/cycles
@@ -40,7 +41,16 @@ class Simulation():
         
         
         for cycle in range(cycles):
+            probe_qubit = self.full_state.ptrace(0)
+            data_qubit = self.full_state.ptrace(cycle+1)
             
+            state = tensor(probe_qubit,data_qubit)
             state = self._run_quarter_cycle(state,cycle_time,cycle_steps)
-        self.final_states.append(state)
-        return state
+            
+            all_data_qubits = [self.full_state.ptrace(i+1) for i in range(4)]
+            probe_qubit = state.ptrace(0)
+            all_data_qubits[cycle] = state.ptrace(1)
+            
+            self.full_state = tensor(probe_qubit,all_data_qubits[0],all_data_qubits[1],all_data_qubits[2],all_data_qubits[3])
+        self.final_states.append(self.full_state)
+        return self.full_state
