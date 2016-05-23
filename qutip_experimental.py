@@ -8,6 +8,20 @@ from Plotter import Plotter
 def qubit_state(theta,phi):
     return Qobj([[cos(theta/2.)], [exp(1j*phi) * sin(theta/2.)]])
 
+def bloch_vector(state): # Calculate the bloch vector
+    return [expect(sigmax(), state),
+            expect(sigmay(), state),
+            expect(sigmaz(), state)]
+
+def extract_phi(self, vec):
+    if vec[0] > 0.:
+        if vec[1] < 0.:
+            return -arctan(vec[1]/vec[0])
+        else:
+            return 2.*pi - arctan(vec[1]/vec[0])
+    else:
+        return pi - arctan(vec[1]/vec[0])
+
 
 def circ_motion(t, args):
     # cOffset can be generated using Gavins function!
@@ -49,10 +63,11 @@ AP=118e6
 
 muB=cp.e*cp.hbar/(2*cp.m_e) #9.27e-24
 Bfield=300e-3/cp.hbar   # division by hbar needed because not implemented in mesolve lindblad?
-g1=ge*muB*Bfield-9*ABi/4. #gBi#10   in units of frequency
-g2=ge*muB*Bfield-AP/4. #gP
+g1=gBi #ge*muB*Bfield-9*ABi/4. #10   in units of frequency
+g2=gP #ge*muB*Bfield-AP/4. 
 J=cp.mu_0*ge**2 * muB**2/(4*pi)/cp.hbar #in units of frequency
-Delta=(g2-g1)#*muB*Bfield
+# we agreed to choose a delta which is large enough to be much larger than J/d**3. Too large delta slows down the simulation!
+Delta=(g2-g1)*muB*Bfield
 
 #
 sigma2z = tensor(qeye(2), sigmaz())
@@ -62,24 +77,34 @@ Hz= Delta*sigma2z
 args={'Hz': Hz, 'Hd': tensor(sigmaz(), sigmaz()), 'H12': Qobj([[0,0,0,0],[0,0,0,0],[0,1,0,0],[0,0,0,0]]), 'H21': Qobj([[0,0,0,0],[0,0,1,0],[0,0,0,0],[0,0,0,0]])}
 
 # specify simulation arguments
-args.update({'J': J, 'Delta': Delta, 'r': array([0,0,d]), 'circ': False, 'cOpts': {'pJit': False, 'rstd': 1.e-9, 'cOffset': zeros(3), 'tau': tau, 'd': d, 'D': D} })
+args.update({'J': J, 'Delta': Delta, 'r': array([0,0,d]), 'circ': True, 'cOpts': {'pJit': False, 'rstd': 1.e-9, 'cOffset': zeros(3), 'tau': tau, 'd': d, 'D': D} })
 
 # intial state
 #               probe |+>               data
 psi0 = tensor(qubit_state(pi/2.,0), qubit_state(0.,0,))
 
-tau=1.5e-3 #e.g. 1ms
 # use time independent staying on top of each other 2*78e-6 does the pi/2 rotation we want!
-
-#tlist=linspace(0, 2*78e-6, 100) #one simulation is only a quarter of the turn!
-tlist=linspace(0, tau/4., 100)#40000) #one simulation is only a quarter of the turn!
-result = mesolve(H_RWA, psi0, tlist, [], [], args)
-
 #tlist=linspace(0, 2*78e-6, 200) #one simulation is only a quarter of the turn!
-#result = mesolve(H_RWA, psi0, tlist, [], [], args,options=Odeoptions(nsteps=100000))
+#tlist=linspace(0, tau/4., 100)#40000) #one simulation is only a quarter of the turn!
+#result = mesolve(H_RWA, psi0, tlist, [], [], args)#,options=Odeoptions(nsteps=100000))
 
 
+taulist=arange(3.1e-3,3.5e-3,0.025e-3)
+statelist=[]
+philist=zeros(len(taulist))
 
+for i in range(len(taulist)):
+    tlist=linspace(0, taulist[i]/4., 300)#40000) #one simulation is only a quarter of the turn!
+    args['cOpts']['tau']=taulist[i]
+    result = mesolve(H_RWA, psi0, tlist, [], [], args)#,options=Odeoptions(nsteps=100000))
+    statelist.append(result.states[-1].ptrace(0))
+    philist[i]=extract_phi(bloch_vector(statelist[i]))
+    print philist[i]
+
+plot(taulist*1e3,philist)
+show()
+
+"""
 #qsave(result.states, 'states')
 # Plot Bloch
 db=Bloch()
@@ -88,6 +113,7 @@ for t in range(0,len(result.states),1):
     db.add_states(result.states[t].ptrace(0), kind='point')
     db.add_states(result.states[t].ptrace(1), kind='point')
 db.show()
+"""
 
 # Test plot circ motion
 """
@@ -97,4 +123,4 @@ show()
 """
 
 
-my_plot = Plotter(result.states, 'something')
+#my_plot = Plotter(result.states, 'something')
