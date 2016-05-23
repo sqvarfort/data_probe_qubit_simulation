@@ -2,6 +2,7 @@ from qutip import *
 from pylab import *
 from scipy import constants as cp
 from numpy import random
+from Plotter import Plotter
 
 from Lindblad import Lindblad
 from DataQubitDisplacement import *
@@ -64,8 +65,8 @@ rstd = 1e-9
 
 def calc_r(t):
     r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
-    r_rand = rOffset + array([random.normal(size/sqrt(2)*sin(2*pi/tau * t), rstd), random.normal(size/sqrt(2)*cos(2*pi/tau * t), rstd), random.normal(0,rstd)])
-    return r_rand
+    #r_rand = rOffset + array([random.normal(size/sqrt(2)*sin(2*pi/tau * t), rstd), random.normal(size/sqrt(2)*cos(2*pi/tau * t), rstd), random.normal(0,rstd)])
+    return r
 
 test_time = 0
 
@@ -160,8 +161,9 @@ linds = lind.lindblads # If no lindblads have been declared, lind.lindblads==[]
 
 
 # use time independent staying on top of each other 2*78e-6 does the pi/2 rotation we want!
-tlist=linspace(0, 2*78e-6, 3000) #one simulation is only a quarter of the turn!
+tlist=linspace(0, 2*78e-6, 100) #one simulation is only a quarter of the turn!
 result = mesolve(Hz+Hi, psi0, tlist, linds, [])#, options=Odeoptions(nsteps=100000))
+
 
 # use time dependent
 #tlist=linspace(0, tau/4., 40000) #one simulation is only a quarter of the turn!
@@ -171,7 +173,9 @@ qsave(result.states, 'states')
 
 db=Bloch()
 
-for t in range(0,len(result.states),100):
+for t in range(0,len(result.states),1):
     db.add_states(result.states[t].ptrace(0), kind='point')
     db.add_states(result.states[t].ptrace(1), kind='point')
 db.show()
+
+Plotter(result.states, 'something')
