@@ -5,7 +5,25 @@ from scipy import constants as cp
 from Lindblad import Lindblad
 
 class Simulation():
+    '''
+    Prepare and run simulations on 5-qubit system using given hamiltonian
+    
+    Run simulation with Simulation.run(time,steps)
+    
+    This class stores some data after each run, some of which is
+    persistent over several run()s, some of which gets
+    overwritten after each run().
+    
+    Stored data:
+    - final_states (each run() simulation appends its final 5-qubit state here) [PERSISTENT]
+    - last_run_all (stores each 2-qubit state after each step of the simulaiton) [OVERWRITTEN]
+    - last_run_quarter_cycle (stores the 2-qubit state after simulation of each quandarnt) [OVERWRITTEN]
+    - last_run_metadata (stores some metadata from the last run) [OVERWRITTEN]
+    '''
     def __init__(self,hamiltonian,states,mesolve_args):
+        '''
+        Prepare a simulation with given hamiltonian, mesolve arguments, and initial states
+        '''
         self.hamiltonian = hamiltonian
         self.args = mesolve_args
 
@@ -24,6 +42,11 @@ class Simulation():
         return Qobj([[cos(theta/2.)], [exp(1j*phi) * sin(theta/2.)]])
     
     def set_system_state(self, states):
+        '''
+        Set 5-qubit system state using given rotations from |0>
+        
+        Probe qubit is qubit 0
+        '''
         # states should be of form [(theta,phi),...] for all qubits
         q_probe = self.qubit_state(states[0][0],states[0][1])
         q_data1 = self.qubit_state(states[1][0],states[1][1])
@@ -43,6 +66,9 @@ class Simulation():
         return self.last_run_metadata
         
     def run(self,time,steps,cycles=4):
+        '''
+        Run simulation for given time and steps
+        '''
         self.last_run_quarter_cycle = []
         self.last_run_all = []
         cycle_time = time/cycles

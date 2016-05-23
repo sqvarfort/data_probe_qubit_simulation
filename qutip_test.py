@@ -172,6 +172,8 @@ sim = Simulation(hamiltonian,initial_states,mesolve_args)
 #sim.lind.dephasing(1.0e3,0) # example of adding Lindblad operators (dephase probe)
 sim.run(8*78e-6,12000) # total time, total steps, num of cycles (default 4)
 
+#sim.set_system_state(initial_states) # Set full system state to whatever you want
+
 result_states = sim.last_run_all
 metadata = sim.last_run_metadata
 step_data = sim.last_run_quarter_cycle
