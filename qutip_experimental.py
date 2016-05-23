@@ -10,10 +10,10 @@ def qubit_state(theta,phi):
 
 
 def circ_motion(t, args):
+    # cOffset can be generated using Gavins function!
     r=args['cOffset'] + array( [ -args['D']/2. + args['D']/sqrt(2)*sin(2*pi/args['tau'] * t)  ,  -args['D']/2. + args['D']/sqrt(2)*cos(2*pi/args['tau'] * t)  ,  args['d'] ] )
     #allow random path jitter (simulates not perfect movement of mems stage) ~~1nm?
     if args['pJit']:
-        # add gavins function here!
         r+=random.normal(0, args['rstd'], 3)
         # use below for test plot
         #r=args['cOffset'] + array( [ -args['D']/2. + random.normal(args['D']/sqrt(2)*sin(2*pi/args['tau'] * t), args['rstd'])  ,  -args['D']/2. + random.normal(args['D']/sqrt(2)*cos(2*pi/args['tau'] * t), args['rstd'])  ,  random.normal(args['d'], args['rstd']) ] )
@@ -40,19 +40,19 @@ D=400e-9
 d=40e-9
 
 # constants
-ge=1.99875
+ge=1.9985
 gP=ge-2.5e-4
 gBi=2.0003
-ABi=1475e6
+ABi=1475.4e6
 AP=118e6
 
 
-muB=9.27e-24
+muB=cp.e*cp.hbar/(2*cp.m_e) #9.27e-24
 Bfield=300e-3/cp.hbar   # division by hbar needed because not implemented in mesolve lindblad?
-g1=gBi#10
-g2=gP
-J=cp.mu_0*ge**2 * muB**2/(4*pi)/cp.hbar
-Delta=(g2-g1)*muB*Bfield
+g1=ge*muB*Bfield-9*ABi/4. #gBi#10   in units of frequency
+g2=ge*muB*Bfield-AP/4. #gP
+J=cp.mu_0*ge**2 * muB**2/(4*pi)/cp.hbar #in units of frequency
+Delta=(g2-g1)#*muB*Bfield
 
 #
 sigma2z = tensor(qeye(2), sigmaz())
@@ -70,17 +70,21 @@ psi0 = tensor(qubit_state(pi/2.,0), qubit_state(0.,0,))
 
 tau=1.5e-3 #e.g. 1ms
 # use time independent staying on top of each other 2*78e-6 does the pi/2 rotation we want!
+
 #tlist=linspace(0, 2*78e-6, 100) #one simulation is only a quarter of the turn!
 tlist=linspace(0, tau/4., 100)#40000) #one simulation is only a quarter of the turn!
 result = mesolve(H_RWA, psi0, tlist, [], [], args)
 
+#tlist=linspace(0, 2*78e-6, 200) #one simulation is only a quarter of the turn!
+#result = mesolve(H_RWA, psi0, tlist, [], [], args,options=Odeoptions(nsteps=100000))
+
+
 
 #qsave(result.states, 'states')
-
 # Plot Bloch
 db=Bloch()
 
-for t in range(0,len(result.states),10):
+for t in range(0,len(result.states),1):
     db.add_states(result.states[t].ptrace(0), kind='point')
     db.add_states(result.states[t].ptrace(1), kind='point')
 db.show()

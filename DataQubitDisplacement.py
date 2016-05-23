@@ -1,6 +1,5 @@
-import random
 from math import sin, cos, sqrt, pi
-from numpy import array
+from numpy import array, random
 
 def random_uniform_cylinder(radius,half_height):
     '''
