@@ -3,6 +3,8 @@ from pylab import *
 from scipy import constants as cp
 from numpy import random
 
+from Lindblad import Lindblad
+from DataQubitDisplacement import *
 
 def qubit_state(theta,phi):
     return Qobj([[cos(theta/2.)], [exp(1j*phi) * sin(theta/2.)]])
@@ -19,7 +21,9 @@ Bfield=300e-3/cp.hbar   # division by hbar needed because not implemented in mes
 g1=gBi#10
 g2=gP
 J=cp.mu_0*ge**2 * muB**2/(4*pi)/cp.hbar
-print J
+
+
+linds = [] # Initially no lindblad operators
 
 
 # GEOMETRY
@@ -133,6 +137,7 @@ g2=g2-g
 # Zeeman Hamitonian
 Hz= muB * Bfield * ( g1*sigma1z + g2*sigma2z  )
 
+# all simulations using Hi are wrong because 10e-12*sigmazz=0 precision problem. Using H is woking!
 Hi= J/norm(r)**3 * ( sigmaxx + sigmayy + sigmazz -3/norm(r)**2 * ( r[0]**2 * sigmaxx + r[1]**2 * sigmayy + r[2]**2 * sigmazz + r[0]*r[1] * sigmaxy + r[0]*r[2] * sigmaxz + r[1]*r[0]* sigmayx + r[1]*r[2] * sigmayz + r[2]*r[0] * sigmazx + r[2]*r[1]* sigmazy  ) )
 
 
@@ -143,9 +148,16 @@ H=[Hz,[Hxyz, Hxyz_coeff],[Hxx, Hxx_coeff],[Hyy, Hyy_coeff],[Hzz, Hzz_coeff],[Hxy
 #Htest=tensor(qeye(2), sigmaz())
 
 
+# DEFINE LINDBLAD OPERATORS
+lind = Lindblad(2) # Collapse operators over (x) qubits
+#lind.dephasing(1.0e3,0) # Dephasing on first qubit (rate, qubit)
+linds = lind.lindblads # If no lindblads have been declared, lind.lindblads==[]
+
+
+
 # use time independent staying on top of each other 2*78e-6 does the pi/2 rotation we want!
 tlist=linspace(0, 2*78e-6, 3000) #one simulation is only a quarter of the turn!
-result = mesolve(Hz+Hi, psi0, tlist, [], [])#, options=Odeoptions(nsteps=100000))
+result = mesolve(Hz+Hi, psi0, tlist, linds, [])#, options=Odeoptions(nsteps=100000))
 
 # use time dependent
 #tlist=linspace(0, tau/4., 40000) #one simulation is only a quarter of the turn!
