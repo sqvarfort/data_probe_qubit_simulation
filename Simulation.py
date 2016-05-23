@@ -5,15 +5,16 @@ from scipy import constants as cp
 from Lindblad import Lindblad
 
 class Simulation():
-    def __init__(self,hamiltonian,initial_states,mesolve_args):
+    def __init__(self,hamiltonian,states,mesolve_args):
         self.hamiltonian = hamiltonian
         self.args = mesolve_args
 
         self.lind = Lindblad(2) # Add Lindblads with eg Simulation.lind.dephasing(1.0e3,0)
         
-        self.initial_states = initial_states
-        self.full_state = self.full_system_state(self.initial_states)
+        self.initial_states = states
+        self.full_state = self.set_system_state(states)
         
+        #self.start_states = [] # Stores the initial 5-qubit Qobjs before every run
         self.final_states = [] # Stores the final 5-qubit Qobjs after every run
         self.last_run_all = []
         self.last_run_quarter_cycle = []
@@ -22,7 +23,7 @@ class Simulation():
     def qubit_state(self,theta,phi):
         return Qobj([[cos(theta/2.)], [exp(1j*phi) * sin(theta/2.)]])
     
-    def full_system_state(self, states):
+    def set_system_state(self, states):
         # states should be of form [(theta,phi),...] for all qubits
         q_probe = self.qubit_state(states[0][0],states[0][1])
         q_data1 = self.qubit_state(states[1][0],states[1][1])
@@ -46,6 +47,8 @@ class Simulation():
         self.last_run_all = []
         cycle_time = time/cycles
         cycle_steps = steps/cycles
+        
+        #self.initial_states.append(self.full_state) # Optionally store initial states
         
         for cycle in range(cycles):
             probe_qubit = self.full_state.ptrace(0)
