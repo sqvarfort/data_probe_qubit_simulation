@@ -6,8 +6,10 @@ from numpy import random
 from Lindblad import Lindblad
 from DataQubitDisplacement import *
 
-def qubit_state(theta,phi):
-    return Qobj([[cos(theta/2.)], [exp(1j*phi) * sin(theta/2.)]])
+# thetad = preparation error for theta
+# phid = preparation error for phi
+def qubit_state(theta,phi, thetad, phid):
+    return Qobj([[cos(theta/2. + thetad)], [exp(1j*(phi + phid)) * sin(theta/2. + thetad)]])
 
 # constants
 ge=1.99875
@@ -36,7 +38,9 @@ r=array([0,0,separation])
 
 # intial state
 #               probe |+>               data
-psi0 = tensor(qubit_state(pi/2.,0), qubit_state(pi,0,))
+psi0 = tensor(qubit_state(pi/2.,0,0,0), qubit_state(pi,0,0,0))
+# Two last values indicate error in preparation
+
 # operators
 sigma1z  = tensor(sigmaz(), qeye(2))
 sigma2z = tensor(qeye(2), sigmaz())
