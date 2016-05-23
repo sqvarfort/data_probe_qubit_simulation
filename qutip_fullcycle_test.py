@@ -33,9 +33,6 @@ separation=40e-9
 rOffset=array([-size/2.,-size/2, separation])
 r=array([0,0,separation])
 
-# intial state
-#               probe |+>               data
-psi0 = tensor(qubit_state(pi/2.,0), qubit_state(pi,0,))
 # operators
 sigma1z  = tensor(sigmaz(), qeye(2))
 sigma2z = tensor(qeye(2), sigmaz())
@@ -59,7 +56,7 @@ rstd = 1e-9
 
 def calc_r(t):
     r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
-    r_rand = rOffset# + array([random.uniform(size/sqrt(2)*sin(2*pi/tau * t), rstd), random.uniform(size/sqrt(2)*cos(2*pi/tau * t), rstd), random.uniform(0,rstd)])
+    r_rand = rOffset + array([random.uniform(size/sqrt(2)*sin(2*pi/tau * t), rstd), random.uniform(size/sqrt(2)*cos(2*pi/tau * t), rstd), random.uniform(0,rstd)])
     return r_rand
 
 test_time = 0
@@ -143,13 +140,17 @@ Hi= J/norm(r)**3 * ( sigmaxx + sigmayy + sigmazz -3/norm(r)**2 * ( r[0]**2 * sig
 # Full Hamiltonian time dependent
 H=[Hz,[Hxyz, Hxyz_coeff],[Hxx, Hxx_coeff],[Hyy, Hyy_coeff],[Hzz, Hzz_coeff],[Hxy, Hxy_coeff],[Hxz, Hxz_coeff],[Hyx, Hyx_coeff],[Hyz, Hyz_coeff],[Hzx, Hzx_coeff],[Hzy, Hzy_coeff]]
 
+hamiltonian = Hz+Hi
+initial_states = [(pi/2.0,0),(0,0),(0,0),(0,0),(0,0)] # [(theta,phi),...] for all qubits
+mesolve_args = []
 
-initial_states = [(pi/2.0,0),(0,0),(0,0),(0,0),(0,0)]
-sim = Simulation(Hz+Hi,initial_states,[])
+sim = Simulation(hamiltonian,initial_states,mesolve_args)
 #sim.lind.dephasing(1.0e3,0) # example of adding Lindblad operators (dephase probe)
-sim.run_cycles(4,8*78e-6,12000)
-result = sim.last_run
+sim.run(8*78e-6,12000,4) # total time, total steps, num of cycles (default 4)
 
+result = sim.last_run_all
+metadata = sim.last_run_metadata
+step_data = sim.last_run_quarter_cycle
 
         
 db=Bloch()

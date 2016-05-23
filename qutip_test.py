@@ -3,8 +3,8 @@ from pylab import *
 from scipy import constants as cp
 from numpy import random
 
-from Lindblad import Lindblad
 from DataQubitDisplacement import *
+from Simulation import Simulation
 
 # thetad = preparation error for theta
 # phid = preparation error for phi
@@ -38,7 +38,7 @@ r=array([0,0,separation])
 
 # intial state
 #               probe |+>               data
-psi0 = tensor(qubit_state(pi/2.,0,0,0), qubit_state(pi,0,0,0))
+# psi0 = tensor(qubit_state(pi/2.,0,0,0), qubit_state(pi,0,0,0)) - superceded by Simulation class
 # Two last values indicate error in preparation
 
 # operators
@@ -152,26 +152,36 @@ H=[Hz,[Hxyz, Hxyz_coeff],[Hxx, Hxx_coeff],[Hyy, Hyy_coeff],[Hzz, Hzz_coeff],[Hxy
 #Htest=tensor(qeye(2), sigmaz())
 
 
-# DEFINE LINDBLAD OPERATORS
-lind = Lindblad(2) # Collapse operators over (x) qubits
-#lind.dephasing(1.0e3,0) # Dephasing on first qubit (rate, qubit)
-linds = lind.lindblads # If no lindblads have been declared, lind.lindblads==[]
-
-
 
 # use time independent staying on top of each other 2*78e-6 does the pi/2 rotation we want!
-tlist=linspace(0, 2*78e-6, 3000) #one simulation is only a quarter of the turn!
-result = mesolve(Hz+Hi, psi0, tlist, linds, [])#, options=Odeoptions(nsteps=100000))
+#tlist=linspace(0, 2*78e-6, 3000) #one simulation is only a quarter of the turn!
+#result = mesolve(Hz+Hi, psi0, tlist, linds, [])#, options=Odeoptions(nsteps=100000))
+#result_states = result.states
 
 # use time dependent
 #tlist=linspace(0, tau/4., 40000) #one simulation is only a quarter of the turn!
 #result = mesolve(H, psi0, tlist, [], [])#, options=Odeoptions(nsteps=100000))
+#result_states = result.states
 
-qsave(result.states, 'states')
+# ------- BEGIN SIMULATION CODE --------
+hamiltonian = Hz+Hi
+initial_states = [(pi/2.0,0),(0,0),(0,0),(pi,0),(0,0)] # [(theta,phi),...] for all qubits
+mesolve_args = []
+
+sim = Simulation(hamiltonian,initial_states,mesolve_args)
+#sim.lind.dephasing(1.0e3,0) # example of adding Lindblad operators (dephase probe)
+sim.run(8*78e-6,12000) # total time, total steps, num of cycles (default 4)
+
+result_states = sim.last_run_all
+metadata = sim.last_run_metadata
+step_data = sim.last_run_quarter_cycle
+
+
+qsave(result_states, 'states')
 
 db=Bloch()
 
-for t in range(0,len(result.states),100):
-    db.add_states(result.states[t].ptrace(0), kind='point')
-    db.add_states(result.states[t].ptrace(1), kind='point')
+for t in range(0,len(result_states),100):
+    db.add_states(result_states[t].ptrace(0), kind='point')
+    db.add_states(result_states[t].ptrace(1), kind='point')
 db.show()
