@@ -19,7 +19,7 @@ Bfield=300e-3/cp.hbar   # division by hbar needed because not implemented in mes
 g1=gBi#10
 g2=gP
 J=cp.mu_0*ge**2 * muB**2/(4*pi)/cp.hbar
-
+print J
 
 
 # GEOMETRY
