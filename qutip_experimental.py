@@ -2,6 +2,7 @@ from qutip import *
 from pylab import *
 from scipy import constants as cp
 from numpy import random
+from Plotter import Plotter
 
 
 def qubit_state(theta,phi):
@@ -80,10 +81,13 @@ args.update({'J': J, 'Delta': Delta, 'r': array([0,0,d]), 'circ': True, 'cOpts':
 
 # intial state
 #               probe |+>               data
-psi0 = tensor(qubit_state(pi/2.,0), qubit_state(0.,0,))  
+psi0 = tensor(qubit_state(pi/2.,0), qubit_state(0.,0,))
 
 # use time independent staying on top of each other 2*78e-6 does the pi/2 rotation we want!
 #tlist=linspace(0, 2*78e-6, 200) #one simulation is only a quarter of the turn!
+#tlist=linspace(0, tau/4., 100)#40000) #one simulation is only a quarter of the turn!
+#result = mesolve(H_RWA, psi0, tlist, [], [], args)#,options=Odeoptions(nsteps=100000))
+
 
 taulist=arange(3.1e-3,3.5e-3,0.025e-3)
 statelist=[]
@@ -117,3 +121,4 @@ r=circ_motion(tlist, args['cOpts'])
 plot(r[0], r[1])
 show()
 """
+

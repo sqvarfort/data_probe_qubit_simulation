@@ -2,6 +2,7 @@ from qutip import *
 from pylab import *
 from scipy import constants as cp
 from numpy import random
+from Plotter import Plotter
 
 from DataQubitDisplacement import *
 from Simulation import Simulation
@@ -64,8 +65,8 @@ rstd = 1e-9
 
 def calc_r(t):
     r=rOffset+array([size/sqrt(2)*sin(2*pi/tau * t), size/sqrt(2)*cos(2*pi/tau * t), 0.])
-    r_rand = rOffset + array([random.normal(size/sqrt(2)*sin(2*pi/tau * t), rstd), random.normal(size/sqrt(2)*cos(2*pi/tau * t), rstd), random.normal(0,rstd)])
-    return r_rand
+    #r_rand = rOffset + array([random.normal(size/sqrt(2)*sin(2*pi/tau * t), rstd), random.normal(size/sqrt(2)*cos(2*pi/tau * t), rstd), random.normal(0,rstd)])
+    return r
 
 test_time = 0
 
@@ -158,6 +159,8 @@ H=[Hz,[Hxyz, Hxyz_coeff],[Hxx, Hxx_coeff],[Hyy, Hyy_coeff],[Hzz, Hzz_coeff],[Hxy
 #result = mesolve(Hz+Hi, psi0, tlist, linds, [])#, options=Odeoptions(nsteps=100000))
 #result_states = result.states
 
+
+
 # use time dependent
 #tlist=linspace(0, tau/4., 40000) #one simulation is only a quarter of the turn!
 #result = mesolve(H, psi0, tlist, [], [])#, options=Odeoptions(nsteps=100000))
@@ -187,3 +190,5 @@ for t in range(0,len(result_states),100):
     db.add_states(result_states[t].ptrace(0), kind='point')
     db.add_states(result_states[t].ptrace(1), kind='point')
 db.show()
+
+Plotter(result.states, 'something')
