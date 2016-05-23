@@ -30,13 +30,15 @@ class Simulation():
         self.lind = Lindblad(2) # Add Lindblads with eg Simulation.lind.dephasing(1.0e3,0)
         
         self.initial_states = states
-        self.full_state = self.set_system_state(states)
+        self.set_system_state(states)
         
         #self.start_states = [] # Stores the initial 5-qubit Qobjs before every run
         self.final_states = [] # Stores the final 5-qubit Qobjs after every run
         self.last_run_all = []
         self.last_run_quarter_cycle = []
-        self.last_run_metadata = self._store_metadata(None,None,None)  
+        self.last_run_metadata = self._store_metadata(None,None,None) 
+
+        self.progress_bar = True
         
     def qubit_state(self,theta,phi):
         return Qobj([[cos(theta/2.)], [exp(1j*phi) * sin(theta/2.)]])
@@ -53,11 +55,12 @@ class Simulation():
         q_data2 = self.qubit_state(states[2][0],states[2][1])
         q_data3 = self.qubit_state(states[3][0],states[3][1])
         q_data4 = self.qubit_state(states[4][0],states[4][1])
-        return tensor(q_probe,q_data1,q_data2,q_data3,q_data4)
+        self.full_state = tensor(q_probe,q_data1,q_data2,q_data3,q_data4)
+        return self.full_state
     
     def _run_quarter_cycle(self,state,time,steps):
         tlist=linspace(0, time, steps) #one simulation is only a quarter of the turn!
-        it_res = mesolve(self.hamiltonian, state, tlist, self.lind.lindblads, self.args)
+        it_res = mesolve(self.hamiltonian, state, tlist, self.lind.lindblads, e_ops=[], args=self.args, progress_bar=self.progress_bar)
         for state in it_res.states: self.last_run_all.append(state)
         return it_res.states[-1] # return last Qobj
         
