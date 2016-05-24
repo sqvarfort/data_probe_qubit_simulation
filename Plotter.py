@@ -76,7 +76,6 @@ class Plotter(object):
         plt.savefig('Histogram.pdf')
 
     def phi_to_file(self, list_of_phi, info):
-        print self.info
         f = open('phi_data.txt', 'w+')
         f.write('Phase of the final state' '\n \n')
         f.write( yaml.dump(info, default_flow_style=False) + '\n \n')
