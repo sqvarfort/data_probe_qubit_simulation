@@ -57,6 +57,13 @@ class Simulation():
         q_data4 = self.qubit_state(states[4][0],states[4][1])
         self.full_state = tensor(q_probe,q_data1,q_data2,q_data3,q_data4)
         return self.full_state
+        
+    def reset_system_state(self):
+        '''
+        Resets the system back to its initial state
+        '''
+        self.set_system_state(self.initial_states)
+        
     
     def _run_quarter_cycle(self,state,time,steps):
         tlist=linspace(0, time, steps) #one simulation is only a quarter of the turn!
