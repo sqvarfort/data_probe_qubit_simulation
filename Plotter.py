@@ -38,6 +38,8 @@ class Plotter(object):
         # Plot histogram and write textfile
         self.Histogram(list_of_phi)
         self.phi_to_file(list_of_phi, info)
+        self.Probe_measurement_outcome(probe_states, info)
+        self.states_to_file(states, info)
 
 
     def bloch_vector(self, state): # Calculate the bloch vector
@@ -114,12 +116,17 @@ class Plotter(object):
         probe_states_output = np.vstack((probe_states))
         data_states_output = np.vstack((data_states))
 
-        file_data_store('full_states.txt', states_output, numtype="complex")
-        file_data_store('probe_states.txt', probe_states_output, numtype = "complex")
-        file_data_store('data_states.txt', data_states_output, numtype = "complex")
+        for item in states_output:
+            fprobe_data.write("%s\n" % item)
+
+        for item in probe_states_output:
+            fprobe_states.write("%s\n" % item)
+
+        for item in data_states_output:
+            fdata_states.write("%s\n" % item)
 
 
-    def Probe_measurement_outcome(self, probe_states):
+    def Probe_measurement_outcome(self, probe_states, info):
         """ This method calculates the probability of measuring the probe qubit in a particular state after one round of the measurement. We expect the probe qubit to either end up in the |+> state for an even outcome, or in the |-> state for the odd outcome.
         """
         fprobes = open('probe_measurements.txt', 'w+')
@@ -137,7 +144,7 @@ class Plotter(object):
         min_mean = mean(min_prob)
 
         for Exp in measurements:
-            fprobes.write("%s\t %s \t %s \n" % entry, (1/2.)*(Exp + sqrt(2-Exp**2)), (1/2.)*(-Exp + sqrt(2-Exp**2)))
+            fprobes.write("%s\t %s \t %s \n" % (Exp, (1/2.)*(Exp + sqrt(2-Exp**2)), (1/2.)*(-Exp + sqrt(2-Exp**2))))
 
         fprobes.write('The average expectation value is: ' + str(avg_exp) + '\n')
         fprobes.write('The average probability of measuring |+> is: ' + str(plus_mean) + '\n')
