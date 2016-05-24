@@ -37,7 +37,7 @@ class Plotter(object):
 
         # Plot histogram and write textfile
 
-        self.Histogram(list_of_phi)
+        self.Histogram(list_of_phi, self.info)
         self.phi_to_file(list_of_phi, self.info)
         self.Probe_measurement_outcome(probe_states, self.info)
         self.states_to_file(states, self.info)
@@ -59,8 +59,9 @@ class Plotter(object):
         else:
             return pi - arctan(vec[1]/vec[0])
 
-    def Histogram(self, list_of_phi):
+    def Histogram(self, list_of_phi, info):
         # Use LaTeX rendering
+        folder_name = info.get('folder')
         plt.rc('text', usetex=True)
         plt.rc('font', family='serif')
         path = os.path.abspath(__file__) # Set path where rates are saved to current directory
@@ -75,7 +76,7 @@ class Plotter(object):
         ax.legend()
         ax.legend(loc='upper right')
         plt.show()
-        plt.savefig('Histogram.pdf')
+        plt.savefig(folder_name + '/Histogram.pdf')
 
     def phi_to_file(self, list_of_phi, info):
         folder_name = info.get('folder')
