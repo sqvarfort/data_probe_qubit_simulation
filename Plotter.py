@@ -7,7 +7,7 @@ from pylab import *
 from scipy import constants as cp
 import os
 from matplotlib import rc
-import json
+import yaml
 
 
 
@@ -36,10 +36,11 @@ class Plotter(object):
         list_of_phi = [self.extract_phi(self.bloch_vector(probe_states[t])) for t in range(0,len(probe_states))]
 
         # Plot histogram and write textfile
+
         self.Histogram(list_of_phi)
-        self.phi_to_file(list_of_phi, info)
-        self.Probe_measurement_outcome(probe_states, info)
-        self.states_to_file(states, info)
+        self.phi_to_file(list_of_phi, self.info)
+        self.Probe_measurement_outcome(probe_states, self.info)
+        self.states_to_file(states, self.info)
 
     @staticmethod
     def bloch_vector(state): # Calculate the bloch vector
@@ -75,11 +76,10 @@ class Plotter(object):
         plt.savefig('Histogram.pdf')
 
     def phi_to_file(self, list_of_phi, info):
-        path = os.path.abspath(__file__)
+        print self.info
         f = open('phi_data.txt', 'w+')
-        with open('phi_data.txt', 'w+') as fp:
-            json.dump(info, fp)
-
+        f.write('Phase of the final state' '\n \n')
+        f.write( yaml.dump(info, default_flow_style=False) + '\n \n')
         # Write all values to the file
         for item in list_of_phi:
             f.write("%s\n" % item)
@@ -104,13 +104,13 @@ class Plotter(object):
         fdata_states = open('data_states.txt', 'w+')
         fprobe_data = open('full_states.txt', 'w+')
 
-        fprobe_data.write('Full probe and data states \n')
-        fprobe_states.write('Traced out probe states \n')
-        fdata_states.write('Traced out data states \n')
+        fprobe_data.write('Full probe and data states \n \n')
+        fprobe_states.write('Traced out probe states \n \n')
+        fdata_states.write('Traced out data states \n \n')
 
-        fprobe_data.write(info + '\n') # Write info into the
-        fprobe_states.write(info + '\n') # Write info into the
-        fdata_states.write( info + '\n') # Write info into the
+        fprobe_data.write( yaml.dump(info, default_flow_style=False) + '\n \n')
+        fprobe_states.write( yaml.dump(info, default_flow_style=False) +'\n \n' )
+        fdata_states.write( yaml.dump(info, default_flow_style=False) + '\n \n')
 
         states_output = np.vstack((states))
         probe_states_output = np.vstack((probe_states))
@@ -132,8 +132,7 @@ class Plotter(object):
         fprobes = open('probe_measurements.txt', 'w+')
         fprobes.write('Probe Measurement Outcomes \n')
 
-        with open('probe_measurements.txt', 'w') as outfile:
-            outfile.write( yaml.dump(info, default_flow_style=True) )
+        fprobes.write( yaml.dump(info, default_flow_style=False) + '\n \n')
 
         fprobes.write('sigmax exp.' + '\t' + 'Prob. of |+>'+ '\t'+ 'Prob. of |->' + '\n')
         measurements = [expect(sigmax(), state) for state in probe_states]
@@ -141,7 +140,7 @@ class Plotter(object):
         # Given the expectation value for a sigmax measurement, we solve for the probailities of measuring |+> and |->
 
         plus_prob = [((1/2.)*(E + sqrt(2-E**2))) for E in measurements]
-        min_prob = [(1/2.)*(-E + sqrt(2-E**2)) for E in measurements]
+        min_prob = [(1. -p) for p in plus_prob]
         avg_exp = mean(measurements)
         plus_mean = mean(plus_prob)
         min_mean = mean(min_prob)
