@@ -1,11 +1,10 @@
 #Information that goes into the header of each files
 
-Errors:
-  odd: true
-  dephasing: true
-  dephasing_time: 0
-  excitation: false
-  excitation_time: 0
-  relaxation: false
-  relaxation_time: 0
-  preparation_error: true
+odd: true
+dephasing: true
+dephasing_param: 0.0
+excitation: false
+excitation_param: 0.0
+relaxation: false
+relaxation_param: 0.0
+preparation_error: true
