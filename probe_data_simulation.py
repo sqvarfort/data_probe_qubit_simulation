@@ -67,7 +67,7 @@ db.point_marker = ['o']
 """ Set up simulation """
 mesolve_args = ham.getArgs()
 iterations = 200
-no_of_runs = 2
+no_of_runs = lind_args.get('runs')
 sim = Simulation(hamiltonian,initial_states,mesolve_args)
 final_states = []
 
@@ -84,7 +84,7 @@ if lind_args.get('relaxation'):
 """ Run simulation """
 for i in range(1,no_of_runs):
     print 'Starting loop ' + str(i)
-    sim.run(tau,iterations,1)
+    sim.run(tau,iterations)
     result_states = sim.last_run_all
     step_data = sim.last_run_quarter_cycle
     final_states.append(sim.last_run_all[-1])
