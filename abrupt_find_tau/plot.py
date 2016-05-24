@@ -11,6 +11,6 @@ tau=(pi/2.-p[1])/p[0]
 
 figure(1)
 plot(taulist, philist, 'k.')
-x=arange(3.e-3,3.6e-3,0.01e-3)
+x=arange(72.e-6,83e-6,0.1e-6)
 plot(x, p[0]*x+p[1], 'r:')
 show()
