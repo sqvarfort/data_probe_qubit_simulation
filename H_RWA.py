@@ -29,7 +29,7 @@ class H_RWA(object):
     @staticmethod
     def circ_motion(t, args):
         # cOffset can be generated using Gavins function!
-        r=np.array(args['cOffset']) + np.array( [ -args['D']/2. + args['D']/sqrt(2)*np.sin(2*np.pi/args['tau'] * t)  ,  -args['D']/2. + args['D']/np.sqrt(2)*cos(2*np.pi/args['tau'] * t)  ,  args['d'] ] )
+        r=np.array(args['cOffset']) + np.array( [ -args['D']/2. + args['D']/np.sqrt(2)*np.sin(2*np.pi/args['tau'] * t)  ,  -args['D']/2. + args['D']/np.sqrt(2)*np.cos(2*np.pi/args['tau'] * t)  ,  args['d'] ] )
         #allow random path jitter (simulates not perfect movement of mems stage) ~~1nm?
         if args['pJit']:
             r+=np.random.normal(0, args['rstd'], 3)
@@ -88,7 +88,7 @@ class H_RWA(object):
         if args['circ']:
             #implements circular motion from with radius D/sqrt2 where D is the separation between donors. data qubit is in the origin with total circle time of tau!
             # cOffset allows to move not perfectly above the data qubit
-            r=circ_motion(t, args['cOpts'])
+            r=H_RWA.circ_motion(t, args['cOpts'])
         return args['Hz'] + args['J']/np.linalg.norm(r)**3 * ( 1. -3. * r[2]**2/np.linalg.norm(r)**2 ) * args['Hd'] + args['J']/np.linalg.norm(r)**3 * ( 2. -3.*r[0]**2/np.linalg.norm(r)**2 -3.*r[1]**2/np.linalg.norm(r)**2 ) * (phase*args['H12'] + np.conjugate(phase)*args['H21'])
 
     def getHfunc(self):
