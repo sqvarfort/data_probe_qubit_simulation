@@ -8,3 +8,4 @@ excitation_param: 0.0
 relaxation: false
 relaxation_param: 0.0
 preparation_error: true
+folder: 'dephasing'
