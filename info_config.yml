@@ -1,12 +1,11 @@
 #Information that goes into the header of each files
-
-odd: true
+odd: false
 dephasing: true
-dephasing_param: 0.0
+dephasing_param: 3240.2200334542995 #strong dephasing
 excitation: false
 excitation_param: 0.0
 relaxation: false
 relaxation_param: 0.0
-preparation_error: true
+preparation_error: false
 folder: 'dephasing'
-runs: 10
+runs: 1
