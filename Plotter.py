@@ -42,6 +42,8 @@ class Plotter(object):
         self.Probe_measurement_outcome(probe_states, self.info)
         self.states_to_file(states, self.info)
 
+
+
     @staticmethod
     def bloch_vector(state): # Calculate the bloch vector
         return [expect(sigmax(), state),
@@ -76,7 +78,8 @@ class Plotter(object):
         plt.savefig('Histogram.pdf')
 
     def phi_to_file(self, list_of_phi, info):
-        f = open('phi_data.txt', 'w+')
+        folder_name = info.get('folder')
+        f = open(folder_name + '/phi_data.txt', 'w+')
         f.write('Phase of the final state' '\n \n')
         f.write( yaml.dump(info, default_flow_style=False) + '\n \n')
         # Write all values to the file
@@ -97,12 +100,13 @@ class Plotter(object):
         return std(list_of_phi)
 
     def states_to_file(self, states, info):
+        folder_name = info.get('folder')
         probe_states = [states[t].ptrace(0) for t in range(0, len(states))]
         data_states = [states[t].ptrace(1) for t in range(0, len(states))]
         path = os.path.abspath(__file__)
-        fprobe_states = open('probe_states.txt', 'w+')
-        fdata_states = open('data_states.txt', 'w+')
-        fprobe_data = open('full_states.txt', 'w+')
+        fprobe_states = open(folder_name + '/probe_states.txt', 'w+')
+        fdata_states = open(folder_name + '/data_states.txt', 'w+')
+        fprobe_data = open(folder_name + '/full_states.txt', 'w+')
 
         fprobe_data.write('Full probe and data states \n \n')
         fprobe_states.write('Traced out probe states \n \n')
@@ -129,7 +133,8 @@ class Plotter(object):
     def Probe_measurement_outcome(self, probe_states, info):
         """ This method calculates the probability of measuring the probe qubit in a particular state after one round of the measurement. We expect the probe qubit to either end up in the |+> state for an even outcome, or in the |-> state for the odd outcome.
         """
-        fprobes = open('probe_measurements.txt', 'w+')
+        folder_name = info.get('folder')
+        fprobes = open(folder_name + '/probe_measurements.txt', 'w+')
         fprobes.write('Probe Measurement Outcomes \n')
 
         fprobes.write( yaml.dump(info, default_flow_style=False) + '\n \n')
