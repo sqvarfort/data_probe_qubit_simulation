@@ -41,13 +41,13 @@ class Plotter(object):
         self.Probe_measurement_outcome(probe_states, info)
         self.states_to_file(states, info)
 
-
-    def bloch_vector(self, state): # Calculate the bloch vector
+    @staticmethod
+    def bloch_vector(state): # Calculate the bloch vector
         return [expect(sigmax(), state),
                    expect(sigmay(), state),
                    expect(sigmaz(), state)]
-
-    def extract_phi(self, vec): # Extract values for phi. If-statements needed for stupid non-invertible arctan
+    @staticmethod
+    def extract_phi(vec): # Extract values for phi. If-statements needed for stupid non-invertible arctan
         if vec[0] >= 0.:
             if vec[1] <= 0.:
                 return -arctan(vec[1]/vec[0])
@@ -134,7 +134,7 @@ class Plotter(object):
 
         with open('probe_measurements.txt', 'w') as outfile:
             outfile.write( yaml.dump(info, default_flow_style=True) )
-            
+
         fprobes.write('sigmax exp.' + '\t' + 'Prob. of |+>'+ '\t'+ 'Prob. of |->' + '\n')
         measurements = [expect(sigmax(), state) for state in probe_states]
 
