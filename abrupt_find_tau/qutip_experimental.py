@@ -2,7 +2,7 @@ from qutip import *
 from pylab import *
 from scipy import constants as cp
 from numpy import random
-from Plotter import Plotter
+#from Plotter import Plotter
 
 
 def qubit_state(theta,phi):
@@ -89,19 +89,19 @@ psi0 = tensor(qubit_state(pi/2.,0), qubit_state(0.,0,))
 #result = mesolve(H_RWA, psi0, tlist, [], [], args)#,options=Odeoptions(nsteps=100000))
 
 
-taulist=arange(73e-6,83e-6,1e-6)
+taulist=arange(4*73e-6,4*83e-6,4e-6)
 statelist=[]
 philist=zeros(len(taulist))
 
 for i in range(len(taulist)):
-    tlist=linspace(0, taulist[i], 200)#40000) #one simulation is only a quarter of the turn!
+    tlist=linspace(0, taulist[i], 1000)#40000) #one simulation is only a quarter of the turn!
     #args['cOpts']['tau']=taulist[i]
     result = mesolve(H_RWA, psi0, tlist, [], [], args)#,options=Odeoptions(nsteps=100000))
     statelist.append(result.states[-1].ptrace(0))
     philist[i]=extract_phi(bloch_vector(statelist[i]))
     print philist[i]
 
-plot(taulist*1e3,philist)
+plot(taulist,philist)
 show()
 
 """
