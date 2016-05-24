@@ -1,13 +1,11 @@
 from H_RWA import H_RWA
 from Plotter import Plotter
-
+from random import random
 from DataQubitDisplacement import *
 from Simulation import Simulation
-
 from qutip import *
 import yaml
 
-Plotter.extract_phi()
 """ Simulation parameters """
 
 # here abrupt movement. tau is the time spend in interaction with each individual qubit
@@ -39,17 +37,23 @@ header = lind_args.copy()
 header.update(config_args)
 
 """ Prepare Initial states """
-intial_states = []
+initial_states = []
 if lind_args.get('preparation_error'): # Check if preparation error should be applied
     if random.random() > 0.99: # Apply a preparation error at random
         initial_states.append((pi/2.,pi))
     else:
-        intial_states.append((pi/2., 0))
-
+        initial_states.append((pi/2., 0))
+else:
+    initial_states.append((pi/2.,0))
 if lind_args.get('odd'):
-    initial_statesa.. = [(pi/2., pi), (0,0), (0,0), (0,0), (pi, 0)]
+    for i in range(0,3):
+        initial_states.append((0,0))
+    initial_states.append((pi, 0))
+else:
+    for i in range(0,4):
+        initial_states.append((0,0))
 
-
+print initial_states
 
 
 """ Prepare Hamiltonian """
@@ -69,14 +73,15 @@ no_of_runs = 2
 sim = Simulation(hamiltonian,initial_states,mesolve_args)
 final_states = []
 
+print type(lind_args.get('dephasing_param'))
 
 """Adding Lindblad operators"""
 if lind_args.get('dephasing'):
-    sim.lind.dephasing(float(lind_args.get(dephasing_param)))
+    sim.lind.dephasing(lind_args.get('dephasing_param'))
 if lind_args.get('excitation'):
-    sim.lind.excitation(float(lind_args.get(excitation_param)))
+    sim.lind.excitation(lind_args.get('excitation_param'))
 if lind_args.get('relaxation'):
-    sim.lind.relaxation(float(lind_args.get(relaxation_param)))
+    sim.lind.relaxation(lind_args.get('relaxation_param'))
 
 
 
