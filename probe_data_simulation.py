@@ -53,8 +53,6 @@ else:
     for i in range(0,4):
         initial_states.append((0,0))
 
-print initial_states
-
 
 """ Prepare Hamiltonian """
 ham=H_RWA(config)
@@ -72,8 +70,6 @@ iterations = 200
 no_of_runs = 2
 sim = Simulation(hamiltonian,initial_states,mesolve_args)
 final_states = []
-
-print type(lind_args.get('dephasing_param'))
 
 """Adding Lindblad operators"""
 if lind_args.get('dephasing'):
