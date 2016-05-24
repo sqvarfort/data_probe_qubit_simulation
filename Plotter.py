@@ -86,8 +86,9 @@ class Plotter(object):
         # Calculate mean and std and write them to file
         mean_phi = self.calc_mean(list_of_phi)
         std_phi = self.calc_std(list_of_phi)
-        f.write('The mean phase is: ' + str(mean_phi) + ' which is ' + str(abs(mean_phi - pi/2.)/(pi/2.)) + "% of pi/2" + "\n")
-        f.write("\n" + 'The standard deviation is: ' + str(std_phi) + " which is " + str(abs(std_phi - pi/2.)/(pi/2.)) + "% of pi/2" + "\n")
+        f.write('The mean phase is: ' + str(mean_phi) + ' which is ' + str(abs(mean_phi - 2.*pi)/(2.*pi)) + "% of 2pi, and " + str(abs(mean_phi - pi)/pi) + '% of pi' "\n")
+        f.write("\n" + 'The standard deviation is: ' + str(std_phi) + " which is " + str(abs(std_phi - 2.*pi)/(2.*pi)) + "% of pi/2" + "\n")
+
 
     def calc_mean(self, list_of_phi):
         return mean(list_of_phi)
