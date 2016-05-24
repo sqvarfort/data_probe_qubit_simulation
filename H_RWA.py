@@ -7,7 +7,7 @@ class H_RWA(object):
     def __init__(self, config):
         """
             config can be file -> yaml or dict
-            config need to be of form 
+            config need to be of form
             {'J': J, 'Delta': Delta, 'r': array([0,0,d]), 'circ': False, 'cOpts': {'pJit': False, 'rstd': 1.e-9, 'cOffset': zeros(3), 'tau': tau, 'd': d, 'D': D} }
             TODO: check with yaml list vs numpy array!
         """
@@ -50,7 +50,7 @@ class H_RWA(object):
         g['e']=1.9985
         g['P']=g['e']-2.5e-4
         g['Bi']=2.0003
-        
+
         return (g[mat2]-g[mat1]) * muB * Bfield / cp.hbar
 
     @staticmethod
@@ -61,7 +61,7 @@ class H_RWA(object):
         """
         # account for nuclear spin -> 9/4, 1/4
         A={'P': 118.e6 / 4, 'Bi': 9*1475.4e6 / 4}
-        
+
         return A[mat1] - A[mat2]
 
     @staticmethod
@@ -97,4 +97,3 @@ class H_RWA(object):
 
     def getArgs(self):
         return self.args
-
