@@ -3,6 +3,7 @@ from pylab import *
 from scipy import constants as cp
 
 from Lindblad import Lindblad
+from DataQubitDisplacement import *
 
 class Simulation():
     '''
@@ -32,13 +33,18 @@ class Simulation():
         self.initial_states = states
         self.set_system_state(states)
         
+        self.progress_bar = True
+        
+        self.qubit_offsets_bool = False
+        self.qubit_offsets_list = [[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0]]
+        
         #self.start_states = [] # Stores the initial 5-qubit Qobjs before every run
         self.final_states = [] # Stores the final 5-qubit Qobjs after every run
         self.last_run_all = []
         self.last_run_quarter_cycle = []
         self.last_run_metadata = self._store_metadata(None,None,None) 
 
-        self.progress_bar = True
+
         
     def qubit_state(self,theta,phi):
         return Qobj([[cos(theta/2.)], [exp(1j*phi) * sin(theta/2.)]])
@@ -72,8 +78,27 @@ class Simulation():
         return it_res.states[-1] # return last Qobj
         
     def _store_metadata(self,time,steps,cycles):
-        self.last_run_metadata = {'cycles':cycles, 'time':time, 'steps':steps, 'lindblad':self.lind.lindblads, 'initial_states':self.initial_states, 'args':self.args}
+        self.last_run_metadata = {'cycles':cycles, 'time':time, 'steps':steps, 'lindblad':self.lind.lindblads, 'initial_states':self.initial_states, 'args':self.args, 'qubit_offsets_list':self.qubit_offsets_list}
         return self.last_run_metadata
+        
+    def set_data_qubit_offsets(self,offset_list):
+        if offset_list: # Allows passing None or False to turn off offsets
+            self.qubit_offsets_list = offset_list
+            self.qubit_offsets_bool = True
+        else:
+            self.qubit_offsets_bool = False
+            self.qubit_offsets_list = [[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0]]
+            
+    def generate_data_qubit_offsets(self,radius,half_height,type='uniform',convert=False):
+        offset_list = []
+        if type == 'uniform':
+            for i in range(4):
+                offset_list.append( random_uniform_cylinder(radius,half_height) )
+        elif type == 'gaussian': # if using gaussian must specify standard deviations
+            for i in range(4):   # alternatively convert uniform to sd with convert=True
+                offset_list.append( random_gaussian_cylinder(radius,half_height,convert) )
+                
+        return offset_list
         
     def run(self,time,steps,cycles=4):
         '''
@@ -84,9 +109,15 @@ class Simulation():
         cycle_time = time/cycles
         cycle_steps = steps/cycles
         
+        if self.qubit_offsets_bool:
+            cOffset_backup = self.args['cOpts']['cOffset'] # store cOffset to reset after displacement
         #self.initial_states.append(self.full_state) # Optionally store initial states
         
         for cycle in range(cycles):
+            if self.qubit_offsets_bool: # Set qubit offsets as defined
+                self.args['cOpts']['cOffset'] = self.qubit_offsets_list[cycle]
+
+            print self.args['cOpts']['cOffset']
             probe_qubit = self.full_state.ptrace(0)
             data_qubit = self.full_state.ptrace(cycle+1)
             
@@ -99,6 +130,9 @@ class Simulation():
             all_data_qubits[cycle] = state.ptrace(1)
             
             self.full_state = tensor(probe_qubit,all_data_qubits[0],all_data_qubits[1],all_data_qubits[2],all_data_qubits[3])
+        
+        if self.qubit_offsets_bool:
+            self.args['cOpts']['cOffset'] = cOffset_backup # restore cOffset in case it's important later
         
         self.final_states.append(self.full_state)
         self._store_metadata(time,steps,cycles)
