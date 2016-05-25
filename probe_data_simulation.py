@@ -83,8 +83,9 @@ if lind_args.get('relaxation'):
 if lind_args.get('qubit_displacement_error'):
     disp_radius = float(lind_args.get('qubit_displacement_radius'))
     disp_halfheight = float(lind_args.get('qubit_displacement_halfheight'))
-    
+
     sim.generate_data_qubit_offsets(disp_radius,disp_halfheight)
+
 
 """ Run simulation """
 for i in range(0,no_of_runs):

@@ -1,7 +1,7 @@
 #Plotting functions
 
 from numpy import *
-import matplotlib.pyplot as pltB
+import matplotlib.pyplot as plt
 from qutip import *
 from pylab import *
 from scipy import constants as cp
@@ -67,20 +67,22 @@ class Plotter(object):
         folder_name = info.get('folder')
         plt.rc('text', usetex=True)
         plt.rc('font', family='serif')
-        path = os.path.abspath(__file__) # Set path where rates are saved to current directory
-        fig = plt.figure()
-        ax = fig.add_subplot(111,title='Phase Histogram')
-        ax.set_xlabel('$\phi$')
-        plt.xticks([0, pi/2, pi, 3*pi/2, 2*pi],
-           ['$0$', r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$']) #Trig ticks
-        ax.set_ylabel('N')
-        #plt.plot(list_of_phi)
-        plt.hist(list_of_phi, bins = 100, label = 'No. of runs:' + str(len(list_of_phi)))
-        ax.legend()
-        ax.legend(loc='upper right')
-        plt.show()
+
+        n, bins, patches = plt.hist(list_of_phi, 100, facecolor='green', alpha=0.75, range = (0,2*pi), label = 'No. of runs: ' + str(len(list_of_phi)))
+        #fig.add_subplot(111,title='Phase Histogram')
+        plt.xlabel('$\phi$')
+        plt.ylabel('N')
+        plt.title('Phase Histogram')
+        plt.grid(True)
+        plt.xticks([0, pi/2, pi, 3*pi/2, 2*pi], ['$0$', r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$'])
+        plt.legend()
+        plt.legend(loc='upper right')
+        fig = plt.gcf()
         st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
-        plt.savefig(folder_name + '/Histogram' + st +'.pdf')
+        plt.savefig(folder_name + '/Histogram' + st + '.png',  transparent=False, dpi=1000)
+        plt.show()
+
+
 
     def phi_to_file(self, list_of_phi, info):
         st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
@@ -95,7 +97,8 @@ class Plotter(object):
         # Calculate mean and std and write them to file
         mean_phi = self.calc_mean(list_of_phi)
         std_phi = self.calc_std(list_of_phi)
-        f.write('The mean phase is: ' + str(mean_phi) + ' which is ' + str(100.*abs(mean_phi - 2.*pi)/(2.*pi)) + "% of 2pi, and " + str(100.*abs(mean_phi - pi)/pi) + '% of pi' "\n")
+        f.write('The mean phase is: ' + str(mean_phi))
+        f.write( 'The mean error is ' + str(100.*abs(mean_phi - 2.*pi)/(2.*pi)) + "% of 2pi, and " + str(100.*abs(mean_phi - pi)/pi) + '% of pi' "\n")
         f.write("\n" + 'The standard deviation is: ' + str(std_phi) + " which is " + str(100.*abs(std_phi - 2.*pi)/(2.*pi)) + "% of 2pi and " + str(100.*abs(std_phi - pi)/pi) + "% of pi." "\n")
 
 
@@ -159,7 +162,7 @@ class Plotter(object):
         min_mean = mean(min_prob)
 
         for Exp in measurements:
-            fprobes.write("%s\t %s \t %s \n" % (Exp, (1/2.)*(Exp + sqrt(2-Exp**2)), (1. - Exp, (1/2.)*(Exp + sqrt(2-Exp**2)))))
+            fprobes.write("%s\t %s \t %s \n" % (Exp, (1/2.)*(Exp + sqrt(2-Exp**2)), (1. - (1/2.)*(Exp + sqrt(2-Exp**2)))))
 
         fprobes.write('The average expectation value is: ' + str(avg_exp) + '\n')
         fprobes.write('The average probability of measuring |+> is: ' + str(plus_mean) + '\n')

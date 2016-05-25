@@ -1,7 +1,8 @@
 #Information that goes into the header of each files
-odd: false
-dephasing: false
-dephasing_param: 3240.2200334542995 #strong dephasing
+
+odd: true
+dephasing: true
+dephasing_param: 1300 #strong dephasing
 excitation: false
 excitation_param: 0.0
 relaxation: false
