@@ -12,11 +12,45 @@ We have simulated a probe qubit interacting with four data qubits.
 \section{Dephasing}
 In this section, we present results from simulations of the Lindblad master equation where a dephasing channel is turned on. This channel contains the Lindblad operator
 \beq
-L  = 
+L  = \sqrt{\Gamma} \sigma_z
 \eeq
+
+where $\Gamma$ is the dephasing parameter, which is also $1/\tau$ where $\tau$ is the dephasing time. 
 
 We evolve the system under the Lindblad master equation for an odd number of errors. This causes the final phase of the probe qubit to end up at $\phi = \pi$. 
 
+In Figure \ref{fig:BlochsphereDephasing}, we see the effect of a small dephasing coefficient (100) whereas in Figure \ref{fig:somethig} we see the effect of larger dephasing (500). Note that the dephasing happens primarily as the interaction between the probe qubit and the data qubit is weak. 
+
+
+
+\begin{figure}[!ht]
+  \caption{A picture of a gull.}
+  \centering
+    \includegraphics[width=\textwidth]{Figures/Circ_orbit_odd_no_dephasing.png}
+\end{figure}
+
+
+
+
+\begin{figure}[!ht]
+  \caption{A picture of a gull.}
+  \centering
+    \includegraphics[width=\textwidth]{Figures/Circ_orbit_odd_100_dephasing.png}
+\end{figure}
+
+In Figure \ref{fig:plot} we see the effect of dephasing on the probability of measuring the correct value of the probe qubit. Since there is an odd number of errors, we want the probe qubit to end up in the $\ket{-}$ state. However, the dephasing will cause the probe qubit to become a mixed state $\rho$, for which we have a finite probability of measuring $\ket{+} $ instead of $\ket{-}$. For complete dephasing, the probe qubit becomes a mixed state which has a 50-50\% chance of measuring either state. 
+
+In Figure \ref{fig:Plot}, we have market the data-point for dephasing corresponding to the decoherence time for Bismuth, which is one of the proposed donor types for the probe qubit. The decoherence time of bismuth is 2.7 s \cite{something}, which leads to a dephasing parameter of 0.37 s$^{-1}$. 
+
+\begin{figure}[!ht]
+  \caption{A picture of a gull.}
+  \centering
+    \includegraphics[width=\textwidth]{Figures/measurement_dephasing_graph.png}
+\end{figure}
+
 \section{Dopant Placement}
+
+\section{Path Jitter}
+
 
 \end{document}
