@@ -159,7 +159,7 @@ class Plotter(object):
         min_mean = mean(min_prob)
 
         for Exp in measurements:
-            fprobes.write("%s\t %s \t %s \n" % (Exp, (1/2.)*(Exp + sqrt(2-Exp**2)), (1/2.)*(-Exp + sqrt(2-Exp**2))))
+            fprobes.write("%s\t %s \t %s \n" % (Exp, (1/2.)*(Exp + sqrt(2-Exp**2)), (1. - Exp, (1/2.)*(Exp + sqrt(2-Exp**2)))))
 
         fprobes.write('The average expectation value is: ' + str(avg_exp) + '\n')
         fprobes.write('The average probability of measuring |+> is: ' + str(plus_mean) + '\n')
