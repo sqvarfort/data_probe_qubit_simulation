@@ -2,7 +2,7 @@
 
 odd: true
 dephasing: true
-dephasing_param: 1300 #strong dephasing
+dephasing_param: 400 #strong dephasing
 excitation: false
 excitation_param: 0.0
 relaxation: false
