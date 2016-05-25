@@ -1,5 +1,18 @@
 \input{./UCLHeader.tex}
 \input{./UCLCommands.tex}
+
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[font=footnotesize]{caption}
+\usepackage{subcaption}
+\usepackage[]{microtype}
+\usepackage{balance}
+\usepackage{cite}
+\usepackage{braket}
+\usepackage{braket}
+\usepackage{siunitx}
+
 \begin{document}
 \title{Summary of work}
 \author{Gavin Dold, Sofia Qvarfort, Simon Schaal}
@@ -49,6 +62,22 @@ In Figure \ref{fig:Plot}, we have market the data-point for dephasing correspond
 \end{figure}
 
 \section{Dopant Placement}
+\begin{figure}
+	\centering
+	\begin{subfigure}[t]{0.7\textwidth}
+		\includegraphics[width=\textwidth]{figures/z_offset.pdf}
+		\caption{Evolution of probe qubit with data qubit displacement in the Z direction. 1st and 2nd qubits are displaced \SI{4}{\nano\metre} down, slowing the evolution, the 4th is displaced \SI{3}{\nano\metre} up with a resultant increase in phase accumulated. The overall deviation from $2\pi$ is small as a result.}
+		\label{fig:zoffset}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.7\textwidth}
+		\includegraphics[width=\textwidth]{figures/10nm_displacement_inward.pdf}
+		\caption{Phase accumulated when all 4 data qubits are displaced \SI{10}{\nano\metre} towards the centre of the circle. Other directions of \SI{10}{\nano\metre} displacements result in similar phase deviations.}
+		\label{fig:inwarddisplacement}
+	\end{subfigure}
+	
+	\caption{Phase errors as a result of misplaced data qubits.}
+	\label{fig:overall_displacement}
+\end{figure}
 
 \section{Path Jitter}
 
