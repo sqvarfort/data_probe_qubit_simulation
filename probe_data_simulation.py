@@ -79,7 +79,7 @@ if lind_args.get('excitation'):
 if lind_args.get('relaxation'):
     sim.lind.relaxation(lind_args.get('relaxation_param'))
 
-""" Generate qubit displacements """
+""" Set up and generate qubit displacements """
 if lind_args.get('qubit_displacement_error'):
     disp_radius = float(lind_args.get('qubit_displacement_radius'))
     disp_halfheight = float(lind_args.get('qubit_displacement_halfheight'))
