@@ -1,4 +1,5 @@
 #Information that goes into the header of each files
+
 odd: true
 dephasing: true
 dephasing_param: 1300 #strong dephasing
@@ -7,5 +8,8 @@ excitation_param: 0.0
 relaxation: false
 relaxation_param: 0.0
 preparation_error: false
+qubit_displacement_error: false
+qubit_displacement_radius: 1e-9
+qubit_displacement_halfheight: 1e-9
 folder: 'dephasing'
 runs: 1

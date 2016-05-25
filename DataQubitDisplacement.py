@@ -13,7 +13,7 @@ def random_uniform_cylinder(radius,half_height):
     x = r * cos(theta)
     y = r * sin(theta)
     
-    return array([x,y,z])
+    return [x,y,z]
     
 def random_gaussian_cylinder(sd_radius,sd_height,convert=False):
     '''
@@ -35,4 +35,4 @@ def random_gaussian_cylinder(sd_radius,sd_height,convert=False):
     x = r * cos(theta)
     y = r * sin(theta)
     
-    return array([x,y,z])
+    return [x,y,z]

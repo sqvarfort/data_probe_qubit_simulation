@@ -1,5 +1,6 @@
-time: 0.0003086210163739808 #full perfect abrupt time
-steps: 1000 
+#time: 0.0003086210163739808 #full perfect abrupt time
+time: 0.0033787705211349608 #full perfect circular time
+steps: 5000
 Delta: -54083715.725774
 J: 3.25737133530311e-19
 cOpts:
@@ -9,5 +10,5 @@ cOpts:
   pJit: false
   rstd: 1.0e-09
   tau: 0.0033787705211349608 #full perfect circular time
-circ: false
+circ: true
 r: [0, 0, 4.0e-08]
