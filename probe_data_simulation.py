@@ -80,7 +80,6 @@ if lind_args.get('relaxation'):
     sim.lind.relaxation(lind_args.get('relaxation_param'))
 
 
-
 """ Run simulation """
 for i in range(0,no_of_runs):
     print 'Starting loop ' + str(i)
