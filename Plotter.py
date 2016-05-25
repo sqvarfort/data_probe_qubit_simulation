@@ -8,6 +8,9 @@ from scipy import constants as cp
 import os
 from matplotlib import rc
 import yaml
+import datetime
+import time
+
 
 
 
@@ -72,15 +75,17 @@ class Plotter(object):
            ['$0$', r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$']) #Trig ticks
         ax.set_ylabel('N')
         #plt.plot(list_of_phi)
-        plt.hist(list_of_phi, bins = 20, label = 'No. of runs:' + str(len(list_of_phi)))
+        plt.hist(list_of_phi, bins = 100, label = 'No. of runs:' + str(len(list_of_phi)))
         ax.legend()
         ax.legend(loc='upper right')
         plt.show()
-        plt.savefig(folder_name + '/Histogram.pdf')
+        st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
+        plt.savefig(folder_name + '/Histogram' + st +'.pdf')
 
     def phi_to_file(self, list_of_phi, info):
+        st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
         folder_name = info.get('folder')
-        f = open(folder_name + '/phi_data.txt', 'w+')
+        f = open(folder_name + '/phi_data' + st + '.txt', 'w+')
         f.write('Phase of the final state' '\n \n')
         f.write( yaml.dump(info, default_flow_style=False) + '\n \n')
         # Write all values to the file
@@ -101,13 +106,14 @@ class Plotter(object):
         return std(list_of_phi)
 
     def states_to_file(self, states, info):
+        st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
         folder_name = info.get('folder')
         probe_states = [states[t].ptrace(0) for t in range(0, len(states))]
         data_states = [states[t].ptrace(1) for t in range(0, len(states))]
         path = os.path.abspath(__file__)
-        fprobe_states = open(folder_name + '/probe_states.txt', 'w+')
-        fdata_states = open(folder_name + '/data_states.txt', 'w+')
-        fprobe_data = open(folder_name + '/full_states.txt', 'w+')
+        fprobe_states = open(folder_name + '/probe_states' + st + '.txt', 'w+')
+        fdata_states = open(folder_name + '/data_states' + st + '.txt', 'w+')
+        fprobe_data = open(folder_name + '/full_states' + st + '.txt', 'w+')
 
         fprobe_data.write('Full probe and data states \n \n')
         fprobe_states.write('Traced out probe states \n \n')
@@ -134,8 +140,9 @@ class Plotter(object):
     def Probe_measurement_outcome(self, probe_states, info):
         """ This method calculates the probability of measuring the probe qubit in a particular state after one round of the measurement. We expect the probe qubit to either end up in the |+> state for an even outcome, or in the |-> state for the odd outcome.
         """
+        st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
         folder_name = info.get('folder')
-        fprobes = open(folder_name + '/probe_measurements.txt', 'w+')
+        fprobes = open(folder_name + '/probe_measurements' + st + '.txt', 'w+')
         fprobes.write('Probe Measurement Outcomes \n')
 
         fprobes.write( yaml.dump(info, default_flow_style=False) + '\n \n')
@@ -157,15 +164,3 @@ class Plotter(object):
         fprobes.write('The average expectation value is: ' + str(avg_exp) + '\n')
         fprobes.write('The average probability of measuring |+> is: ' + str(plus_mean) + '\n')
         fprobes.write('The average probability of measuring |-> is: ' + str(min_mean) + '\n')
-
-
-
-
-
-
-
-
-
-
-
-#def Histogram()
