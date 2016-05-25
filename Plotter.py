@@ -71,16 +71,17 @@ class Plotter(object):
         fig = plt.figure()
         ax = fig.add_subplot(111,title='Phase Histogram')
         ax.set_xlabel('$\phi$')
-        plt.xticks([0, pi/2, pi, 3*pi/2, 2*pi],
-           ['$0$', r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$']) #Trig ticks
+        plt.xticks([0, pi/2, pi, 3*pi/2, 2*pi]) #Trig ticks
         ax.set_ylabel('N')
         #plt.plot(list_of_phi)
         plt.hist(list_of_phi, bins = 100, label = 'No. of runs:' + str(len(list_of_phi)))
         ax.legend()
         ax.legend(loc='upper right')
-        plt.show()
         st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
         plt.savefig(folder_name + '/Histogram' + st +'.pdf')
+        plt.show()
+
+
 
     def phi_to_file(self, list_of_phi, info):
         st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
