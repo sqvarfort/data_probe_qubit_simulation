@@ -7,7 +7,7 @@ excitation_param: 0.0
 relaxation: false
 relaxation_param: 0.0
 preparation_error: false
-qubit_displacement_error: true 
+qubit_displacement_error: false 
 qubit_displacement_radius: 10e-9
 qubit_displacement_halfheight: 10e-9
 folder: 'dephasing'
