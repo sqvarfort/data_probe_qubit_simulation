@@ -81,15 +81,15 @@ if lind_args.get('relaxation'):
 
 """ Generate qubit displacements """
 if lind_args.get('qubit_displacement_error'):
-    print 'setting displacements!'
     disp_radius = float(lind_args.get('qubit_displacement_radius'))
     disp_halfheight = float(lind_args.get('qubit_displacement_halfheight'))
-    offsets_array = sim.generate_data_qubit_offsets(disp_radius,disp_halfheight)
-    sim.set_data_qubit_offsets(offsets_array)
+    
+    sim.generate_data_qubit_offsets(disp_radius,disp_halfheight)
 
 """ Run simulation """
 for i in range(0,no_of_runs):
     print 'Starting loop ' + str(i)
+    sim.regenerate_data_qubit_offsets() # Necessary for each run to have different displacement errors
     sim.run(time,steps)
     result_states = sim.last_run_all
     step_data = sim.last_run_quarter_cycle

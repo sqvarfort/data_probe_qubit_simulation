@@ -37,6 +37,8 @@ class Simulation():
         
         self.qubit_offsets_bool = False
         self.qubit_offsets_list = [[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0]]
+        self.qubit_offsets_settings = {'radius':0.0, 'half_height':0.0, 'type':'uniform', 'convert':False}
+        self.add_qubit_offsets = True
         
         #self.start_states = [] # Stores the initial 5-qubit Qobjs before every run
         self.final_states = [] # Stores the final 5-qubit Qobjs after every run
@@ -82,14 +84,25 @@ class Simulation():
         return self.last_run_metadata
         
     def set_data_qubit_offsets(self,offset_list):
-        if offset_list: # Allows passing None or False to turn off offsets
+        '''
+        Set a given list of 4 [x,y,z] qubit offsets for use in the simulation
+        
+        Clear offsets by running this function with the arguments None or False
+        '''
+        if offset_list: 
             self.qubit_offsets_list = offset_list
             self.qubit_offsets_bool = True
-        else:
+        else: # Allows passing None or False to turn off offsets
             self.qubit_offsets_bool = False
             self.qubit_offsets_list = [[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0]]
             
     def generate_data_qubit_offsets(self,radius,half_height,type='uniform',convert=False):
+        '''
+        Generate a list of 4 [x,y,z] qubit offsets representing
+        random data qubit displacement
+        
+        Stores the settings used to generate offsets for use in 
+        '''
         offset_list = []
         if type == 'uniform':
             for i in range(4):
@@ -97,8 +110,33 @@ class Simulation():
         elif type == 'gaussian': # if using gaussian must specify standard deviations
             for i in range(4):   # alternatively convert uniform to sd with convert=True
                 offset_list.append( random_gaussian_cylinder(radius,half_height,convert) )
-                
+        
+        self.qubit_offsets_settings = {'radius':radius, 'half_height':half_height, 'type':type, 'convert':convert}
+        
+        self.qubit_offsets_list = offset_list
+        self.qubit_offsets_bool = True
+        
         return offset_list
+        
+    def regenerate_data_qubit_offsets(self):
+        self.generate_data_qubit_offsets(self.qubit_offsets_settings['radius'],
+                                         self.qubit_offsets_settings['half_height'],
+                                         self.qubit_offsets_settings['type'],
+                                         self.qubit_offsets_settings['convert'])
+        
+    def _add_cOffset(self,constOffset,qubitDisplacement,add=True):
+        '''
+        Adds the cOffset parameter specified in mesolve_args to the random
+        qubit offset specified by set_data_qubit_offsets
+        
+        By setting self.add_qubit_offsets = False this addition can be turned
+        off and the qubit displacements are simply those specified by
+        set_data_qubit_offsets()
+        '''
+        if add:
+            return [sum(x) for x in zip(constOffset, qubitDisplacement)]
+        else:
+            return qubitDisplacement
         
     def run(self,time,steps,cycles=4):
         '''
@@ -110,14 +148,13 @@ class Simulation():
         cycle_steps = steps/cycles
         
         if self.qubit_offsets_bool:
-            cOffset_backup = self.args['cOpts']['cOffset'] # store cOffset to reset after displacement
+            cOffset = self.args['cOpts']['cOffset'] # store cOffset to reset after displacement
         #self.initial_states.append(self.full_state) # Optionally store initial states
         
         for cycle in range(cycles):
             if self.qubit_offsets_bool: # Set qubit offsets as defined
-                self.args['cOpts']['cOffset'] = self.qubit_offsets_list[cycle]
-
-            print self.args['cOpts']['cOffset']
+                self.args['cOpts']['cOffset'] = self._add_cOffset(cOffset,self.qubit_offsets_list[cycle],self.add_qubit_offsets)
+                print('Data qubit displacement ' + str(self.args['cOpts']['cOffset']))
             probe_qubit = self.full_state.ptrace(0)
             data_qubit = self.full_state.ptrace(cycle+1)
             
@@ -132,7 +169,7 @@ class Simulation():
             self.full_state = tensor(probe_qubit,all_data_qubits[0],all_data_qubits[1],all_data_qubits[2],all_data_qubits[3])
         
         if self.qubit_offsets_bool:
-            self.args['cOpts']['cOffset'] = cOffset_backup # restore cOffset in case it's important later
+            self.args['cOpts']['cOffset'] = cOffset # restore cOffset in case it's important later
         
         self.final_states.append(self.full_state)
         self._store_metadata(time,steps,cycles)
