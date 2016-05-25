@@ -172,7 +172,7 @@ class Simulation():
         #self.initial_states.append(self.full_state) # Optionally store initial states
         
         for cycle in range(cycles):
-            print(' Quadrant '+str(cycle))
+            print(' Data qubit '+str(cycle+1))
         
             if self.qubit_offsets_bool: # Set qubit offsets as defined
                 self.args['cOpts']['cOffset'] = self._add_cOffset(cOffset,self.qubit_offsets_list[cycle],self.add_qubit_offsets)
