@@ -1,6 +1,8 @@
+import numpy as np
 from qutip import *
 from pylab import *
 from scipy import constants as cp
+
 
 from Lindblad import Lindblad
 from DataQubitDisplacement import *
@@ -137,7 +139,25 @@ class Simulation():
             return [sum(x) for x in zip(constOffset, qubitDisplacement)]
         else:
             return qubitDisplacement
+    
+    def _cOffset_cycle_correction(self,offset,cycle):
+        '''
+        Corrects the displacement offset to match the quadrant for
+        the current cycle. Allows proper correlated errors due to
         
+        '''
+        if cycle%4==0:
+            return [offset[0],offset[1],offset[2]]
+        elif cycle%4==1:
+            return [-offset[1],offset[0],offset[2]]
+        elif cycle%4==2:
+            return [-offset[0],-offset[1],offset[2]]
+        elif cycle%4==3:
+            return [offset[1],-offset[0],offset[2]]
+        else:
+            print('invalid cycle number '+str(cycle)+', unable to correct cOffset to match direction')
+            return offset
+    
     def run(self,time,steps,cycles=4):
         '''
         Run simulation for given time and steps
@@ -152,9 +172,18 @@ class Simulation():
         #self.initial_states.append(self.full_state) # Optionally store initial states
         
         for cycle in range(cycles):
+            print(' Quadrant '+str(cycle))
+        
             if self.qubit_offsets_bool: # Set qubit offsets as defined
                 self.args['cOpts']['cOffset'] = self._add_cOffset(cOffset,self.qubit_offsets_list[cycle],self.add_qubit_offsets)
-                print('Data qubit displacement ' + str(self.args['cOpts']['cOffset']))
+            # Correct displacement direction for cycle
+            self.args['cOpts']['cOffset'] = self._cOffset_cycle_correction(self.args['cOpts']['cOffset'],cycle)
+            
+            # Print displacement if any is above 1 picometre
+            if not np.allclose(self.args['cOpts']['cOffset'],0,atol=1e-12):
+                print(' Data qubit displacement ' + str(self.args['cOpts']['cOffset']))
+                # Displacement displayed in simulation reference frame, not lab frame
+            
             probe_qubit = self.full_state.ptrace(0)
             data_qubit = self.full_state.ptrace(cycle+1)
             
