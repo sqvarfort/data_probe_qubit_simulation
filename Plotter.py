@@ -25,7 +25,7 @@ class Plotter(object):
                     - textfile of all data-qubit states
     """
 
-    def __init__(self, states, info):
+    def __init__(self, states, info,filetype='.png'):
         self.states = states
         self.info = info
 
@@ -100,7 +100,7 @@ class Plotter(object):
         plt.legend(loc='upper right')
         fig = plt.gcf()
         st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
-        plt.savefig(os.path.join(folder_name,'Histogram') + st + '.png',  transparent=False, dpi=1000)
+        plt.savefig(os.path.join(folder_name,'Histogram') + st + filetype,  transparent=False, dpi=1000)
         plt.show()
 
 
