@@ -96,7 +96,7 @@ In Figure \ref{fig:phaseplot} we see the effect of dephasing on the probability 
 In Figure \ref{fig:phaseplot}, we have market the data-point for dephasing corresponding to the decoherence time for Bismuth, which is one of the proposed donor types for the probe qubit. The decoherence time of bismuth is \SI{2.7}{\second} \cite{Wolfowicz2013}, which leads to a dephasing parameter of \SI{0.37}{\per\second}. 
 
 
-\clearpage
+%\clearpage
 \section{Data qubit displacement}
 The effect of displacement of the data qubits from the ideal was investigated. Ideally the data qubits would be in a square lattice of spins precisely $D = \SI{400}{\nano\metre}$ apart, but due to inaccuracies in dopant spin placement each qubit will have small displacements from the ideal lattice position.
 
@@ -110,7 +110,7 @@ Fig.\@ \ref{fig:zoffset} shows changes in accumulated phase due to $z$-displacem
 
 Fig.\@ \ref{fig:inwarddisplacement} shows the effect of displacements in the $x$-$y$ plane. For this run, all data qubits were displaced \SI{10}{\nano\metre} inwards with respect to the circular motion. The phase error on each individual qubit is then less than that produced by the \SI{3}{\nano\metre} $z$-displacement of fig.\@ \ref{fig:zoffset}, showing the smaller sensitivity to displacement in the $x$-$y$ plane, though the overall error after all 4 qubits is greater as in the $z$-direction, +$z$ and --$z$ errors cancel out somewhat, whereas $xy$ displacement errors will always slow the evolution.
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{Figures/Displacement_phase_histogram.pdf}	
 	\caption{Phase errors over 25 runs as a result of randomly generated data qubit displacements within a pillbox of half-height \SI{3}{\nano\metre} and radius \SI{6}{\nano\metre}. These values are a threshold for the proposed scheme.}
@@ -175,6 +175,9 @@ Further investigation is to be undertake in the following areas:
 \item Find phase error $\phi_e$ for 1/4 of the run
 \item Investigate how errors `stack' (e.g. is $\phi_e(2\pi)$ for a full circle equal to $4\phi_e(\pi/2)$?
 \item Extract realistic physical parameters for the magnetic field $B$
+\item Check effect of flip-flopping for different $\Delta$
+\item Test different donor species ($g_1$, $g_2$
+\item Sinusoidal motion in the $z$-direction (dip down over data qubits)
 \end{itemize}
 
 
