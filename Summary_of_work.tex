@@ -2,13 +2,16 @@
 \input{./UCLCommands.tex}
 
 
+\usepackage{geometry}
+\geometry{legalpaper, margin=1.0in}
+
 \begin{document}
-\title{Summary of work}
+\title{Probe-Data Qubit Simulation -- Summary}
 \author{Gavin Dold, Sofia Qvarfort, Simon Schaal}
 \maketitle
 \tableofcontents
 \section{Introduction}
-We have simulated a probe qubit interacting with four data qubits. 
+We have simulated a probe qubit interacting with four data qubits. The probe qubit is performing a circular orbit $40$ nm above the data qubits, and in this document we will document the effect of various errors. These errors include dephasing, dopan placement uncertainties and a path jitter. 
 
 
 \section{Dephasing}
@@ -17,7 +20,7 @@ In this section, we present results from simulations of the Lindblad master equa
 L  = \sqrt{\Gamma} \sigma_z
 \eeq
 
-where $\Gamma$ is the dephasing parameter, which is also $1/\tau$ where $\tau$ is the dephasing time. 
+where $\Gamma$ is the dephasing parameter. $\Gamma$ can also be written as $1/\tau$ where $\tau$ is the dephasing time. 
 
 We evolve the system under the Lindblad master equation for an odd number of errors. This causes the final phase of the probe qubit to end up at $\phi = \pi$. 
 
@@ -25,19 +28,19 @@ In Figure \ref{fig:BlochsphereDephasing}, we see the effect of a small dephasing
 
 
 
-\begin{figure}[!ht]
-  \caption{A picture of a gull.}
+\begin{figure}[h]
   \centering
-    \includegraphics[width=\textwidth]{Figures/Circ_orbit_odd_no_dephasing.png}
+    \includegraphics[width=0.7\textwidth]{Figures/Circ_orbit_odd_no_dephasing.png}
+      \caption{The states of the probe and data qubits plotted in the Bloch sphere with zero dephasing. The data qubits remain in the $\ket{0}$ and $\ket{1}$ state respectively and the probe qubit precesses in a trajectory along the equator of the Bloch sphere, starting from the $\ket{+}$ state. The probe qubit speeds up at the beginning or end of each quadrant because it is then furthest away from the data qubits. In the last quadrant, the probe qubit reverses its direction and backtracks because the final data qubit in $\ket{1}$ contains an $X$ error.}
 \end{figure}
 
 
 
 
-\begin{figure}[!ht]
-  \caption{A picture of a gull.}
+\begin{figure}[!h]
   \centering
-    \includegraphics[width=\textwidth]{Figures/Circ_orbit_odd_100_dephasing.png}
+    \includegraphics[width=0.7\textwidth]{Figures/Circ_orbit_odd_100_dephasing.png}
+      \caption{The states of the probe and data qubits plotted in the Bloch sphere with a dephasing parameter of 100, which translates to a dephasing time of 10 ms. The phase of the probe qubit is not affected since no relaxation or excitation is taking place. The effect can however be seen in the probability of measuring the probe qubit in the $\ket{+}$ or $\ket{-}$ state. For complete dephasing, the probe qubit will become the maximally mixed state and the measurement outcomes are completely random. }
 \end{figure}
 
 In Figure \ref{fig:plot} we see the effect of dephasing on the probability of measuring the correct value of the probe qubit. Since there is an odd number of errors, we want the probe qubit to end up in the $\ket{-}$ state. However, the dephasing will cause the probe qubit to become a mixed state $\rho$, for which we have a finite probability of measuring $\ket{+} $ instead of $\ket{-}$. For complete dephasing, the probe qubit becomes a mixed state which has a 50--50\% chance of measuring either state. 
@@ -71,6 +74,12 @@ Fig.\@ \ref{fig:inwarddisplacement} shows the effect of displacements in the $x$
 	\includegraphics[width=\textwidth]{figures/Displacement_phase_histogram.pdf}	
 	\caption{Phase errors over 25 runs as a result of randomly generated data qubit displacements within a pillbox of half-height \SI{3}{\nano\metre} and radius \SI{6}{\nano\metre}. These values are a threshold for the proposed scheme.}
 	\label{fig:DisplacementPhaseHistogram}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+    \includegraphics[width=\textwidth]{Figures/phase_graph.png}
+      \caption{A graph showing the relationship between the dephasing parameter $\Gamma$ and the probability $P(\ket{-})$ of measuring the probe qubit in the $\ket{-}$ state. In this simulation, one of the data qubits have undergone a bit-flip error. As the dephasing parameter increases, the probe qubit moves towards the maximally mixed state and the probability of measuring $\ket{-}$ goes towards 0.5. The dephasing parameter for Bismuth as a material for the probe qubit has been market in the graph. }
 \end{figure}
 
 \begin{figure}

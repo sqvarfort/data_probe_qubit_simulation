@@ -1,0 +1,33 @@
+Phase of the final state
+ 
+Delta: -54083715.725774
+J: 3.25737133530311e-19
+cOpts:
+  D: 4.0e-07
+  cOffset:
+  - 0
+  - 0
+  - 0
+  d: 4.0e-08
+  pJit: false
+  rstd: 1.0e-09
+  tau: 0.003378770521134961
+circ: false
+dephasing: true
+dephasing_param: 0.0
+excitation: false
+excitation_param: 0.0
+odd: true
+preparation_error: true
+r:
+- 0
+- 0
+- 4.0e-08
+relaxation: false
+relaxation_param: 0.0
+
+ 
+1.5706967733
+The mean phase is: 1.5706967733 which is 6.33777203539e-05% of pi/2
+
+The standard deviation is: 0.0 which is 1.0% of pi/2
