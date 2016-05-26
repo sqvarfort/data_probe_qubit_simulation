@@ -67,14 +67,35 @@ class Plotter(object):
         folder_name = info.get('folder')
         plt.rc('text', usetex=True)
         plt.rc('font', family='serif')
-
-        n, bins, patches = plt.hist(list_of_phi, 100, facecolor='green', alpha=0.75, range = (0,2*pi), label = 'No. of runs: ' + str(len(list_of_phi)))
-        #fig.add_subplot(111,title='Phase Histogram')
         plt.xlabel('$\phi$')
         plt.ylabel('N')
         plt.title('Phase Histogram')
         plt.grid(True)
-        plt.xticks([0, pi/2, pi, 3*pi/2, 2*pi], ['$0$', r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$'])
+
+        # Move data-points that are close to zero to other end
+        for item in list_of_phi:
+            if item < pi/2.:
+                item = item + 2.*pi
+
+        n, bins, patches = plt.hist(list_of_phi, 100, facecolor='green', alpha=0.75, range = (0,2*pi), label = 'No. of runs: ' + str(len(list_of_phi)))
+
+
+        #Ticks go from pi/2 to pi/2 including the origin
+        plt.xticks([pi/2, pi, 3*pi/2, 2*pi, 5*pi/2, 3*pi], [r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$0 (2\pi)$', r'$\frac{\pi}{2}$'])
+
+
+        # If there is an error in the data qubits,
+        """
+        if info_config.get('odd'):
+            plt.xticks([0, pi/2, pi, 3*pi/2, 2*pi], ['$0$', r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$'])
+        else:
+            for item in list_of_phi:
+                if item < pi:
+                    item = item + 2.*pi
+            plt.xticks([pi, 3*pi/2, 2*pi, 5*pi/2, 3*pi], [r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$'], '$0$', r'$\frac{\pi}{2}$')
+        """
+
+        # Render plot
         plt.legend()
         plt.legend(loc='upper right')
         fig = plt.gcf()
@@ -162,7 +183,7 @@ class Plotter(object):
         min_mean = mean(min_prob)
 
         for Exp in measurements:
-            fprobes.write("%s\t %s \t %s \n" % (Exp, (1/2.)*(Exp + sqrt(2-Exp**2)), (1. - Exp, (1/2.)*(Exp + sqrt(2-Exp**2)))))
+            fprobes.write("%s\t %s \t %s \n" % (Exp, ((Exp+1.)/2.), (1. - ((Exp+1.)/2.))))
 
         fprobes.write('The average expectation value is: ' + str(avg_exp) + '\n')
         fprobes.write('The average probability of measuring |+> is: ' + str(plus_mean) + '\n')

@@ -28,14 +28,24 @@ class H_RWA(object):
 
     @staticmethod
     def circ_motion(t, args):
-        # cOffset can be generated using Gavins function!
-        r=np.array(args['cOffset']) + np.array( [ -args['D']/2. + args['D']/np.sqrt(2)*np.sin(2*np.pi/args['tau'] * t)  ,  -args['D']/2. + args['D']/np.sqrt(2)*np.cos(2*np.pi/args['tau'] * t)  ,  args['d'] ] )
+        # cOffset can be generated using Gavins function!. use newaxis etc to make it compatible for plotting
+        if np.size(t)==1: #turn t into numpy array if it is just a single number or python list to make the code below work
+            t=np.array([t])
+        elif type(t)==list:
+            t=np.array(t)
+
+        r=np.array(args['cOffset'])[:,np.newaxis] + np.array( [ -args['D']/2. + args['D']/np.sqrt(2)*np.sin(2*np.pi/args['tau'] * t)  ,  -args['D']/2. + args['D']/np.sqrt(2)*np.cos(2*np.pi/args['tau'] * t)  ,  args['d']*np.ones(len(t)) ] )
+
         #allow random path jitter (simulates not perfect movement of mems stage) ~~1nm?
         if args['pJit']:
-            r+=np.random.normal(0, args['rstd'], 3)
-            # use below for test plot
-            #r=args['cOffset'] + array( [ -args['D']/2. + random.normal(args['D']/sqrt(2)*sin(2*pi/args['tau'] * t), args['rstd'])  ,  -args['D']/2. + random.normal(args['D']/sqrt(2)*cos(2*pi/args['tau'] * t), args['rstd'])  ,  random.normal(args['d'], args['rstd']) ] )
-        return r
+            for i, c in enumerate(['x','y','z']):
+                if args[c+'std'] > 0:
+                    r[i]+=np.random.normal(0, args[c+'std'], len(t))
+
+        if np.size(r)==3:
+            return r[:,0]
+        else:
+            return r
 
     @staticmethod
     def getDelta(mat1='Bi', mat2='P', Bfield=300e-3):
