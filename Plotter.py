@@ -100,7 +100,7 @@ class Plotter(object):
         plt.legend(loc='upper right')
         fig = plt.gcf()
         st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
-        plt.savefig(folder_name + '/Histogram' + st + '.png',  transparent=False, dpi=1000)
+        plt.savefig(os.path.join(folder_name,'Histogram') + st + '.png',  transparent=False, dpi=1000)
         plt.show()
 
 
@@ -108,7 +108,7 @@ class Plotter(object):
     def phi_to_file(self, list_of_phi, info):
         st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
         folder_name = info.get('folder')
-        f = open(folder_name + '/phi_data' + st + '.txt', 'w+')
+        f = open(os.path.join(folder_name,'phi_data') + st + '.txt', 'w+')
         f.write('Phase of the final state' '\n \n')
         f.write( yaml.dump(info, default_flow_style=False) + '\n \n')
         # Write all values to the file
@@ -135,9 +135,9 @@ class Plotter(object):
         probe_states = [states[t].ptrace(0) for t in range(0, len(states))]
         data_states = [states[t].ptrace(1) for t in range(0, len(states))]
         path = os.path.abspath(__file__)
-        fprobe_states = open(folder_name + '/probe_states' + st + '.txt', 'w+')
-        fdata_states = open(folder_name + '/data_states' + st + '.txt', 'w+')
-        fprobe_data = open(folder_name + '/full_states' + st + '.txt', 'w+')
+        fprobe_states = open(os.path.join(folder_name,'probe_states') + st + '.txt', 'w+')
+        fdata_states = open(os.path.join(folder_name,'data_states') + st + '.txt', 'w+')
+        fprobe_data = open(os.path.join(folder_name,'full_states') + st + '.txt', 'w+')
 
         fprobe_data.write('Full probe and data states \n \n')
         fprobe_states.write('Traced out probe states \n \n')
@@ -166,7 +166,7 @@ class Plotter(object):
         """
         st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
         folder_name = info.get('folder')
-        fprobes = open(folder_name + '/probe_measurements' + st + '.txt', 'w+')
+        fprobes = open(os.path.join(folder_name,'probe_measurements') + st + '.txt', 'w+')
         fprobes.write('Probe Measurement Outcomes \n')
 
         fprobes.write( yaml.dump(info, default_flow_style=False) + '\n \n')
