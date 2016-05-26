@@ -6,6 +6,8 @@ from Simulation import Simulation
 from qutip import *
 import yaml
 import os
+import datetime
+import time
 
 """ Simulation parameters """
 
@@ -94,7 +96,9 @@ for i in range(0,no_of_runs):
     sim.regenerate_data_qubit_offsets() # Necessary for each run to have different displacement errors
     sim.run(time,steps)
     result_states = sim.last_run_all
-    qsave(result_states, os.path.join(lind_args['folder'],"iteration"+str(i)))
+    # Set time-stamp and save files
+    st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
+    qsave(result_states, os.path.join(lind_args['folder'],"iteration"+str(i) + st))
     step_data = sim.last_run_quarter_cycle
     final_states.append(sim.last_run_all[-1])
     sim.reset_system_state()
