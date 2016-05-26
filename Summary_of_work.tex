@@ -13,6 +13,20 @@
 \section{Introduction}
 We have simulated a probe qubit interacting with four data qubits. The probe qubit is performing a circular orbit $40$ nm above the data qubits, and in this document we will document the effect of various errors. These errors include dephasing, dopan placement uncertainties and a path jitter. 
 
+\section{Finding the correct evolution time}
+
+\begin{figure}[H]
+	\centering
+	\subfloat[]{
+		\includegraphics[width=0.49\linewidth]{abrupt_find_tau/abrupt_find_tau_full.pdf}
+		\label{fig:abrupt_tau}}
+	\subfloat[]{
+		\includegraphics[width=0.49\linewidth]{circular_find_tau/circle_find_tau.pdf}
+		\label{fig:circ_tau}}
+	\label{fig:find_tau}
+	\caption{Finding the correct evolution time. (a) abrupt. (b) circular}
+\end{figure}
+
 
 \section{Dephasing}
 In this section, we present results from simulations of the Lindblad master equation where a dephasing channel is turned on. This channel contains the Lindblad operator
