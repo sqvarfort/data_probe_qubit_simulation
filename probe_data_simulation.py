@@ -5,6 +5,7 @@ from DataQubitDisplacement import *
 from Simulation import Simulation
 from qutip import *
 import yaml
+import os
 
 """ Simulation parameters """
 
@@ -93,12 +94,12 @@ for i in range(0,no_of_runs):
     sim.regenerate_data_qubit_offsets() # Necessary for each run to have different displacement errors
     sim.run(time,steps)
     result_states = sim.last_run_all
-    qsave(result_states, lind_args['folder']+"\iteration"+str(i))
+    qsave(result_states, os.path.join(lind_args['folder'],"iteration"+str(i)))
     step_data = sim.last_run_quarter_cycle
     final_states.append(sim.last_run_all[-1])
     sim.reset_system_state()
 
-qsave(final_states, lind_args.get('folder') + "/final_states")
+qsave(final_states, os.path.join(lind_args.get('folder'),"final_states"))
 
 
 for t in range(0,len(result_states),10):
