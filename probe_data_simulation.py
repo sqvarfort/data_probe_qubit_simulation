@@ -98,6 +98,7 @@ for i in range(0,no_of_runs):
     final_states.append(sim.last_run_all[-1])
     sim.reset_system_state()
 
+qsave(final_states, lind_args['folder']+"\final_states")
 
 
 for t in range(0,len(result_states),10):
