@@ -2,6 +2,8 @@
 %Maths
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
+\newcommand{\beqn}{\begin{equation*}}
+\newcommand{\eeqn}{\end{equation*}}
 \newcommand{\bea}{\begin{align}}
 \newcommand{\eea}{\end{align}}
 \newcommand{\p}{\partial}
@@ -94,7 +96,23 @@ e^{-2it} & e^{-it} & 1 \epmat}
 %Wave vector shortening
 \newcommand{\kvec}{\vv{k}}
 
+% Commands that Gavin likes
+% SUBSCRIPT COMMAND
+\renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
+\newcommand{\subscript}[1]{$_{\text{#1}}$}
+\newcommand{\superscript}[1]{$^{\text{#1}}$}
 
+% NEW DEFINITION OF SQRT - much neater, with tick at end
+% ADAPTED FROM http://en.wikibooks.org/wiki/LaTeX/Mathematics
+% rename \sqrt as \oldsqrt
+\let\oldsqrt\sqrt
+% define new \sqrt in terms of the old one
+\def\sqrt{\mathpalette\DHLhksqrt}
+\def\DHLhksqrt#1#2{%
+	\setbox0=\hbox{$#1\oldsqrt{#2\,}$}\dimen0=\ht0
+	\advance\dimen0-0.2\ht0
+	\setbox2=\hbox{\vrule height\ht0 depth -\dimen0}
+	{\box0\lower0.4pt\box2}}
 
 
 

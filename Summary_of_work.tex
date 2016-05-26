@@ -1,17 +1,6 @@
 \input{./UCLHeader.tex}
 \input{./UCLCommands.tex}
 
-\usepackage{url}
-\usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage[font=footnotesize]{caption}
-\usepackage{subcaption}
-\usepackage[]{microtype}
-\usepackage{balance}
-\usepackage{cite}
-\usepackage{braket}
-\usepackage{braket}
-\usepackage{siunitx}
 
 \usepackage{geometry}
 \geometry{legalpaper, margin=1.0in}
@@ -54,9 +43,38 @@ In Figure \ref{fig:BlochsphereDephasing}, we see the effect of a small dephasing
       \caption{The states of the probe and data qubits plotted in the Bloch sphere with a dephasing parameter of 100, which translates to a dephasing time of 10 ms. The phase of the probe qubit is not affected since no relaxation or excitation is taking place. The effect can however be seen in the probability of measuring the probe qubit in the $\ket{+}$ or $\ket{-}$ state. For complete dephasing, the probe qubit will become the maximally mixed state and the measurement outcomes are completely random. }
 \end{figure}
 
-In Figure \ref{fig:plot} we see the effect of dephasing on the probability of measuring the correct value of the probe qubit. Since there is an odd number of errors, we want the probe qubit to end up in the $\ket{-}$ state. However, the dephasing will cause the probe qubit to become a mixed state $\rho$, for which we have a finite probability of measuring $\ket{+} $ instead of $\ket{-}$. For complete dephasing, the probe qubit becomes a mixed state which has a 50-50\% chance of measuring either state. 
+In Figure \ref{fig:plot} we see the effect of dephasing on the probability of measuring the correct value of the probe qubit. Since there is an odd number of errors, we want the probe qubit to end up in the $\ket{-}$ state. However, the dephasing will cause the probe qubit to become a mixed state $\rho$, for which we have a finite probability of measuring $\ket{+} $ instead of $\ket{-}$. For complete dephasing, the probe qubit becomes a mixed state which has a 50--50\% chance of measuring either state. 
 
-In Figure \ref{fig:Plot}, we have market the data-point for dephasing corresponding to the decoherence time for Bismuth, which is one of the proposed donor types for the probe qubit. The decoherence time of bismuth is 2.7 s \cite{something}, which leads to a dephasing parameter of 0.37 s$^{-1}$. 
+\begin{figure}[!ht]
+	\caption{This is not a picture of a gull.}
+	\centering
+	\includegraphics[width=\textwidth]{Figures/measurement_dephasing_graph.png}
+\end{figure}
+
+In Figure \ref{fig:Plot}, we have market the data-point for dephasing corresponding to the decoherence time for Bismuth, which is one of the proposed donor types for the probe qubit. The decoherence time of bismuth is \SI{2.7}{\second} \cite{something}, which leads to a dephasing parameter of \SI{0.37}{\per\second}. 
+
+
+
+\clearpage
+\section{Data qubit displacement}
+The effect of displacement of the data qubits from the ideal was investigated. Ideally the data qubits would be in a square lattice of spins precisely $D = \SI{400}{\nano\metre}$ apart, but due to inaccuracies in dopant spin placement each qubit will have small displacements from the ideal lattice position.
+
+This is modelled by generating a uniform random displacement within a given pillbox $xy$-radius and $z$-height. Simulations from the original paper show $\textrm{radius} = \textrm{height} = \SI{6}{\nano\metre}$ to be a threshold for this scheme. The phase accumulated over 25 runs for this pillbox size is plotted as a histogram in fig.\@ \ref{fig:DisplacementPhaseHistogram}, showing a maximum phase error of $\tfrac{\pi}{4}$ for these runs. 
+
+
+
+The effect of displacements in the $x$-$y$ plane and the $z$-axis are significantly different in magnitudes, due to the $\tfrac{1}{d^3}$ term in the Hamiltonian being most strongly affected by $z$ displacements. This effect was investigated by artificially setting displacements in these directions.
+
+Fig.\@ \ref{fig:zoffset} shows changes in accumulated phase due to $z$-displacements. The first 2 qubits are displaced \SI{4}{\nano\metre} down, slowing the evolution and giving a noticeable phase error after half a cycle. However, qubit 4 is displaced \SI{3}{\nano\metre} upwards, reducing $d$ and resulting in faster evolution. The effect is a small phase error from the ideal $2\pi$.
+
+Fig.\@ \ref{fig:inwarddisplacement} shows the effect of displacements in the $x$-$y$ plane. For this run, all data qubits were displaced \SI{10}{\nano\metre} inwards with respect to the circular motion. The phase error on each individual qubit is then less than that produced by the \SI{3}{\nano\metre} $z$-displacement of fig.\@ \ref{fig:zoffset}, showing the smaller sensitivity to displacement in the $x$-$y$ plane, though the overall error after all 4 qubits is greater as in the $z$-direction, +$z$ and --$z$ errors cancel out somewhat, whereas $xy$ displacement errors will always slow the evolution.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/Displacement_phase_histogram.pdf}	
+	\caption{Phase errors over 25 runs as a result of randomly generated data qubit displacements within a pillbox of half-height \SI{3}{\nano\metre} and radius \SI{6}{\nano\metre}. These values are a threshold for the proposed scheme.}
+	\label{fig:DisplacementPhaseHistogram}
+\end{figure}
 
 \begin{figure}[h]
   \centering
@@ -64,25 +82,25 @@ In Figure \ref{fig:Plot}, we have market the data-point for dephasing correspond
       \caption{A graph showing the relationship between the dephasing parameter $\Gamma$ and the probability $P(\ket{-})$ of measuring the probe qubit in the $\ket{-}$ state. In this simulation, one of the data qubits have undergone a bit-flip error. As the dephasing parameter increases, the probe qubit moves towards the maximally mixed state and the probability of measuring $\ket{-}$ goes towards 0.5. The dephasing parameter for Bismuth as a material for the probe qubit has been market in the graph. }
 \end{figure}
 
-\section{Dopant Placement}
 \begin{figure}
 	\centering
-	\begin{subfigure}[t]{0.7\textwidth}
-		\includegraphics[width=\textwidth]{figures/z_offset.pdf}
+	\caption{Phase errors as a result of misplaced data qubits.}
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{figures/z_offset.pdf}
 		\caption{Evolution of probe qubit with data qubit displacement in the Z direction. 1st and 2nd qubits are displaced \SI{4}{\nano\metre} down, slowing the evolution, the 4th is displaced \SI{3}{\nano\metre} up with a resultant increase in phase accumulated. The overall deviation from $2\pi$ is small as a result.}
 		\label{fig:zoffset}
 	\end{subfigure}
-	\begin{subfigure}[t]{0.7\textwidth}
-		\includegraphics[width=\textwidth]{figures/10nm_displacement_inward.pdf}
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{figures/10nm_displacement_inward.pdf}
 		\caption{Phase accumulated when all 4 data qubits are displaced \SI{10}{\nano\metre} towards the centre of the circle. Other directions of \SI{10}{\nano\metre} displacements result in similar phase deviations.}
 		\label{fig:inwarddisplacement}
 	\end{subfigure}
-	
-	\caption{Phase errors as a result of misplaced data qubits.}
 	\label{fig:overall_displacement}
 \end{figure}
 
-\section{Path Jitter}
 
+\section{Path Jitter}
 
 \end{document}
