@@ -25,9 +25,11 @@ class Plotter(object):
                     - textfile of all data-qubit states
     """
 
-    def __init__(self, states, info):
+    def __init__(self, states, info,filetype='.png',display=True):
         self.states = states
         self.info = info
+        self.filetype = filetype
+        self.display = display
 
         # Save the states in the array to a file
         #self.states_to_file(states, info)
@@ -65,6 +67,8 @@ class Plotter(object):
     def Histogram(self, list_of_phi, info):
         # Use LaTeX rendering
         folder_name = info.get('folder')
+        if 'subfolder' in info:
+            folder_name = os.path.join(info.get('folder'),info.get('subfolder'))
         plt.rc('text', usetex=True)
         plt.rc('font', family='serif')
         plt.xlabel('$\phi$')
@@ -100,14 +104,17 @@ class Plotter(object):
         plt.legend(loc='upper right')
         fig = plt.gcf()
         st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
-        plt.savefig(os.path.join(folder_name,'Histogram') + st + '.png',  transparent=False, dpi=1000)
-        plt.show()
+        plt.savefig(os.path.join(folder_name,'Histogram') + st + self.filetype,  transparent=False, dpi=1000)
+        if self.display:
+            plt.show()
 
 
 
     def phi_to_file(self, list_of_phi, info):
         st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
         folder_name = info.get('folder')
+        if 'subfolder' in info:
+            folder_name = os.path.join(info.get('folder'),info.get('subfolder'))
         f = open(os.path.join(folder_name,'phi_data') + st + '.txt', 'w+')
         f.write('Phase of the final state' '\n \n')
         f.write( yaml.dump(info, default_flow_style=False) + '\n \n')
@@ -132,6 +139,8 @@ class Plotter(object):
     def states_to_file(self, states, info):
         st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
         folder_name = info.get('folder')
+        if 'subfolder' in info:
+            folder_name = os.path.join(info.get('folder'),info.get('subfolder'))
         probe_states = [states[t].ptrace(0) for t in range(0, len(states))]
         data_states = [states[t].ptrace(1) for t in range(0, len(states))]
         path = os.path.abspath(__file__)
@@ -166,6 +175,8 @@ class Plotter(object):
         """
         st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
         folder_name = info.get('folder')
+        if 'subfolder' in info:
+            folder_name = os.path.join(info.get('folder'),info.get('subfolder'))
         fprobes = open(os.path.join(folder_name,'probe_measurements') + st + '.txt', 'w+')
         fprobes.write('Probe Measurement Outcomes \n')
 

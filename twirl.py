@@ -6,15 +6,11 @@ from Simulation import Simulation
 from qutip import *
 import yaml
 import os
-import datetime
-import time
 
 """ Simulation parameters """
 
-# here abrupt movement. tau is the time spend in interaction with each individual qubit
-
-info = 'info_config.yml'
-config = "ham_conf.yml"
+info = os.path.join('twirl','twirl_config.yml')
+config = os.path.join('twirl',"ham_conf.yml")
 lind_args = dict()
 config_args = dict()
 
@@ -39,22 +35,17 @@ header = lind_args.copy()
 header.update(config_args)
 
 """ Prepare Initial states """
+bitflips = lind_args.get('bit_errors')
 initial_states = []
-if lind_args.get('preparation_error'): # Check if preparation error should be applied
-    if random.random() > 0.99: # Apply a preparation error at random
-        initial_states.append((pi/2.,pi))
+initial_states.append((pi/2.,0)) # probe qubit
+for bit in bitflips: # data qubits
+    if int(bit)==0:
+        initial_states.append((0,0))
+    elif int(bit)==1:
+        initial_states.append((pi,0))
     else:
-        initial_states.append((pi/2., 0))
-else:
-    initial_states.append((pi/2.,0))
-if lind_args.get('odd'):
-    for i in range(0,3):
-        initial_states.append((0,0))
-    initial_states.append((pi, 0))
-else:
-    for i in range(0,4):
-        initial_states.append((0,0))
-
+        print('Invalid bit_error specified')
+print('Bitflips: '+str(bitflips))
 
 """ Prepare Hamiltonian """
 ham=H_RWA(config)
@@ -83,32 +74,36 @@ if lind_args.get('relaxation'):
     sim.lind.relaxation(lind_args.get('relaxation_param'))
 
 """ Set up and generate qubit displacements """
-if lind_args.get('qubit_displacement_error'):
-    disp_radius = float(lind_args.get('qubit_displacement_radius'))
-    disp_halfheight = float(lind_args.get('qubit_displacement_halfheight'))
+displacements = lind_args.get('displacement')
+displacements = [[float(x) for x in y] for y in displacements] # conversion from str to float
+sim.set_data_qubit_offsets(displacements)
 
-    sim.generate_data_qubit_offsets(disp_radius,disp_halfheight)
+""" Set up folder/subfolder """
+lind_args['folder'] = os.path.join(lind_args.get('folder'),lind_args.get('subfolder'))
+if not os.path.exists(lind_args.get('folder')):
+    os.mkdir(lind_args.get('folder'))
+if not os.path.exists(os.path.join(lind_args.get('folder'),'data')):
+    os.mkdir(os.path.join(lind_args.get('folder'),'data'))    
 
 
 """ Run simulation """
 for i in range(0,no_of_runs):
-    print 'Starting loop ' + str(i)
-    sim.regenerate_data_qubit_offsets() # Necessary for each run to have different displacement errors
+    print 'Starting loop ' + str(i+1)
     sim.run(time,steps)
     result_states = sim.last_run_all
-    # Set time-stamp and save files
-    st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
-    qsave(result_states, os.path.join(lind_args['folder'],"iteration"+str(i) + st))
+    qsave(result_states, os.path.join(lind_args.get('folder'),'data','run'+str(i+1)))
     step_data = sim.last_run_quarter_cycle
     final_states.append(sim.last_run_all[-1])
     sim.reset_system_state()
 
-qsave(final_states, os.path.join(lind_args.get('folder'),"final_states"))
-
-
+qsave(final_states, os.path.join(lind_args.get('folder'),'data',"final_states"))
+print('States saved')
 for t in range(0,len(result_states),10):
     db.add_states(result_states[t].ptrace(0), kind='point')
     db.add_states(result_states[t].ptrace(1), kind='point')
-db.show()
 
-Plotter(final_states, header)
+db.save(os.path.join(lind_args.get('folder'),'bloch.pdf'))
+#db.show()
+print('Bloch for last run saved to '+os.path.join(lind_args.get('folder'),'bloch.pdf'))
+Plotter(final_states, header,filetype='.pdf',display=False)
+print('Plotter output to '+os.path.join(lind_args.get('folder'),''))
