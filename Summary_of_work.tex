@@ -59,9 +59,9 @@ In this section, we present results from simulations of the Lindblad master equa
 L  = \sqrt{\Gamma} \sigma_z
 \eeq
 
-where $\Gamma$ is the dephasing parameter. $\Gamma$ can also be written as $1/\tau$ where $\tau$ is the dephasing time. We evolve the system under the Lindblad master equation for an odd number of errors. In this case, the error is a bit-flip error on the fourth data qubit.  This causes the final phase of the probe qubit to end up at $\phi = \pi$. 
+where $\Gamma$ is the dephasing parameter. $\Gamma$ can also be written as $1/\tau$ where $\tau$ is the dephasing time. We evolve the system under the Lindblad master equation for an odd number of errors. In this simulation, the error is a bit-flip error on the fourth data qubit.  As a result, the probe qubit `backtracks'  during the last quarter of the run such that its final phase ends up at $\phi = \pi$. 
 
-In Figure \ref{fig:BlochsphereDephasing}, we see the effect of a small dephasing coefficient (100) whereas in Figure \ref{fig:BlochsphereDephasing2} we see the effect of larger dephasing (500). Note that the dephasing happens primarily as the interaction between the probe qubit and the data qubit is weak. 
+In Figure \ref{fig:BlochsphereDephasing}, we see the effect of a small dephasing coefficient (100) whereas in Figure \ref{fig:BlochsphereDephasing2} we see the effect of larger dephasing (500). Note that the dephasing happens primarily as the interaction between the probe qubit and the data qubit is weak, where the phase of the probe qubit doesn't evolve. 
 
 
 
@@ -93,7 +93,7 @@ In Figure \ref{fig:phaseplot} we see the effect of dephasing on the probability 
 \end{figure}
 
 
-In Figure \ref{fig:Plot}, we have market the data-point for dephasing corresponding to the decoherence time for Bismuth, which is one of the proposed donor types for the probe qubit. The decoherence time of bismuth is \SI{2.7}{\second} \cite{Wolfowicz2013}, which leads to a dephasing parameter of \SI{0.37}{\per\second}. 
+In Figure \ref{fig:phaseplot}, we have market the data-point for dephasing corresponding to the decoherence time for Bismuth, which is one of the proposed donor types for the probe qubit. The decoherence time of bismuth is \SI{2.7}{\second} \cite{Wolfowicz2013}, which leads to a dephasing parameter of \SI{0.37}{\per\second}. 
 
 
 \clearpage
@@ -164,6 +164,21 @@ Fig.\@ \ref{fig:inwarddisplacement} shows the effect of displacements in the $x$
 	\label{fig:paritymeas}
 	\caption{Making sure path jitter works as expected. (a) xjit. (b) yjit. (c) zjit.}
 \end{figure}
+
+
+\section{Outlook}
+Further investigation is to be undertake in the following areas:
+
+\begin{itemize}
+\item Simulate path jitter
+\item Combine errors
+\item Find phase error $\phi_e$ for 1/4 of the run
+\item Investigate how errors `stack' (e.g. is $\phi_e(2\pi)$ for a full circle equal to $4\phi_e(\pi/2)$?
+\item Extract realistic physical parameters for the magnetic field $B$
+\end{itemize}
+
+
+
 
 \bibliography{papers}
 
