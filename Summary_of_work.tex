@@ -17,12 +17,18 @@ We have simulated a probe qubit interacting with four data qubits. The probe qub
 
 \begin{figure}[H]
 	\centering
-	\subfloat[]{
-		\includegraphics[width=0.49\linewidth]{abrupt_find_tau/abrupt_find_tau_full.pdf}
-		\label{fig:abrupt_tau}}
-	\subfloat[]{
-		\includegraphics[width=0.49\linewidth]{circular_find_tau/circle_find_tau.pdf}
-		\label{fig:circ_tau}}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{abrupt_find_tau/abrupt_find_tau_full.pdf}
+		\caption{}
+		\label{fig:abrupt_tau}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{circular_find_tau/circle_find_tau.pdf}
+		\caption{}
+		\label{fig:circ_tau}
+	\end{subfigure}
 	\label{fig:find_tau}
 	\caption{Finding the correct evolution time. (a) abrupt. (b) circular}
 \end{figure}
