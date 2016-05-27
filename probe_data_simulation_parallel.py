@@ -99,7 +99,7 @@ def log_result(result):
 def do_simulation(i):
     print 'Starting loop ' + str(i)
     sim.regenerate_data_qubit_offsets() # Necessary for each run to have different displacement errors
-    sim.run(time/4,steps,1)
+    sim.run(time/4,steps,1)	#adjust for full circle!
     result_states = sim.last_run_all
     qsave(result_states, os.path.join(lind_args['folder'],"iteration"+str(i)))
     #step_data = sim.last_run_quarter_cycle
@@ -110,7 +110,10 @@ def do_simulation(i):
 
 if __name__ == '__main__': # windows needs this for multiprocessing ... whatever
 	""" Run simulation """
-	pool = mp.Pool(processes=3) # limits no of processes to 3 = 75% CPU usage for me
+	pool = mp.Pool(processes=10)# limits no of parallel processes to 3 = 75% CPU usage for me. more slows laptop pc down
+	# windows pc: 1 process=120s each. 2 processes= 130s each (nearly twice as fast). 
+	# 3processes= 130s each (3 times as fast) 4 processes= 138s, 6 processes=210s each
+	# still speed up for 10: 337s each. 
 	mp.freeze_support()
 	for i in range(0,no_of_runs):
 		# we could parse args in addition to i and change significant parameters during interations!
