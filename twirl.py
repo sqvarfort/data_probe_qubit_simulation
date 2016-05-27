@@ -52,10 +52,12 @@ ham=H_RWA(config)
 hamiltonian = ham.getHfunc()
 
 """ Prepare Bloch Sphere settings """
-db=Bloch()
-colors = ["g"]#,"r","g","#CC6600"]#,"r","g","#CC6600"]
-db.point_color = "r"
-db.point_marker = ['o']
+def prepare_bloch():
+    db=Bloch()
+    colors = ["g"]#,"r","g","#CC6600"]#,"r","g","#CC6600"]
+    db.point_color = "r"
+    db.point_marker = ['o']
+    return db
 
 """ Set up simulation """
 mesolve_args = ham.getArgs()
@@ -89,6 +91,7 @@ if not os.path.exists(os.path.join(lind_args.get('folder'),'data')):
 """ Run simulation """
 for i in range(0,no_of_runs):
     print 'Starting loop ' + str(i+1)
+    sim.choose_twirl(lind_args.get('twirl')) # Pass this False if you don't want twirling
     sim.run(time,steps)
     result_states = sim.last_run_all
     qsave(result_states, os.path.join(lind_args.get('folder'),'data','run'+str(i+1)))
