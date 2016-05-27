@@ -139,6 +139,7 @@ class Simulation():
         elif type(i)==int: self.twirl = i # address twirls with 1,2,3,4; address array with 0,1,2,3
         elif i=='default': self.twirl = np.random.randint(4)+1 # No i specified, generate
         elif type(i)==bool and i: self.twirl = np.random.randint(4)+1 # input is True, generate
+        elif type(i)==list: self.twirl = i[self.loop] # input is array, pick element
         else:
             print(' Not clear whether twirling; no twirling applied')
             self.twirl = None

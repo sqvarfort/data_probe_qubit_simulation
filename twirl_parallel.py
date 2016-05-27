@@ -5,7 +5,7 @@ from DataQubitDisplacement import *
 from Simulation import Simulation
 from qutip import *
 import yaml
-import os
+import os, shutil
 import multiprocessing as mp
 import time
 
@@ -75,7 +75,7 @@ def plot_bloch(db,result_states):
 """ Saving twirls applied """
 twirl_applied = []
 def save_twirl(twirl_applied):
-    f = open(os.path.join(lind_args.get('folder'),'data','twirls.txt'),'w+')
+    f = open(os.path.join(lind_args.get('folder'),lind_args.get('subfolder'),'data','twirls.txt'),'w')
     f.write( yaml.dump(twirl_applied))
     f.close()
 
@@ -121,6 +121,11 @@ def save_header(header):
     f.close()
 save_header(header)
 
+
+""" Copy input .yml files to subfolder """
+shutil.copy2(info,os.path.join(lind_args.get('folder'),lind_args.get('subfolder')))
+shutil.copy2(config,os.path.join(lind_args.get('folder'),lind_args.get('subfolder')))
+
     
 def log_result(result):
     # This is called whenever simulation(i) returns a result.
@@ -130,13 +135,15 @@ def log_result(result):
 
 def do_simulation(i):
     print 'Starting loop ' + str(i)
-    initial_states = calculate_initial_states_from_bitflips(bitflips)
+    
+    if lind_args.get('specify_errors'): initial_states = calculate_initial_states_from_bitflips(bitflips[i])
+    else: initial_states = calculate_initial_states_from_bitflips(bitflips)
+    
     sim = Simulation(hamiltonian,initial_states,mesolve_args)
+    sim.loop = i
     sim.set_data_qubit_offsets(displacements)
     sim.choose_twirl(lind_args.get('twirl'))
-    #sim.regenerate_data_qubit_offsets() # Necessary for each run to have different displacement errors
-    #sim.args['J'] = jlist[i]
-    sim.run(time/4,steps/4,1)    #adjust for full circle!
+    sim.run(time,steps)    #adjust for full circle!
     result_states = sim.last_run_all
     qsave(result_states, os.path.join(lind_args.get('folder'),lind_args.get('subfolder'),'data','run'+str(i+1)))
     #step_data = sim.last_run_quarter_cycle
