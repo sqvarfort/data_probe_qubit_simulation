@@ -108,16 +108,18 @@ def do_simulation(i):
     return (i, sim.last_run_all[-1]) 
 
 
-""" Run simulation """
-pool = mp.Pool(processes=3) # limits no of processes to 3 = 75% CPU usage for me
-for i in range(0,no_of_runs):
-    # we could parse args in addition to i and change significant parameters during interations!
-    pool.apply_async(do_simulation, args = (i, ), callback = log_result) 
-    
-pool.close()
-pool.join()
-print final_states
-#qsave(final_states, os.path.join(lind_args.get('folder'),"final_states"))
+if __name__ == '__main__': # windows needs this for multiprocessing ... whatever
+	""" Run simulation """
+	pool = mp.Pool(processes=3) # limits no of processes to 3 = 75% CPU usage for me
+	mp.freeze_support()
+	for i in range(0,no_of_runs):
+		# we could parse args in addition to i and change significant parameters during interations!
+		pool.apply_async(do_simulation, args = (i, ), callback = log_result) 
+		
+	pool.close()
+	pool.join()
+	#print final_states
+	qsave(final_states, os.path.join(lind_args.get('folder'),"final_states"))
 
 """
 for t in range(0,len(result_states),10):
