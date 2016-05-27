@@ -13,6 +13,7 @@
 #qubit_displacement_halfheight: 0.0
 bit_errors: [0,0,1,0]
 displacement: [[1e-9,0,0],[1e-9,0,0],[1e-9,0,0],[1e-9,0,0]]
+twirl: true # specify True for random, False for none, or 1,2,3,4 for specific twirls
 folder: 'twirl'
 subfolder: 'test_sim' # memorable simulation name
 runs: 1

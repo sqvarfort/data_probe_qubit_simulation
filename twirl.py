@@ -89,6 +89,7 @@ if not os.path.exists(os.path.join(lind_args.get('folder'),'data')):
 """ Run simulation """
 for i in range(0,no_of_runs):
     print 'Starting loop ' + str(i+1)
+    sim.choose_twirl(lind_args.get('twirl')) # Pass this False if you don't want twirling
     sim.run(time,steps)
     result_states = sim.last_run_all
     qsave(result_states, os.path.join(lind_args.get('folder'),'data','run'+str(i+1)))
