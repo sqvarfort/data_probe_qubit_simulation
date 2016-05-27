@@ -45,7 +45,7 @@ class Plotter(object):
         self.Histogram(list_of_phi, self.info)
         self.phi_to_file(list_of_phi, self.info)
         self.Probe_measurement_outcome(probe_states, self.info)
-        self.states_to_file(states, self.info)
+        #self.states_to_file(states, self.info)
 
 
 
@@ -85,20 +85,8 @@ class Plotter(object):
 
 
         #Ticks go from pi/2 to pi/2 including the origin
-        plt.xticks([ 3*pi/4, pi, 5*pi/4, 3*pi/2, 7*pi/4, 2*pi, 9*pi/4 5*pi/2 ], [r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$0 (2\pi)$', r'$\frac{\pi}{2}$'])
-
-
-        # If there is an error in the data qubits,
-        """
-        if info_config.get('odd'):
-            plt.xticks([0, pi/2, pi, 3*pi/2, 2*pi], ['$0$', r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$'])
-        else:
-            for item in list_of_phi:
-                if item < pi:
-                    item = item + 2.*pi
-            plt.xticks([pi, 3*pi/2, 2*pi, 5*pi/2, 3*pi], [r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$'], '$0$', r'$\frac{\pi}{2}$')
-        """
-
+        plt.xticks([ 3*pi/4, pi, 5*pi/4, 3*pi/2, 7*pi/4, 2*pi, 9*pi/4,  5*pi/2 ], [r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$0 (2\pi)$', r'$\frac{\pi}{2}$'])
+        
         # Render plot
         plt.legend()
         plt.legend(loc='upper right')
