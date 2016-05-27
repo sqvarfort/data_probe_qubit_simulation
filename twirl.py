@@ -52,10 +52,12 @@ ham=H_RWA(config)
 hamiltonian = ham.getHfunc()
 
 """ Prepare Bloch Sphere settings """
-db=Bloch()
-colors = ["g"]#,"r","g","#CC6600"]#,"r","g","#CC6600"]
-db.point_color = "r"
-db.point_marker = ['o']
+def prepare_bloch():
+    db=Bloch()
+    colors = ["g"]#,"r","g","#CC6600"]#,"r","g","#CC6600"]
+    db.point_color = "r"
+    db.point_marker = ['o']
+    return db
 
 """ Set up simulation """
 mesolve_args = ham.getArgs()

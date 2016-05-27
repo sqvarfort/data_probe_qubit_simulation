@@ -127,7 +127,7 @@ class Simulation():
         self.qubit_offsets_bool = True
         
         return offset_list
-        
+      
     def regenerate_data_qubit_offsets(self):
         self.generate_data_qubit_offsets(self.qubit_offsets_settings['radius'],
                                          self.qubit_offsets_settings['half_height'],
