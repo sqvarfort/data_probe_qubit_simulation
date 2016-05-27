@@ -1,0 +1,3 @@
+#dnm	tau ms
+# D=200nm do ocntour plot?
+20 0.4224539948575522
