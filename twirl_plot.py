@@ -15,6 +15,7 @@ else:
 
 #path = os.path.join('twirl','displaced')
 #num_of_files = 4
+steps = 5000
 path = os.path.join(lind_args.get('folder'),lind_args.get('subfolder'))
 num_of_files = lind_args.get('runs')
 data_directory = 'data'
@@ -33,21 +34,28 @@ if not os.path.exists(save_path):
 
 def prepare_bloch():
     db=Bloch()
-    colors = ["g"]#,"r","g","#CC6600"]#,"r","g","#CC6600"]
-    db.point_color = "r"
     db.point_marker = ['o']
     return db
 
 def plot_bloch(db,result_states): 
+    db.point_color = 'r'
     for t in range(0,len(result_states),10):
         db.add_states(result_states[t].ptrace(0), kind='point')
-        db.add_states(result_states[t].ptrace(1), kind='point')    
+        db.add_states(result_states[t].ptrace(1), kind='point') 
+    db.add_states(result_states[-1].ptrace(0))
 
+def plot_bloch2(db,result_states):
+    colors = ["b","c","g","r"]
+    db.point_color = colors
+    for i in range(4):
+        db.add_points(np.transpose(np.array([Plotter.bloch_vector(result_states[t].ptrace(0)) for t in range(int(i*steps/4.),int((i+1)*steps/4.),10)])))
+
+    db.add_states(result_states[-1].ptrace(0))
 
 for file in filenames:
     result_states = qload(os.path.join(data_path,file))
     db = prepare_bloch()
-    plot_bloch(db,result_states)
+    plot_bloch2(db,result_states)
     #db.show()
     db.save(os.path.join(save_path,file+'.pdf'))
     
