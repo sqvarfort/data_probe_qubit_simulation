@@ -27,34 +27,28 @@ class H_RWA(object):
         self.args['Hz']= self.args['Delta']*sigma2z
 
         # Calculate the time it takes to move one nm
-        self.time_increment = (self.args['time']*1.e-09)/(2.*np.pi*self.args['cOpts'].get('D'))
-        #self.time_increment = 1.2e-06
-        self.previous_r = np.array( [ -self.args['cOpts'].get('D')/2. ,  -self.args['cOpts'].get('D')/2. + self.args['cOpts'].get('D')/np.sqrt(2.) , self.args['cOpts'].get('d') ])
 
 
 
     def circ_motion(self, t, args):
-        if (t % self.time_increment <= args.get('tolerance')): # check if remainder is
-            return self.previous_r
+        # cOffset can be generated using Gavins function!. use newaxis etc to make it compatible for plotting
+        if np.size(t)==1: #turn t into numpy array if it is just a single number or python list to make the code below work
+            t=np.array([t])
+        elif type(t)==list:
+            t=np.array(t)
+        r=np.array(args['cOffset'])[:,np.newaxis] + np.array( [ -args['D']/2. + args['D']/np.sqrt(2.)*np.sin(2.*np.pi/args['tau'] * t)  ,  -args['D']/2. + args['D']/np.sqrt(2.)*np.cos(2.*np.pi/args['tau'] * t)  ,  args['d']*np.ones(len(t)) ] )
+
+        #allow random path jitter (simulates not perfect movement of mems stage) ~~1nm?
+        if args['pJit']:
+            for i, c in enumerate(['x','y','z']):
+                if args[c+'std'] > 0:
+                    r[i]+=np.random.normal(0, args[c+'std'], len(t))
+
+        self.previous_r = r
+        if np.size(r)==3:
+            return self.previous_r[:,0]
         else:
-            # cOffset can be generated using Gavins function!. use newaxis etc to make it compatible for plotting
-            if np.size(t)==1: #turn t into numpy array if it is just a single number or python list to make the code below work
-                t=np.array([t])
-            elif type(t)==list:
-                t=np.array(t)
-            r=np.array(args['cOffset'])[:,np.newaxis] + np.array( [ -args['D']/2. + args['D']/np.sqrt(2.)*np.sin(2.*np.pi/args['tau'] * t)  ,  -args['D']/2. + args['D']/np.sqrt(2.)*np.cos(2.*np.pi/args['tau'] * t)  ,  args['d']*np.ones(len(t)) ] )
-
-            #allow random path jitter (simulates not perfect movement of mems stage) ~~1nm?
-            if args['pJit']:
-                for i, c in enumerate(['x','y','z']):
-                    if args[c+'std'] > 0:
-                        r[i]+=np.random.normal(0, args[c+'std'], len(t))
-
-            self.previous_r = r
-            if np.size(r)==3:
-                return self.previous_r[:,0]
-            else:
-                return self.previous_r
+            return self.previous_r
 
     @staticmethod
     def getDelta(mat1='Bi', mat2='P', Bfield=300e-3):
