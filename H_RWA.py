@@ -26,8 +26,6 @@ class H_RWA(object):
         sigma2z = tensor(qeye(2), sigmaz())
         self.args['Hz']= self.args['Delta']*sigma2z
 
-        # Calculate the time it takes to move one nm
-
 
     @staticmethod
     def circ_motion(t, args):
