@@ -112,7 +112,7 @@ Department of Physics and Astronomy, University College London
              %  but any date may be explicitly specified
 
 \begin{abstract}
-Insert concrete abstract. 
+We simulate a simple system consisting of one probe qubit and four data qubits as proposed in \cite{the paper} and implement errors such as dephasing, dopant displacement, and path jitter to the full stabiliser measurement cycle. 
 \end{abstract}
 
 \pacs{Valid PACS appear here}% PACS, the Physics and Astronomy
@@ -123,9 +123,7 @@ Insert concrete abstract.
 
 %\tableofcontents
 
-\section{\label{sec:level1}First-level heading}
-
-t
+\section{Introduction} \label{sec:Introduction}
 
 
 
@@ -173,6 +171,11 @@ H = \mu_B B( g_1 \sigma_1^Z + g_2 \sigma_2^Z) + \frac{J}{r^3} ( \mathbf{\sigma_1
 The effect of this Hamiltonian is to evolve the probe qubit in a particular direction depending on the state of the data qubit. By initialising the probe qubit in the $\ket{+}$ state, the final parity measurement will entail finding the probe qubit in either the $\ket{+}$ state (even parity) or in the $\ket{-}$ state. This can be understood by the fact that each data qubit imparts a $\frac{\pi}{2}$ phase in 
 
 \subsection{Finding the correct evolution time}
+The speed of the simulation is set by the total time it takes to complete one full cycle. We want the accumulated phase for an even parity measurement to reach $2\pi$ exactly. The plot in Figure \ref{fig:plot} shows the accumulated phase as a function of evolution time. 
+
+
+
+
 
 \begin{figure}[H]
 	\centering
@@ -195,13 +198,13 @@ The effect of this Hamiltonian is to evolve the probe qubit in a particular dire
 
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}[t]{0.49\textwidth}
+	\begin{subfigure}[t]{0.30\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{Figures/notodd.pdf}
 		\caption{}
 		\label{fig:notodd}
 	\end{subfigure}
-	\begin{subfigure}[t]{0.49\textwidth}
+	\begin{subfigure}[t]{0.30\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{Figures/odd.pdf}
 		\caption{}
