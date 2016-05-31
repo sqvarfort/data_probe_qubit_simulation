@@ -1,0 +1,20 @@
+#Information that goes into the header of each files
+
+#odd: false
+#dephasing: false
+#dephasing_param: 0.0
+#excitation: false
+#excitation_param: 0.0
+#relaxation: false
+#relaxation_param: 0.0
+#preparation_error: false
+qubit_displacement_error: false 
+qubit_displacement_radius: 6e-9
+qubit_displacement_halfheight: 3e-9
+specify_errors: false # false for constant errors, true for specific errors on each run
+bit_errors: [0,0,0,0] # list for constant errors, list of list for specific errors on each run
+#displacement: [[-4e-9,0,4e-9],[2e-9,0,-4e-9],[0,-2e-9,-2e-9],[1.5e-9,1.5e-9,3e-9]] # list of displacements of each data qubit
+twirl: false # True for random, False for none, 1-4 for specific twirls, or an array thereof
+folder: 'displacement'
+subfolder: 'test' # memorable simulation name
+runs: 4
