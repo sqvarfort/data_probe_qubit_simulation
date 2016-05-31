@@ -18,7 +18,41 @@ There has been a recent proposal to make use of dopants in silicon to act as qub
 
 We have simulated a probe qubit interacting with four data qubits. The probe qubit is performing a circular orbit $40$ nm above the data qubits, and in this document we will document the effect of various errors. These errors include dephasing, dopan placement uncertainties and a path jitter. 
 
-\section{Finding the correct evolution time}
+\subsection{The proposal}
+Let us first take a closer look at the scheme proposed in \cite{the paper}. The data qubits are dopants placed in silicon placed in a square pattern using the best dopant placement techniques available, which currently stand at [insert some error value and cite it]. To perform the stabiliser measurements, a probe qubit of a different dopant species is placed on a mobile slab above the data qubits. Each probe qubit performs a stabiliser measurement on four data qubits, a procedure which is performed by physically moving the overhead slab with the probe qubits. 
+
+Some differences in physical parameters are required. 
+
+\subsection{Spin species}
+
+\begin{table}
+\begin{tabular}{ccccccccc}
+	& $T_1^e$ & $T_2^{e*}$ & $T_2^e$ & $T_{2, decoupl}^e$ & $T_1^N$ & $T_2^{N*}$ & $T_2^N$ & $T_{2, decoupl.}^N$\\ \hline
+P (nat. Si, SET) \cite{Pla2012}& $0.7\, $s & $55\, $ns  & $206\, \mu$s & $410\, \mu$s &  & & \\
+P (puri. Si, SET) \cite{Muhonen2014}&  & $160\, \mu$s  & $1\, $ms & $560\, $ms & & $500\, \mu$s & $1.75\, $s & $35.6\, $s \\
+Bi (puri. Si, CT) \cite{Wolfowicz2013} & $9\, $s &  & $2.7\, $s && && &\\
+NV (puri. C, RT) \cite{Balasubramanian2009,Bar-Gill2013} & & & $1.8\, $ms & $3.3\, $ms && &&\\
+NV (puri. C, $77\, $K) \cite{Bar-Gill2013} & & &  & $0.6\, $s && &&\\
+SiC ($20\, $K) \cite{Christle2014} & & $1.1\, \mu$s & $1.2\, $ms & && && \\
+SiC (RT) \cite{Koehl2011} & $185\, \mu$s & $214\, $ns & $40\, \mu$s &  & & && \\
+\hline
+\end{tabular} 
+\label{lala}
+\caption{\cite{Pla2012,Muhonen2014}: high field >1T low temp mK. Even good coherenc ebeing close to suurface.}
+\end{table}
+
+Donors deep in bulk show longer coherence times $T_2^e=2\, $s \cite{Tyryshkin2011} not applicable for us.
+
+
+\section{The Simulation}
+In this section, we will describe how we go about simulating the interaction between the probe qubit and the data qubit. The interaction is governed by the following Hamiltonian:
+
+\begin{equation}
+H = \mu_B B( g_1 \sigma_1^Z + g_2 \sigma_2^Z) + \frac{J}{r^3} ( \mathbf{\sigma_1} \cdot \mathbf{\sigma_2} - 3 ( \hat{\mathbf{r}} \cdot \mathbf{\sigma_1}) ( \hat{\mathbf{r}}\cdot \mathbf{\sigma_2}))
+\end{equation}
+The effect of this Hamiltonian is to evolve the probe qubit in a particular direction depending on the state of the data qubit. By initialising the probe qubit in the $\ket{+}$ state, the final parity measurement will entail finding the probe qubit in either the $\ket{+}$ state (even parity) or in the $\ket{-}$ state. This can be understood by the fact that each data qubit imparts a $\frac{\pi}{2}$ phase in 
+
+\subsection{Finding the correct evolution time}
 
 \begin{figure}[H]
 	\centering
@@ -57,14 +91,11 @@ We have simulated a probe qubit interacting with four data qubits. The probe qub
 	\caption{Example of parity measurement for the circular motion. (a) no error in data qubits. plus state is final state. (b) error on last qubit. minus state is final state.}
 \end{figure}
 
-\begin{equation}
-H = \mu_B B( g_1 \sigma_1^Z + g_2 \sigma_2^Z) + \frac{J}{r^3} ( \mathbf{\sigma_1} \cdot \mathbf{\sigma_2} - 3 ( \hat{\mathbf{r}} \cdot \mathbf{\sigma_1}) ( \hat{\mathbf{r}}\cdot \mathbf{\sigma_2}))
-\end{equation}
 
 
 
 
-\section{Dephasing}
+\subsection{Dephasing}
 In this section, we present results from simulations of the Lindblad master equation where a dephasing channel is turned on. This channel contains the Lindblad operator
 \beq
 L  = \sqrt{\Gamma} \sigma_z
@@ -107,8 +138,10 @@ In Figure \ref{fig:phaseplot} we see the effect of dephasing on the probability 
 In Figure \ref{fig:phaseplot}, we have market the data-point for dephasing corresponding to the decoherence time for Bismuth, which is one of the proposed donor types for the probe qubit. The decoherence time of bismuth is \SI{2.7}{\second} \cite{Wolfowicz2013}, which leads to a dephasing parameter of \SI{0.37}{\per\second}. 
 
 
+It should be noted that the Bismuth dephasing time of 2.7 s can only be obtained by applying advanced Hahn echo readout methods. Whereas it is cumbersome, this technique is not beyond the capabilities of modern experiments. 
+
 %\clearpage
-\section{Data qubit displacement}
+\subsection{Data qubit displacement}
 The effect of displacement of the data qubits from the ideal was investigated. Ideally the data qubits would be in a square lattice of spins precisely $D = \SI{400}{\nano\metre}$ apart, but due to inaccuracies in dopant spin placement each qubit will have small displacements from the ideal lattice position.
 
 This is modelled by generating a uniform random displacement within a given pillbox $xy$-radius and $z$-height. Simulations from the original paper show $\textrm{radius} = \textrm{height} = \SI{6}{\nano\metre}$ to be a threshold for this scheme. The phase accumulated over 25 runs for this pillbox size is plotted as a histogram in fig.\@ \ref{fig:DisplacementPhaseHistogram}, showing a maximum phase error of $\tfrac{\pi}{4}$ for these runs. 
@@ -148,9 +181,13 @@ Fig.\@ \ref{fig:inwarddisplacement} shows the effect of displacements in the $x$
 	\label{fig:overall_displacement}
 \end{figure}
 
+\subsection{Twirling}
 
+\subsection{Path Jitter}
+The final error that we introduce and simulate is jitter in the path taken by the probe qubits. The precision provided by modern MEMS control structures is about 1 nm \cite{MEMS precision}, 
 
-\section{Path Jitter}
+It was found that adding just a random jitter to the path introduced jumps which the solver could not handle very well. Instead, we overlay a sinusoidal motion over the circular motion, effectively causing a periodic deviation from the perfect path. We introduced a random element in the starting phase and amplitude [check this!] 
+
 
 \begin{figure}[H]
 	\centering
@@ -178,30 +215,14 @@ Fig.\@ \ref{fig:inwarddisplacement} shows the effect of displacements in the $x$
 
 
 
-\section{Qubit coherence}
 
-\begin{table}
-\begin{tabular}{ccccccccc}
-	& $T_1^e$ & $T_2^{e*}$ & $T_2^e$ & $T_{2, decoupl}^e$ & $T_1^N$ & $T_2^{N*}$ & $T_2^N$ & $T_{2, decoupl.}^N$\\ \hline
-P (nat. Si, SET) \cite{Pla2012}& $0.7\, $s & $55\, $ns  & $206\, \mu$s & $410\, \mu$s &  & & \\
-P (puri. Si, SET) \cite{Muhonen2014}&  & $160\, \mu$s  & $1\, $ms & $560\, $ms & & $500\, \mu$s & $1.75\, $s & $35.6\, $s \\
-Bi (puri. Si, CT) \cite{Wolfowicz2013} & $9\, $s &  & $2.7\, $s && && &\\
-NV (puri. C, RT) \cite{Balasubramanian2009,Bar-Gill2013} & & & $1.8\, $ms & $3.3\, $ms && &&\\
-NV (puri. C, $77\, $K) \cite{Bar-Gill2013} & & &  & $0.6\, $s && &&\\
-SiC ($20\, $K) \cite{Christle2014} & & $1.1\, \mu$s & $1.2\, $ms & && && \\
-SiC (RT) \cite{Koehl2011} & $185\, \mu$s & $214\, $ns & $40\, \mu$s &  & & && \\
-\hline
-\end{tabular} 
-\label{lala}
-\caption{\cite{Pla2012,Muhonen2014}: high field >1T low temp mK. Even good coherenc ebeing close to suurface.}
-\end{table}
-
-Donors deep in bulk show longer coherence times $T_2^e=2\, $s \cite{Tyryshkin2011} not applicable for us.
+\section{Conclusions and outlook }
+In this report, we have presented the results obtained from simulating the interaction between one probe qubit and four data qubits as in the proposed scheme in \cite{the paper}. 
 
 
-\section{Outlook}
-Further investigation is to be undertake in the following areas:
 
+
+\iffalse 
 \begin{itemize}
 \item Simulate path jitter
 \item Combine errors
@@ -212,6 +233,7 @@ Further investigation is to be undertake in the following areas:
 \item Test different donor species ($g_1$, $g_2$
 \item Sinusoidal motion in the $z$-direction (dip down over data qubits)
 \end{itemize}
+\fi
 
 
 
