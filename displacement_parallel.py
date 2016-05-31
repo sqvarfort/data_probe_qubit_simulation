@@ -1,6 +1,6 @@
 from H_RWA import H_RWA
 from Plotter import Plotter
-from random import random
+from random import random, randint
 from DataQubitDisplacement import *
 from Simulation import Simulation
 from qutip import *
@@ -8,6 +8,8 @@ import yaml
 import os, shutil
 import multiprocessing as mp
 import time
+
+error_list = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
 
 """ Simulation parameters """
 
@@ -102,6 +104,7 @@ final_states = []
 #sim.set_data_qubit_offsets(displacements)
 
 """ Set up and generate qubit displacements """
+displacement_bool = lind_args.get('qubit_displacement_error')
 disp_radius = float(lind_args.get('qubit_displacement_radius'))
 disp_halfheight = float(lind_args.get('qubit_displacement_halfheight'))
 
@@ -141,13 +144,18 @@ def do_simulation(i):
     print 'Starting loop ' + str(i)
     
     if lind_args.get('specify_errors'): initial_states = calculate_initial_states_from_bitflips(bitflips[i])
+    elif lind_args.get('random_errors'): 
+        initial_states = calculate_initial_states_from_bitflips(error_list[randint(0,3)])
     else: initial_states = calculate_initial_states_from_bitflips(bitflips)
     
+
+    
     sim = Simulation(hamiltonian,initial_states,mesolve_args)
-    sim.generate_data_qubit_offsets(disp_radius,disp_halfheight)
+    if displacement_bool == True:
+        sim.generate_data_qubit_offsets(disp_radius,disp_halfheight)
     sim.loop = i
     #sim.set_data_qubit_offsets(displacements)
-    #sim.choose_twirl(lind_args.get('twirl'))
+    sim.choose_twirl(lind_args.get('twirl'))
     sim.run(time,steps)    #adjust for full circle!
     result_states = sim.last_run_all
     qsave(result_states, os.path.join(lind_args.get('folder'),lind_args.get('subfolder'),'data','run'+str(i+1)))
