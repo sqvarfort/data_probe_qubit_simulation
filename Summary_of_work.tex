@@ -11,6 +11,11 @@
 \maketitle
 \tableofcontents
 \section{Introduction}
+Due to its usefulness in the semiconductor industry, silicon is one of the most well-studied and well-udnerstood materials used for classical computers. For quantum computers, a plethora of qubit materials are still being investigated, but it has proven difficult to use silicon due to its .... [insert something]. 
+
+There has been a recent proposal to make use of dopants in silicon to act as qubits \cite{the paper} to implement a version of the surface code. 
+
+
 We have simulated a probe qubit interacting with four data qubits. The probe qubit is performing a circular orbit $40$ nm above the data qubits, and in this document we will document the effect of various errors. These errors include dephasing, dopan placement uncertainties and a path jitter. 
 
 \section{Finding the correct evolution time}
@@ -51,6 +56,12 @@ We have simulated a probe qubit interacting with four data qubits. The probe qub
 	\label{fig:paritymeas}
 	\caption{Example of parity measurement for the circular motion. (a) no error in data qubits. plus state is final state. (b) error on last qubit. minus state is final state.}
 \end{figure}
+
+\begin{equation}
+H = \mu_B B( g_1 \sigma_1^Z + g_2 \sigma_2^Z) + \frac{J}{r^3} ( \mathbf{\sigma_1} \cdot \mathbf{\sigma_2} - 3 ( \hat{\mathbf{r}} \cdot \mathbf{\sigma_1}) ( \hat{\mathbf{r}}\cdot \mathbf{\sigma_2}))
+\end{equation}
+
+
 
 
 \section{Dephasing}
