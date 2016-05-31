@@ -25,7 +25,7 @@ class Plotter(object):
                     - textfile of all data-qubit states
     """
 
-    def __init__(self, states, info,filetype='.png',display=True):
+    def __init__(self, states, info,filetype='.pdf',display=True):
         self.states = states
         self.info = info
         self.filetype = filetype
@@ -81,12 +81,12 @@ class Plotter(object):
             if item < pi/2.:
                 item = item + 2.*pi
 
-        n, bins, patches = plt.hist(list_of_phi, 100, facecolor='green', alpha=0.75, range = (0,2*pi), label = 'No. of runs: ' + str(len(list_of_phi)))
+        n, bins, patches = plt.hist(list_of_phi, 100, facecolor='green', alpha=0.75, range = (pi/2.,10*pi/4.), label = 'No. of runs: ' + str(len(list_of_phi)))
 
 
         #Ticks go from pi/2 to pi/2 including the origin
 
-        plt.xticks([ 3*pi/4, pi, 5*pi/4, 3*pi/2, 7*pi/4, 2*pi, 9*pi/4,  5*pi/2 ], [r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$0 (2\pi)$', r'$\frac{\pi}{2}$'])
+        plt.xticks([ pi/2, 3*pi/4, pi, 5*pi/4, 3*pi/2, 7*pi/4, 2*pi, 9*pi/4, 5.*pi/2.], [r'$\frac{\pi}{2}$', r'$\frac{3\pi}{4}$', r'$\pi$', r'$\frac{5\pi}{4}$', r'$\frac{3\pi}{2}$', r'$\frac{7\pi}{4}$', r'$0  (2\pi)$', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$'])
 
 
 
