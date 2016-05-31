@@ -42,11 +42,11 @@ class Plotter(object):
 
         # Plot histogram and write textfile
 
-        self.Histogram(list_of_phi, self.info)
+        
         self.phi_to_file(list_of_phi, self.info)
         self.Probe_measurement_outcome(probe_states, self.info)
         #self.states_to_file(states, self.info)
-
+        self.Histogram(list_of_phi, self.info)
 
 
     @staticmethod
@@ -77,9 +77,10 @@ class Plotter(object):
         plt.grid(True)
 
         # Move data-points that are close to zero to other end
-        for item in list_of_phi:
-            if item < pi/2.:
-                item = item + 2.*pi
+        for item in range(len(list_of_phi)):
+            if list_of_phi[item] < pi/2.:
+                print 'adding 2pi'
+                list_of_phi[item] = list_of_phi[item] + 2.*pi
 
         n, bins, patches = plt.hist(list_of_phi, 100, facecolor='green', alpha=0.75, range = (pi/2.,10*pi/4.), label = 'No. of runs: ' + str(len(list_of_phi)))
 

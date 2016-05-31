@@ -144,14 +144,11 @@ def do_simulation(i):
     else: initial_states = calculate_initial_states_from_bitflips(bitflips)
     
     sim = Simulation(hamiltonian,initial_states,mesolve_args)
-    print '1'
     sim.generate_data_qubit_offsets(disp_radius,disp_halfheight)
-    print '2'
     sim.loop = i
     #sim.set_data_qubit_offsets(displacements)
     #sim.choose_twirl(lind_args.get('twirl'))
     sim.run(time,steps)    #adjust for full circle!
-    print '3'
     result_states = sim.last_run_all
     qsave(result_states, os.path.join(lind_args.get('folder'),lind_args.get('subfolder'),'data','run'+str(i+1)))
     #step_data = sim.last_run_quarter_cycle
