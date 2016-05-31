@@ -29,8 +29,8 @@ class H_RWA(object):
         # Calculate the time it takes to move one nm
 
 
-
-    def circ_motion(self, t, args):
+    @staticmethod
+    def circ_motion(t, args):
         # cOffset can be generated using Gavins function!. use newaxis etc to make it compatible for plotting
         if np.size(t)==1: #turn t into numpy array if it is just a single number or python list to make the code below work
             t=np.array([t])
@@ -43,12 +43,10 @@ class H_RWA(object):
             for i, c in enumerate(['x','y','z']):
                 if args[c+'std'] > 0:
                     r[i]+=np.random.normal(0, args[c+'std'], len(t))
-
-        self.previous_r = r
         if np.size(r)==3:
-            return self.previous_r[:,0]
+            return r[:,0]
         else:
-            return self.previous_r
+            return r
 
     @staticmethod
     def getDelta(mat1='Bi', mat2='P', Bfield=300e-3):
@@ -103,7 +101,7 @@ class H_RWA(object):
             # cOffset allows to move not perfectly above the data qubit
 
             # Check whether a certain amount of time has elapsed.
-            r=H_RWA.circ_motion(self, t, args['cOpts'])
+            r=H_RWA.circ_motion(t, args['cOpts'])
         return args['Hz'] + args['J']/np.linalg.norm(r)**3 * ( 1. -3. * r[2]**2/np.linalg.norm(r)**2 ) * args['Hd'] + args['J']/np.linalg.norm(r)**3 * ( 2. -3.*r[0]**2/np.linalg.norm(r)**2 -3.*r[1]**2/np.linalg.norm(r)**2 ) * (phase*args['H12'] + np.conjugate(phase)*args['H21'])
 
     def getHfunc(self):
