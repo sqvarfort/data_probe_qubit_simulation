@@ -1,16 +1,134 @@
-\input{./UCLHeader.tex}
+%\input{./UCLHeader.tex}
+
+
+%
+%   This file is part of the APS files in the REVTeX 4.1 distribution.
+%   Version 4.1r of REVTeX, August 2010
+%
+%   Copyright (c) 2009, 2010 The American Physical Society.
+%
+%   See the REVTeX 4 README file for restrictions and more information.
+%
+% TeX'ing this file requires that you have AMS-LaTeX 2.0 installed
+% as well as the rest of the prerequisites for REVTeX 4.1
+%
+% See the REVTeX 4 README file
+% It also requires running BibTeX. The commands are as follows:
+%
+%  1)  latex apssamp.tex
+%  2)  bibtex apssamp
+%  3)  latex apssamp.tex
+%  4)  latex apssamp.tex
+%
+\documentclass[%
+ reprint,
+%superscriptaddress,
+%groupedaddress,
+%unsortedaddress,
+%runinaddress,
+%frontmatterverbose, 
+%preprint,
+%showpacs,preprintnumbers,
+%nofootinbib,
+%nobibnotes,
+%bibnotes,
+ amsmath,amssymb,
+ aps,
+%pra,
+%prb,
+%rmp,
+%prstab,
+%prstper,
+%floatfix,
+]{revtex4-1}
+
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+%\usepackage{hyperref}% add hypertext capabilities
+%\usepackage[mathlines]{lineno}% Enable numbering of text and display math
+%\linenumbers\relax % Commence numbering lines
+
+%\usepackage[showframe,%Uncomment any one of the following lines to test 
+%%scale=0.7, marginratio={1:1, 2:3}, ignoreall,% default settings
+%%text={7in,10in},centering,
+%%margin=1.5in,
+%%total={6.5in,8.75in}, top=1.2in, left=0.9in, includefoot,
+%%height=10in,a5paper,hmargin={3cm,0.8in},
+%]{geometry}
+
+
+%Mathematics
+\usepackage{braket}
+\usepackage{ulem}
+\usepackage{xcolor}
+\usepackage[font={small,it}]{caption}
 \input{./UCLCommands.tex}
 
 
-\usepackage{geometry}
-\geometry{legalpaper, margin=1.0in}
+% Packages that Gavin uses
+\usepackage{url}
+\usepackage[font=footnotesize]{caption}
+\usepackage[font=footnotesize]{subcaption}
+\usepackage[]{microtype}
+\usepackage{balance}
+%\usepackage{cite}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+%\usepackage{doi}
+
+
+% Nice typesetting of SI units
+\usepackage{siunitx}
+\sisetup{range-phrase=--}
+\sisetup{separate-uncertainty = true}
+
+% SImons packages
+\usepackage{float}
+
 
 \begin{document}
-\title{Probe-Data Qubit Simulation -- Summary}
-\author{Gavin Dold, Sofia Qvarfort, Simon Schaal}
+
+\preprint{APS/123-QED}
+
+\title{Simulating an implementation of the surface code in silicon }% Force line breaks with \\
+\thanks{The authors would like to thank Dan Browne and John Morton for fruitful discussions. }%
+
+\author{Gavin Dold}
+\author{Sofia Qvarfort}
+% \email{Second.Author@institution.edu}
+ 
+\author{Simon Schaal}
+ %\email{Second.Author@institution.edu}
+\affiliation{% 
+Centre for Doctoral Training in Delivering Quantum Technologies
+Department of Physics and Astronomy, University College London
+}%'
+
+
+%\collaboration{CLEO Collaboration}%\noaffiliation
+
+\date{\today}% It is always \today, today,
+             %  but any date may be explicitly specified
+
+\begin{abstract}
+We simulate a simple system consisting of one probe qubit and four data qubits as proposed in \cite{the paper} and implement errors such as dephasing, dopant displacement, and path jitter to the full stabiliser measurement cycle. 
+\end{abstract}
+
+\pacs{Valid PACS appear here}% PACS, the Physics and Astronomy
+                             % Classification Scheme.
+%\keywords{Suggested keywords}%Use showkeys class option if keyword
+                              %display desired
 \maketitle
-\tableofcontents
-\section{Introduction}
+
+%\tableofcontents
+
+\section{Introduction} \label{sec:Introduction}
+
+
+
+
+
 Due to its usefulness in the semiconductor industry, silicon is one of the most well-studied and well-udnerstood materials used for classical computers. For quantum computers, a plethora of qubit materials are still being investigated, but it has proven difficult to use silicon due to its .... [insert something]. 
 
 There has been a recent proposal to make use of dopants in silicon to act as qubits \cite{the paper} to implement a version of the surface code. 
@@ -53,6 +171,11 @@ H = \mu_B B( g_1 \sigma_1^Z + g_2 \sigma_2^Z) + \frac{J}{r^3} ( \mathbf{\sigma_1
 The effect of this Hamiltonian is to evolve the probe qubit in a particular direction depending on the state of the data qubit. By initialising the probe qubit in the $\ket{+}$ state, the final parity measurement will entail finding the probe qubit in either the $\ket{+}$ state (even parity) or in the $\ket{-}$ state. This can be understood by the fact that each data qubit imparts a $\frac{\pi}{2}$ phase in 
 
 \subsection{Finding the correct evolution time}
+The speed of the simulation is set by the total time it takes to complete one full cycle. We want the accumulated phase for an even parity measurement to reach $2\pi$ exactly. The plot in Figure \ref{fig:plot} shows the accumulated phase as a function of evolution time. 
+
+
+
+
 
 \begin{figure}[H]
 	\centering
@@ -75,13 +198,13 @@ The effect of this Hamiltonian is to evolve the probe qubit in a particular dire
 
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}[t]{0.49\textwidth}
+	\begin{subfigure}[t]{0.30\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{Figures/notodd.pdf}
 		\caption{}
 		\label{fig:notodd}
 	\end{subfigure}
-	\begin{subfigure}[t]{0.49\textwidth}
+	\begin{subfigure}[t]{0.30\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{Figures/odd.pdf}
 		\caption{}
