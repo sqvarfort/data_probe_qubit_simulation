@@ -96,10 +96,10 @@ class Plotter(object):
 
         n, bins, patches = plt.hist(list_of_phi, 100, facecolor='green', alpha=0.75, range = (pi/2.,10*pi/4.), label = 'No. of runs: ' + str(len(list_of_phi)))
 
-
+        # Fit gaussian to the histogram
         if self.gauss == True:
             (mu, sigma) = norm.fit(list_of_phi)
-            max_phi = np.argmax(list_of_phi)
+            max_phi = max(n)
             print "The mean is: " + str(mu)
             print "The standard deviation is: " + str(sigma)
             print "The maximum value is: " + str(max_phi)
