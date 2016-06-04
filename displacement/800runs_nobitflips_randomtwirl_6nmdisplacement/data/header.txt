@@ -1,0 +1,26 @@
+Delta: -54083715.725774
+J: 3.25737133530311e-19
+bit_errors: [0, 0, 0, 0]
+cOpts:
+  D: 4.0e-07
+  cOffset: [0, 0, 0]
+  d: 4.0e-08
+  pJit: false
+  rstd: 1.0e-09
+  tau: 0.003378770521134961
+  xstd: 0
+  ystd: 0
+  zstd: 1e-9
+circ: true
+folder: displacement
+qubit_displacement_error: true
+qubit_displacement_halfheight: 3e-9
+qubit_displacement_radius: 6e-9
+r: [0, 0, 4.0e-08]
+random_errors: false
+runs: 800
+specify_errors: false
+steps: 5000
+subfolder: 800runs_nobitflips_randomtwirl_6nmdisplacement
+time: 0.003378770521134961
+twirl: true
