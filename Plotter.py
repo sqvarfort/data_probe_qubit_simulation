@@ -5,11 +5,14 @@ import matplotlib.pyplot as plt
 from qutip import *
 from pylab import *
 from scipy import constants as cp
+from scipy import optimize
 import os
 from matplotlib import rc
 import yaml
 import datetime
 import time
+from scipy.stats import norm
+import matplotlib.mlab as mlab
 
 
 
@@ -25,11 +28,12 @@ class Plotter(object):
                     - textfile of all data-qubit states
     """
 
-    def __init__(self, states, info,filetype='.pdf',display=True):
+    def __init__(self, states, info,filetype='.png',display=True, gauss = True):
         self.states = states
         self.info = info
         self.filetype = filetype
         self.display = display
+        self.gauss = gauss
 
         # Save the states in the array to a file
         #self.states_to_file(states, info)
@@ -42,7 +46,7 @@ class Plotter(object):
 
         # Plot histogram and write textfile
 
-        
+
         self.phi_to_file(list_of_phi, self.info)
         self.Probe_measurement_outcome(probe_states, self.info)
         #self.states_to_file(states, self.info)
@@ -58,11 +62,20 @@ class Plotter(object):
     def extract_phi(vec): # Extract values for phi. If-statements needed for stupid non-invertible arctan
         if vec[0] >= 0.:
             if vec[1] <= 0.:
-                return -arctan(vec[1]/vec[0])
+                if vec[0] == 0:
+                    return 0.0
+                else:
+                    return -arctan(vec[1]/vec[0])
             else:
-                return 2.*pi - arctan(vec[1]/vec[0])
+                if vec[0] == 0:
+                    return 0.0
+                else:
+                    return 2.*pi - arctan(vec[1]/vec[0])
         else:
-            return pi - arctan(vec[1]/vec[0])
+            if vec[0] == 0:
+                return 0.0
+            else:
+                return pi - arctan(vec[1]/vec[0])
 
     def Histogram(self, list_of_phi, info):
         # Use LaTeX rendering
@@ -83,6 +96,16 @@ class Plotter(object):
 
         n, bins, patches = plt.hist(list_of_phi, 100, facecolor='green', alpha=0.75, range = (pi/2.,10*pi/4.), label = 'No. of runs: ' + str(len(list_of_phi)))
 
+
+        if self.gauss == True:
+            (mu, sigma) = norm.fit(list_of_phi)
+            max_phi = np.argmax(list_of_phi)
+            print "The mean is: " + str(mu)
+            print "The standard deviation is: " + str(sigma)
+            print "The maximum value is: " + str(max_phi)
+            y = mlab.normpdf( bins, mu, sigma)
+            y = max_phi *y/max(y)
+            l = plt.plot(bins, y, 'r--', linewidth=2)
 
         #Ticks go from pi/2 to pi/2 including the origin
 
