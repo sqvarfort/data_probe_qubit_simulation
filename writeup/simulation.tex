@@ -1,0 +1,51 @@
+\section{The Simulation}
+In this section, we will describe how we go about simulating the interaction between the probe qubit and the data qubit. The interaction is governed by the following Hamiltonian:
+
+\begin{equation}
+H = \mu_B B( g_1 \sigma_1^Z + g_2 \sigma_2^Z) + \frac{J}{r^3} ( \mathbf{\sigma_1} \cdot \mathbf{\sigma_2} - 3 ( \hat{\mathbf{r}} \cdot \mathbf{\sigma_1}) ( \hat{\mathbf{r}}\cdot \mathbf{\sigma_2}))
+\end{equation}
+The effect of this Hamiltonian is to evolve the probe qubit in a particular direction depending on the state of the data qubit. By initialising the probe qubit in the $\ket{+}$ state, the final parity measurement will entail finding the probe qubit in either the $\ket{+}$ state (even parity) or in the $\ket{-}$ state. This can be understood by the fact that each data qubit imparts a $\frac{\pi}{2}$ phase in 
+
+\subsection{Finding the correct evolution time}
+The speed of the simulation is set by the total time it takes to complete one full cycle. We want the accumulated phase for an even parity measurement to reach $2\pi$ exactly. The plot in Figure \ref{fig:plot} shows the accumulated phase as a function of evolution time. 
+
+
+
+
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{../abrupt_find_tau/abrupt_find_tau_full.pdf}
+		\caption{}
+		\label{fig:abrupt_tau}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.49\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{../circular_find_tau/circle_find_tau.pdf}
+		\caption{}
+		\label{fig:circ_tau}
+	\end{subfigure}
+	\label{fig:find_tau}
+	\caption{Finding the correct evolution time. (a) abrupt. (b) circular}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{0.30\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{../Figures/notodd.pdf}
+		\caption{}
+		\label{fig:notodd}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.30\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{../Figures/odd.pdf}
+		\caption{}
+		\label{fig:odd}
+	\end{subfigure}
+	\label{fig:paritymeas}
+	\caption{Example of parity measurement for the circular motion. (a) no error in data qubits. plus state is final state. (b) error on last qubit. minus state is final state.}
+\end{figure}
