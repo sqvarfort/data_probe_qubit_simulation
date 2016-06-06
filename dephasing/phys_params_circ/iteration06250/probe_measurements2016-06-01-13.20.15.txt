@@ -1,0 +1,42 @@
+Probe Measurement Outcomes 
+Delta: -54083715.725774
+J: 3.25737133530311e-19
+cOpts:
+  D: 4.0e-07
+  cOffset:
+  - 0
+  - 0
+  - 0
+  d: 4.0e-08
+  pJit: false
+  rstd: 1.0e-09
+  tau: 0.003378770521134961
+  xstd: 1e-9
+  ystd: 1e-9
+  zstd: 1e-9
+circ: true
+dephasing: true
+dephasing_param: 6250
+excitation: false
+excitation_param: 0.0
+folder: dephasing/phys_params_circ
+odd: true
+preparation_error: false
+qubit_displacement_error: false
+qubit_displacement_halfheight: 3e-9
+qubit_displacement_radius: 6e-9
+r:
+- 0
+- 0
+- 4.0e-08
+relaxation: false
+relaxation_param: 0.0
+steps: 5000
+time: 0.003378770521134961
+
+ 
+sigmax exp.	Prob. of |+>	Prob. of |->
+-6.74320389552e-10	 0.499999999663 	 0.500000000337 
+The average expectation value is: -6.74320389552e-10
+The average probability of measuring |+> is: 0.707106780849
+The average probability of measuring |-> is: 0.292893219151
