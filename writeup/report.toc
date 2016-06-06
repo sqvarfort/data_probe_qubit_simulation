@@ -1,0 +1,16 @@
+\contentsline {title}{Simulating an implementation of the surface code in silicon }{1}{}
+\contentsline {abstract}{Abstract}{1}{}
+\tocdepth@munge 
+\contentsline {section}{\numberline {}Contents}{1}{}
+\tocdepth@restore 
+\contentsline {section}{\numberline {I}Introduction}{1}{}
+\contentsline {subsection}{\numberline {A}A physical implementation}{1}{}
+\contentsline {section}{\numberline {II}Spin species}{1}{}
+\contentsline {section}{\numberline {III}The Simulation}{1}{}
+\contentsline {subsection}{\numberline {A}Finding the correct evolution time}{2}{}
+\contentsline {section}{\numberline {IV}Errors}{2}{}
+\contentsline {subsection}{\numberline {A}Path Jitter}{2}{}
+\contentsline {subsection}{\numberline {B}Dephasing}{3}{}
+\contentsline {subsection}{\numberline {C}Data qubit displacement}{4}{}
+\contentsline {subsection}{\numberline {D}Twirling}{5}{}
+\contentsline {section}{\numberline {V}Conclusions and outlook }{5}{}

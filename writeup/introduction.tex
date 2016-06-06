@@ -1,35 +1,18 @@
 
 \section{Introduction} \label{sec:Introduction}
+It is generally agreed upon that large-scale, universal quantum computing will require comprehensive error correction. 
 
-Due to its usefulness in the semiconductor industry, silicon is one of the most well-studied and well-udnerstood materials used for classical computers. For quantum computers, a plethora of qubit materials are still being investigated, but it has proven difficult to use silicon due to its .... [insert something]. 
+
+
 
 There has been a recent proposal to make use of dopants in silicon to act as qubits \cite{the paper} to implement a version of the surface code. 
 
 
 We have simulated a probe qubit interacting with four data qubits. The probe qubit is performing a circular orbit $40$ nm above the data qubits, and in this document we will document the effect of various errors. These errors include dephasing, dopan placement uncertainties and a path jitter. 
 
-\subsection{The proposal}
+\subsection{A physical implementation}
+In a paper in 2015, it awas proposed by G'Orman \textit{et al}. 
+
 Let us first take a closer look at the scheme proposed in \cite{the paper}. The data qubits are dopants placed in silicon placed in a square pattern using the best dopant placement techniques available, which currently stand at [insert some error value and cite it]. To perform the stabiliser measurements, a probe qubit of a different dopant species is placed on a mobile slab above the data qubits. Each probe qubit performs a stabiliser measurement on four data qubits, a procedure which is performed by physically moving the overhead slab with the probe qubits. 
 
 Some differences in physical parameters are required. 
-
-\subsection{Spin species}
-
-\begin{table}
-\begin{tabular}{ccccccccc}
-	& $T_1^e$ & $T_2^{e*}$ & $T_2^e$ & $T_{2, decoupl}^e$ & $T_1^N$ & $T_2^{N*}$ & $T_2^N$ & $T_{2, decoupl.}^N$\\ \hline
-P (nat. Si, SET) \cite{Pla2012}& $0.7\, $s & $55\, $ns  & $206\, \mu$s & $410\, \mu$s &  & & \\
-P (puri. Si, SET) \cite{Muhonen2014}&  & $160\, \mu$s  & $1\, $ms & $560\, $ms & & $500\, \mu$s & $1.75\, $s & $35.6\, $s \\
-Bi (puri. Si, CT) \cite{Wolfowicz2013} & $9\, $s &  & $2.7\, $s && && &\\
-NV (puri. C, RT) \cite{Balasubramanian2009,Bar-Gill2013} & & & $1.8\, $ms & $3.3\, $ms && &&\\
-NV (puri. C, $77\, $K) \cite{Bar-Gill2013} & & &  & $0.6\, $s && &&\\
-SiC ($20\, $K) \cite{Christle2014} & & $1.1\, \mu$s & $1.2\, $ms & && && \\
-SiC (RT) \cite{Koehl2011} & $185\, \mu$s & $214\, $ns & $40\, \mu$s &  & & && \\
-\hline
-\end{tabular} 
-\label{lala}
-\caption{\cite{Pla2012,Muhonen2014}: high field >1T low temp mK. Even good coherenc ebeing close to suurface.}
-\end{table}
-
-Donors deep in bulk show longer coherence times $T_2^e=2\, $s \cite{Tyryshkin2011} not applicable for us.
-
