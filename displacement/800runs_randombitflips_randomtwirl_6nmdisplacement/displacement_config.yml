@@ -18,4 +18,3 @@ random_errors: true # specify_errors overrules this, otherwise this overrules bi
 twirl: true # True for random, False for none, 1-4 for specific twirls, or an array thereof
 folder: 'displacement'
 subfolder: '800runs_randombitflips_randomtwirl_6nmdisplacement' # memorable simulation name
-runs: 800
