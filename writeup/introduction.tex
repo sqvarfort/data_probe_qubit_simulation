@@ -1,21 +1,17 @@
 
 \section{Introduction} \label{sec:Introduction}
 
-It is generally agreed upon that large-scale, universal quantum computing will require comprehensive error correction \cite{Wang2011,Fowler2012}.
+It is generally agreed upon that large-scale, universal quantum computing will require comprehensive error correction \cite{Wang2011,Fowler2012}. One such candidate is the so-called surface code, but the question remains how to physically implement such a system. 
+
+In this report, we will build on a proposal for a silicon based surface code quantum computer \cite{the paper} and simulate a simple toy model that contains all the essential features. G'Orman \textit{et al}. performed rigorous fault-tolerant simulations and 
 
 
 
 
-
-There has been a recent proposal to make use of dopants in silicon to act as qubits \cite{the paper} to implement a version of the surface code. 
-
-
-We have simulated a probe qubit interacting with four data qubits. The probe qubit is performing a circular orbit $40$ nm above the data qubits, and in this document we will document the effect of various errors. These errors include dephasing, dopan placement uncertainties and a path jitter. 
-
-
+The report is structured as follows: In thl then go e next and subsequent sections, we will introduce the surface code and the results obtained in \cite{the paper}. We will then go on review the methods used in the simulation and the choice for materials, which in turn affect the simulation parameters. Following that, we introduce various errors into our model in Section \ref{sec:errors} and show how they affect the performance of the system. Finally, we summarise our results in Section \ref{sec:conclusion} and provide a number of suggestions as how to the project could be continued. 
 
 \subsection{The surface code}
-The surface code is one of the most-well studied fault-tolerant codes \cite{something}. Its versatility, large code distance and large fault-tolerance threshold have contributed to various proposals \cite{some review} and some attempts at physical implementation \cite{Martinis?}. One key aspect of the surface code is its use of vertex and plauette operators that perform stabiliser measurements on four data qubits at a time. If the stabiliser gives a measurement outcome $-1$, it means that the four data qubits contain an error, whereas a $+1$ outcome indicate that the qubit states are in the codespace. As a consequence, the stabiliser measurements cannot identify errors that correspond to logical operations. At the same time, the stabiliser allow us to actually perform logical operations, which means that a physical implementation of the surface code would not require individual addressing of the data qubits. 
+The surface code is one of the most-well studied fault-tolerant codes \cite{something}. Its versatility, large code distance and large fault-tolerance threshold have contributed to various proposals \cite{some review} and some attempts at physical implementation \cite{Martinis?}. One key aspect of the surface code is its use of vertex and plaquette operators that perform stabiliser measurements on four data qubits at a time. If the stabiliser gives a measurement outcome $-1$, it means that the four data qubits contain an error, whereas a $+1$ outcome indicate that the qubit states are in the codespace. As a consequence, the stabiliser measurements cannot identify errors that correspond to logical operations. At the same time, the stabiliser allow us to actually perform logical operations, which means that a physical implementation of the surface code would not require individual addressing of the data qubits. 
 
 The stabilisers measurements themselves are performed by letting the data qubits interact with one single probe qubit. The probe qubit is the measured, and its outcome tells us about the parity of the measurement, that is, whether none or two,  (even parity) one  or three (odd parity) errors have been detected. Of course, the stabiliser measurement can also fail, but this is taken into account in large-scale fault-tolerance calculations. 
 
