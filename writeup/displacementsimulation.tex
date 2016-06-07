@@ -8,12 +8,12 @@ The 1600 simulation runs consumed 96 computer-hours, yielding the histogram in f
 
 Projecting onto the $x$-axis, however, we find that the average measurement success probability is $\mathrm{P(\ket{+}) = \SI{99.9}{\percent}}$ for even parity and $\mathrm{P(\ket{-}) = \SI{96.7}{\percent}}$ for odd parity, which for low bit-flip rates is well within the \SI{98.9}{\percent} threshold for the surface code, and the standard deviation in phase represents \SI{4.2}{\percent} of $2\pi$, less than the \SI{4.4}{\percent} phase jitter the proposal \cite{OGorman2016} used to derive the results from the logical surface code simulation.
 
-Thus we can conclude that, though the interaction strength has a high $\tfrac{1}{r^3}$ dependence, the parity measurement appears surprisingly tolerant to qubit displacement. Additionally, with the phase variance at the code threshold for qubit displacement being within the phase jitter parameter implemented in the proposal's logical simulations, the results of their simulation likely hold true for any qubit implantation technique with a precision within the $R=\SI{6.1}{\nano\metre}$.
+Thus we can conclude that, though the interaction strength has a high $\tfrac{1}{r^3}$ dependence, the parity measurement appears surprisingly tolerant to qubit displacement. Additionally, with the phase variance at the code threshold for qubit displacement being within the phase jitter parameter implemented in the proposal's logical simulations, the results of their simulation likely hold true for many likely qubit implantation techniques with precisions within the $R=\SI{6.1}{\nano\metre}$.
 
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\columnwidth]{../Figures/Displacement_Histogram.pdf}	
-	\caption{Phase errors over 25 runs as a result of randomly generated data qubit displacements within a pillbox of half-height \SI{3}{\nano\metre} and radius \SI{6}{\nano\metre}. These values are a threshold for the proposed scheme.}
+	\caption{Histogram of 1600 simulation runs given random qubit displacements generated within the pillbox of fig.\@ \ref{fig:pillbox} with $R = \SI{6}{\nano\metre}$ with random twirling operations applied. }
 	\label{fig:DisplacementHistogram}
 \end{figure}
