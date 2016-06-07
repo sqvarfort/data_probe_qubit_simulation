@@ -30,36 +30,6 @@ From the graph it also becomes clear that jitter in the $z$-direction has the gr
 
 
 
-\iffalse
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[t]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{../Figures/xjit.pdf}
-		\caption{}
-		\label{fig:xjit}
-	\end{subfigure}
-	\begin{subfigure}[t]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{../Figures/yjit.pdf}
-		\caption{}
-		\label{fig:yjit}
-	\end{subfigure}
-	\begin{subfigure}[t]{0.49\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{../Figures/zjit.pdf}
-		\caption{}
-		\label{fig:zjit}
-	\end{subfigure}
-	\label{fig:paritymeas}
-	\caption{Making sure path jitter works as expected. (a) xjit. (b) yjit. (c) zjit.}
-\end{figure}
-\fi
-
-
-
-
 \subsection{Dephasing}
 Next, we looked at the influence of dephasing on the measurement probabilities. In order to simulate dephasing, which is the gradual reduction of the Bloch vector in the $x$-direction, we introduced a Lindblad operator into the master equation. The operator is given by 
 \beq
@@ -72,7 +42,13 @@ We see that the clock transition in Bismuth does exceptionally well, but that ma
 As we discuss in more detail in Section \ref{sec:Outlook}, the impact of dephasing could be decreased by lowering the time needed for the probe qubit to complete one orbit around the data qubits. This would require lowering the distance $d$ between the probe qubits and the data qubits as to increase the interaction strength between them. 
 
 
-\iffalse
+\begin{figure}[H]
+	\subfloat[]{\includegraphics[width=0.49\linewidth]{../Figures/abrupt-deph} \label{FIG:abr-deph}}
+	\subfloat[]{\includegraphics[width=0.49\linewidth]{../Figures/circ-deph} \label{FIG:circ-deph}}
+	\caption[oddeven]{}
+	\label{FIG:deph}
+\end{figure}
+
 
 \begin{figure}[h]
   \centering
@@ -83,8 +59,6 @@ As we discuss in more detail in Section \ref{sec:Outlook}, the impact of dephasi
 \end{figure}
 
 
-
-
 \begin{figure}[!h]
   \centering
     \includegraphics[width=0.5\textwidth]{../Figures/Circ_orbit_odd_500_dephasing.png}
@@ -92,9 +66,6 @@ As we discuss in more detail in Section \ref{sec:Outlook}, the impact of dephasi
       \label{fig:BlochsphereDephasing2}
 \end{figure}
 
-
-
-\fi
 
 
 

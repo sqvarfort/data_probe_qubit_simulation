@@ -1,5 +1,10 @@
 
 \subsection{Data qubit displacement}
+Yo
+
+[BELOW LIES OLD CRAP]\\
+\\
+
 The effect of displacement of the data qubits from the ideal was investigated. Ideally the data qubits would be in a square lattice of spins precisely $D = \SI{400}{\nano\metre}$ apart, but due to inaccuracies in dopant spin placement each qubit will have small displacements from the ideal lattice position.
 
 This is modelled by generating a uniform random displacement within a given pillbox $xy$-radius and $z$-height. Simulations from the original paper show $\textrm{radius} = \textrm{height} = \SI{6}{\nano\metre}$ to be a threshold for this scheme. The phase accumulated over 25 runs for this pillbox size is plotted as a histogram in fig.\@ \ref{fig:DisplacementPhaseHistogram}, showing a maximum phase error of $\tfrac{\pi}{4}$ for these runs. 
@@ -19,24 +24,11 @@ Fig.\@ \ref{fig:inwarddisplacement} shows the effect of displacements in the $x$
 	\label{fig:DisplacementPhaseHistogram}
 \end{figure}
 
-
-
-\begin{figure}
-	\centering
-	\caption{Phase errors as a result of misplaced data qubits.}
-	\begin{subfigure}[t]{\textwidth}
-		\centering
-		\includegraphics[width=0.7\textwidth]{../figures/z_offset.pdf}
-		\caption{Evolution of probe qubit with data qubit displacement in the Z direction. 1st and 2nd qubits are displaced \SI{4}{\nano\metre} down, slowing the evolution, the 4th is displaced \SI{3}{\nano\metre} up with a resultant increase in phase accumulated. The overall deviation from $2\pi$ is small as a result.}
-		\label{fig:zoffset}
-	\end{subfigure}
-	\begin{subfigure}[t]{\textwidth}
-		\centering
-		\includegraphics[width=0.7\textwidth]{../figures/10nm_displacement_inward.pdf}
-		\caption{Phase accumulated when all 4 data qubits are displaced \SI{10}{\nano\metre} towards the centre of the circle. Other directions of \SI{10}{\nano\metre} displacements result in similar phase deviations.}
-		\label{fig:inwarddisplacement}
-	\end{subfigure}
+\begin{figure}[H]
+	\subfloat[]{\includegraphics[width=0.49\linewidth]{../figures/z_offset.pdf} \label{fig:zoffset}}
+	\subfloat[]{\includegraphics[width=0.49\linewidth]{../figures/10nm_displacement_inward.pdf} \label{fig:inwarddisplacement}}
+	\caption[oddeven]{(a) Evolution of probe qubit with data qubit displacement in the Z direction. 1st and 2nd qubits are displaced \SI{4}{\nano\metre} down, slowing the evolution, the 4th is displaced \SI{3}{\nano\metre} up with a resultant increase in phase accumulated. The overall deviation from $2\pi$ is small as a result. (b) Phase accumulated when all 4 data qubits are displaced \SI{10}{\nano\metre} towards the centre of the circle. Other directions of \SI{10}{\nano\metre} displacements result in similar phase deviations.}
 	\label{fig:overall_displacement}
 \end{figure}
 
-\subsection{Twirling}
+

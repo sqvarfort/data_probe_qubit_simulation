@@ -21,7 +21,8 @@
 %  4)  latex apssamp.tex
 %
 \documentclass[%
- reprint,
+% reprint,
+twocolumn,
 %superscriptaddress,
 %groupedaddress,
 %unsortedaddress,
@@ -34,7 +35,7 @@
 %bibnotes,
  amsmath,amssymb,
  aps,
-%pra,
+%prl,
 %prb,
 %rmp,
 %prstab,
@@ -45,7 +46,7 @@
 \usepackage{graphicx}% Include figure files
 \usepackage{dcolumn}% Align table columns on decimal point
 \usepackage{bm}% bold math
-%\usepackage{hyperref}% add hypertext capabilities
+\usepackage{hyperref}% add hypertext capabilities
 %\usepackage[mathlines]{lineno}% Enable numbering of text and display math
 %\linenumbers\relax % Commence numbering lines
 
@@ -69,7 +70,7 @@
 % Packages that Gavin uses
 \usepackage{url}
 \usepackage[font=footnotesize]{caption}
-\usepackage[font=footnotesize]{subcaption}
+%\usepackage[font=footnotesize]{subcaption}
 \usepackage[]{microtype}
 \usepackage{balance}
 %\usepackage{cite}
@@ -85,7 +86,19 @@
 
 % SImons packages
 \usepackage{float}
-
+\usepackage[caption=false]{subfig}
+\captionsetup[subfloat]{%
+	margin = 0pt,
+	font = {small,rm},
+	labelfont = {small,bf},
+	format = plain, % oder 'hang'
+	indention = 0em,  % Einruecken der Beschriftung
+	labelsep = space, %period, space, quad, newline
+	justification = RaggedRight, % justified, centering
+	singlelinecheck = false, % false (true=bei einer Zeile immer zentrieren)
+	position = top, %top
+	labelformat = parens % simple, empty % Wie die Bezeichnung gesetzt wird
+}
 
 \begin{document}
 
@@ -133,8 +146,10 @@ We simulate a simple system consisting of one probe qubit and four data qubits a
 
 \input{displacement.tex}
 
+\input{twirling.tex}
+
 \input{conclusions.tex}
 
-\bibliography{papers}
+\bibliography{papers}{}
 
 \end{document}
