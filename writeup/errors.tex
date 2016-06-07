@@ -11,7 +11,7 @@ The first way to quantify error is to look at the phase $\phi$ accumulated by th
 
 
 %\clearpage
-\subsection{Path Jitter}
+\subsection{Path Jitter}\label{sec:jitter}
 The fist error that we shall introduce is jitter present in the orbit performed by the probe qubit. The precision provided by modern MEMS control structures is about 1 nm \cite{MEMS precision} and is due to improve in the near future, but that does ont leave it impervious to noise. At first, we attempted to simulate random jumpts in the trajectory, but discontinuities in the path led to large derivative terms which in turn caused the simulation to fail. Instead, we superposed a sinusoidal motion onto the trajectory path. To add a random element, we varied the phase with which the run start while selecting the amplitude of the motion to represent the uncertainty in precision. The results can be found in Figure \ref{fig:pathjitter}, where we note that an uncertainty of about 2 nm is sufficient for staying below the phase error threshold of $4.4 \%$. Here, we are not comparing the phase jitter with the measurement probability since the probe qubit is not undergoing dephasing due to this interaction. It is sufficient to look at jitter in the $y$-direction instead of both the $x$ and $y$ direction, since the phase error is symmetric between them. 
 
 
