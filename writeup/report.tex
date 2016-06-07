@@ -21,7 +21,8 @@
 %  4)  latex apssamp.tex
 %
 \documentclass[%
- reprint,
+% reprint,
+twocolumn,
 %superscriptaddress,
 %groupedaddress,
 %unsortedaddress,
@@ -34,7 +35,7 @@
 %bibnotes,
  amsmath,amssymb,
  aps,
-%pra,
+%prl,
 %prb,
 %rmp,
 %prstab,
@@ -45,7 +46,7 @@
 \usepackage{graphicx}% Include figure files
 \usepackage{dcolumn}% Align table columns on decimal point
 \usepackage{bm}% bold math
-%\usepackage{hyperref}% add hypertext capabilities
+\usepackage{hyperref}% add hypertext capabilities
 %\usepackage[mathlines]{lineno}% Enable numbering of text and display math
 %\linenumbers\relax % Commence numbering lines
 
@@ -149,6 +150,6 @@ We simulate a simple system consisting of one probe qubit and four data qubits a
 
 \input{conclusions.tex}
 
-\bibliography{papers}
+\bibliography{papers}{}
 
 \end{document}
