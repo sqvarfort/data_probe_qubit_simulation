@@ -1,2 +1,6 @@
 *.pyc
 venv/*
+writeup/report.log
+writeup/report.aux
+writeup/report.pdf
+writeup/report.synctex.gz

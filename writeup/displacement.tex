@@ -24,23 +24,10 @@ Fig.\@ \ref{fig:inwarddisplacement} shows the effect of displacements in the $x$
 	\label{fig:DisplacementPhaseHistogram}
 \end{figure}
 
-
-
-\begin{figure}
-	\centering
-	\caption{Phase errors as a result of misplaced data qubits.}
-	\begin{subfigure}[t]{\textwidth}
-		\centering
-		\includegraphics[width=0.7\textwidth]{../figures/z_offset.pdf}
-		\caption{Evolution of probe qubit with data qubit displacement in the Z direction. 1st and 2nd qubits are displaced \SI{4}{\nano\metre} down, slowing the evolution, the 4th is displaced \SI{3}{\nano\metre} up with a resultant increase in phase accumulated. The overall deviation from $2\pi$ is small as a result.}
-		\label{fig:zoffset}
-	\end{subfigure}
-	\begin{subfigure}[t]{\textwidth}
-		\centering
-		\includegraphics[width=0.7\textwidth]{../figures/10nm_displacement_inward.pdf}
-		\caption{Phase accumulated when all 4 data qubits are displaced \SI{10}{\nano\metre} towards the centre of the circle. Other directions of \SI{10}{\nano\metre} displacements result in similar phase deviations.}
-		\label{fig:inwarddisplacement}
-	\end{subfigure}
+\begin{figure}[H]
+	\subfloat[]{\includegraphics[width=0.49\linewidth]{../figures/z_offset.pdf} \label{fig:zoffset}}
+	\subfloat[]{\includegraphics[width=0.49\linewidth]{../figures/10nm_displacement_inward.pdf} \label{fig:inwarddisplacement}}
+	\caption[oddeven]{(a) Evolution of probe qubit with data qubit displacement in the Z direction. 1st and 2nd qubits are displaced \SI{4}{\nano\metre} down, slowing the evolution, the 4th is displaced \SI{3}{\nano\metre} up with a resultant increase in phase accumulated. The overall deviation from $2\pi$ is small as a result. (b) Phase accumulated when all 4 data qubits are displaced \SI{10}{\nano\metre} towards the centre of the circle. Other directions of \SI{10}{\nano\metre} displacements result in similar phase deviations.}
 	\label{fig:overall_displacement}
 \end{figure}
 

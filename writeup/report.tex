@@ -69,7 +69,7 @@
 % Packages that Gavin uses
 \usepackage{url}
 \usepackage[font=footnotesize]{caption}
-\usepackage[font=footnotesize]{subcaption}
+%\usepackage[font=footnotesize]{subcaption}
 \usepackage[]{microtype}
 \usepackage{balance}
 %\usepackage{cite}
@@ -85,7 +85,19 @@
 
 % SImons packages
 \usepackage{float}
-
+\usepackage[caption=false]{subfig}
+\captionsetup[subfloat]{%
+	margin = 0pt,
+	font = {small,rm},
+	labelfont = {small,bf},
+	format = plain, % oder 'hang'
+	indention = 0em,  % Einruecken der Beschriftung
+	labelsep = space, %period, space, quad, newline
+	justification = RaggedRight, % justified, centering
+	singlelinecheck = false, % false (true=bei einer Zeile immer zentrieren)
+	position = top, %top
+	labelformat = parens % simple, empty % Wie die Bezeichnung gesetzt wird
+}
 
 \begin{document}
 
