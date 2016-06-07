@@ -82,21 +82,7 @@ abrupt_dephasing = log10(abrupt_dephasing)
 
 
 
-for i in range(0, 3):
-    plt.plot((circ_dephasing[i], circ_dephasing[i]), (0.4, 1), 'k--')
 
-
-plt.plot((circ_dephasing[3], circ_dephasing[3]), (0.4, 0.93), 'k--')
-plt.plot((circ_dephasing[4], circ_dephasing[4]), (0.4, 0.95), 'k--')
-plt.plot((circ_dephasing[5], circ_dephasing[5]), (0.4, 1.0), 'k--')
-plt.plot((circ_dephasing[6], circ_dephasing[6]), (0.4, 1.0), 'k--')
-plt.plot((circ_dephasing[7], circ_dephasing[7]), (0.4, 1.05), 'k--')
-plt.plot((circ_dephasing[8], circ_dephasing[8]), (0.4, 1.1), 'k--')
-plt.plot((circ_dephasing[9], circ_dephasing[9]), (0.4, 1.05), 'k--')
-# Add points to abrupt_dephasing to force exponential to 0.5
-
-new_abrupt_dephasing = append(abrupt_dephasing, [9, 10 ,11,12,13,14])
-new_abrupt_probs = append(abrupt_probs, [0.5,0.5,0.5,0.5,0.5,0.5])
 
 
 
@@ -114,41 +100,57 @@ def func1(x, a):
 #1./((1/2.)*exp((x-a)/b) + c)
 #(exp(1-exp(a*x**b))*exp(a*x**b)*a*b*x**(b-1))
 
-popt1, pcov1 = curve_fit(func, circ_dephasing, circ_probs, p0 = (3, 5, 0.5))
-popt2, pcov2 = curve_fit(func1, new_abrupt_dephasing, new_abrupt_probs, p0 = (1), maxfev=100000)
 
-plt.plot(circ_dephasing, circ_probs, '-o', label = 'Circular orbit', alpha = 0.5, markersize=20, linewidth=2)
-plt.plot(abrupt_dephasing, abrupt_probs, '-o', label = 'Abrupt orbit', alpha = 0.5, markersize=20, linewidth=2)
+plt.plot(circ_dephasing, circ_probs, '-o', label = 'Circular orbit', alpha = 0.5, markersize=35, linewidth=2)
+plt.plot(abrupt_dephasing, abrupt_probs, '-o', label = 'Abrupt orbit', alpha = 0.5, markersize=35, linewidth=2)
 
 #plt.plot(linspace(-1.,10.0,2000), func(linspace(-1.0,10.0,2000), popt1[0], popt1[1], popt1[2]), 'r-', linewidth=2)
 
 #plt.plot(linspace(0,10.0,2000),0.5 + func1(linspace(0,10.0,2000),*popt2), 'r-')
 
 
-plt.rc('text', usetex = True)
-plt.rc('font', **{'family' : "sans-serif"})
-params = {'text.latex.preamble' : [r'\usepackage{physics}', r'\usepackage{amsmath}']}
+for i in range(4, 9):
+    plt.plot((circ_dephasing[i], abrupt_dephasing[i]), (circ_probs[i], abrupt_probs[i]), 'k-', linewidth = 2)
+
+#fig_width_pt = 276  # Get this from LaTeX using \showthe\linewidth
+#inches_per_pt = 1.0/72.27               # Convert pt to inch
+#golden_mean = (sqrt(5)-1.0)/2.0         # Aesthetic ratio
+#fig_width = fig_width_pt*inches_per_pt  # width in inches
+#fig_height = fig_width*golden_mean      # height in inches
+#fig_size =  [fig_width,fig_height]#in inch
+params = {'backend': 'ps',
+          'font.size': 12,
+          'axes.labelsize': 12,
+         # 'text.fontsize': 10,
+          'legend.fontsize': 10,
+          'xtick.labelsize': 10,
+          'ytick.labelsize': 10,
+          'text.usetex': True,    #benutze latex fuer schrift encoding -> automatisch selbe schriftart wie in latex
+          'text.latex.unicode': True,
+          'font.family': 'serif',
+          'font.serif': 'cm',
+          #'figure.figsize': fig_size,
+          'text.latex.preamble': [r'\usepackage{physics}', r'\usepackage{amsmath}']}
 plt.rcParams.update(params)
 
-plt.xlabel('dephasing / s$^{-1}$', fontsize = 20)
-plt.ylabel('$P(\ket{-}$', fontsize = 20)
+plt.xlabel('$\mbox{dephasing} / s^{-1}$', fontsize = 60)
+plt.ylabel('$P(\ket{-})$', fontsize = 60)
 #plt.title('Measurement probabilities vs. dephasing', fontsize = 22)
 #plt.grid(True)
 plt.gcf().subplots_adjust(bottom=0.15, left = 0.15)
 plt.legend()
-plt.legend(loc='upper right')
-#plt.xticks((-100,  0, 100, 200, 300, 400, 500, 600), fontsize = 20)
-plt.yticks([0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2],[r'$0.4$',r'$0.5$', r'$0.6$', r'$0.7$', r'$0.8$', r'$0.9$', r'$1.0$', r'$1.1$', r'$1.2$'], fontsize = 20)
+plt.legend(loc='upper right', fontsize = 50)
+plt.yticks([0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1],[r'$0.4$',r'$0.5$', r'$0.6$', r'$0.7$', r'$0.8$', r'$0.9$', r'$1.0$', r'$1.1$', r'$1.2$'], fontsize = 60)
 plt.tick_params(axis='both', which='major', pad=15)
 
-plt.xticks([ -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],[r'$10^{-1}$', r'$0$', r'$10$', r'$10^2$', r'$10^3$', r'$10^4$', r'$10^5$', r'$10^6$', r'$10^7$', r'$10^8$', r'$10^9$'], fontsize = 20)
+plt.xticks([ -1, 0, 1, 2, 3, 4, 5, 6, 7, 8],[r'$10^{-1}$', r'$0$', r'$10$', r'$10^2$', r'$10^3$', r'$10^4$', r'$10^5$', r'$10^6$', r'$10^7$', r'$10^8$'], fontsize = 60)
 
 
 
 ax = plt.gca()
 
 
-
+""" Labels for each spin species
 p0 = ax.text(circ_dephasing[0], 1, "$T^{e*}_2$, P (nat. Si, SET)", size=20, va="center", ha="center", rotation=30)
 p1 = ax.text(circ_dephasing[1], 1, "$T^{e*}_2$, SiC (RT) ", size=20, va="center", ha="center", rotation=30)
 p2 = ax.text(circ_dephasing[2], 1, "$T^{e*}_2, SiC (20 K)$", size=20, va="center", ha="center", rotation=30)
@@ -159,9 +161,12 @@ p6 = ax.text(circ_dephasing[6], 1.00, "$T^{e}_2$, P (puri. Si, SET)", size=20, v
 p7 = ax.text(circ_dephasing[7], 1.05, "$T^{e}_2$, SiC (20 K)", size=20, va="center", ha="center", rotation=30)
 p8 = ax.text(circ_dephasing[8], 1.1, "$T^{e}_2$, NV (puri. C, RT)", size=20, va="center", ha="center", rotation=30)
 p9 = ax.text(circ_dephasing[9], 1.05, "$T^{e}_2$, Bi (puri. Si, CT)", size=20, va="center", ha="center", rotation=30)
+"""
 
+for i in range(0, 10):
+    p0 = ax.text(circ_dephasing[i], abrupt_probs[i] + 0.04, '(' + str(10 -i) + ')', size=40, va="center", ha="center")
 
-
+plt.grid(True, color='gray', linestyle='--', linewidth=2)
 fig = plt.gcf()
 st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H.%M.%S')
 plt.savefig('dephasing/phase_graph.png',  transparent=False, dpi=500)
