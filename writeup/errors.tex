@@ -6,7 +6,7 @@ In this section, we will detail the results that o
 
 
 %\clearpage
-\subsection{Path Jitter}
+\subsection{Path Jitter}\label{sec:jitter}
 The final error that we introduce and simulate is jitter in the path taken by the probe qubits. The precision provided by modern MEMS control structures is about 1 nm \cite{MEMS precision}, 
 
 It was found that adding just a random jitter to the path introduced jumps which the solver could not handle very well. Instead, we overlay a sinusoidal motion over the circular motion, effectively causing a periodic deviation from the perfect path. We introduced a random element in the starting phase and amplitude [check this!] 

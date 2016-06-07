@@ -1,17 +1,17 @@
-\contentsline {title}{Simulating an implementation of the surface code in silicon }{1}{}
-\contentsline {abstract}{Abstract}{1}{}
+\contentsline {title}{Simulating an implementation of the surface code in silicon }{1}{section*.2}
+\contentsline {abstract}{Abstract}{1}{section*.1}
 \tocdepth@munge 
-\contentsline {section}{\numberline {}Contents}{1}{}
+\contentsline {section}{\numberline {}Contents}{1}{section*.3}
 \tocdepth@restore 
-\contentsline {section}{\numberline {I}Introduction}{1}{}
-\contentsline {subsection}{\numberline {A}A physical implementation}{1}{}
-\contentsline {section}{\numberline {II}Spin species}{1}{}
-\contentsline {section}{\numberline {III}The Simulation}{1}{}
-\contentsline {subsection}{\numberline {A}Finding the correct evolution time}{2}{}
-\contentsline {section}{\numberline {IV}Errors}{2}{}
-\contentsline {subsection}{\numberline {A}Path Jitter}{2}{}
-\contentsline {subsection}{\numberline {B}Dephasing}{3}{}
-\contentsline {subsection}{\numberline {C}Data qubit displacement}{4}{}
-\contentsline {subsection}{\numberline {D}Twirling}{5}{}
-\contentsline {section}{\numberline {V}Conclusions and outlook }{5}{}
-\contentsline {section}{\numberline {}References}{5}{}
+\contentsline {section}{\numberline {I}Introduction}{1}{section*.4}
+\contentsline {subsection}{\numberline {A}A physical implementation}{1}{section*.5}
+\contentsline {section}{\numberline {II}Spin species}{1}{section*.6}
+\contentsline {section}{\numberline {III}The Simulation}{1}{section*.8}
+\contentsline {subsection}{\numberline {A}Finding the correct evolution time}{2}{section*.9}
+\contentsline {section}{\numberline {IV}Errors}{2}{section*.13}
+\contentsline {subsection}{\numberline {A}Path Jitter}{2}{section*.14}
+\contentsline {subsection}{\numberline {B}Dephasing}{2}{section*.16}
+\contentsline {subsection}{\numberline {C}Data qubit displacement}{3}{section*.21}
+\contentsline {subsubsection}{\numberline {1}Twirling}{5}{section*.24}
+\contentsline {section}{\numberline {V}Conclusions and outlook }{5}{section*.25}
+\contentsline {section}{\numberline {}References}{5}{section*.26}
