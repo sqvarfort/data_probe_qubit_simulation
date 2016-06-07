@@ -12,7 +12,11 @@ The final error that we introduce and simulate is jitter in the path taken by th
 It was found that adding just a random jitter to the path introduced jumps which the solver could not handle very well. Instead, we overlay a sinusoidal motion over the circular motion, effectively causing a periodic deviation from the perfect path. We introduced a random element in the starting phase and amplitude [check this!] 
 
 
-
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{../Figures/path_jit}
+	\caption{}
+	\label{FIG:pjit}
+\end{figure}
 
 
 \subsection{Dephasing}
@@ -26,6 +30,12 @@ where $\Gamma$ is the dephasing parameter. $\Gamma$ can also be written as $1/\t
 In Figure \ref{fig:BlochsphereDephasing}, we see the effect of a small dephasing coefficient (100) whereas in Figure \ref{fig:BlochsphereDephasing2} we see the effect of larger dephasing (500). Note that the dephasing happens primarily as the interaction between the probe qubit and the data qubit is weak, where the phase of the probe qubit doesn't evolve. 
 
 
+\begin{figure}[H]
+	\subfloat[]{\includegraphics[width=0.49\linewidth]{../Figures/abrupt-deph} \label{FIG:abr-deph}}
+	\subfloat[]{\includegraphics[width=0.49\linewidth]{../Figures/circ-deph} \label{FIG:circ-deph}}
+	\caption[oddeven]{}
+	\label{FIG:deph}
+\end{figure}
 
 \begin{figure}[h]
   \centering
@@ -34,8 +44,6 @@ In Figure \ref{fig:BlochsphereDephasing}, we see the effect of a small dephasing
       \label{fig:BlochsphereDephasing}
       
 \end{figure}
-
-
 
 
 \begin{figure}[!h]
