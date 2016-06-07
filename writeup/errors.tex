@@ -4,7 +4,7 @@
 In this section, we will present three types of errors that we implemented in the simulation: path jitter, dephasing and data qubit displacement. The path jitter is implemented in the calculation of the Hamiltonian for each new spatial point, whereas the dephasing is introduced through a Lindblad operator. Finally, data qubit displacement is simulated by a random offset for each of the four data qubits. In connection to qubit displacement, we will also review a technique called twirling and show how it affects our simulations. Let us begin by introducing a path jitter into the simulation. 
 
 
-\subsection{Error benchmarking}
+\subsection{Benchmarking}
 There are two different ways to quantify error, and we shall here quickly review them as they will be used extensively in the following sections. 
 
 The first way to quantify error is to look at the phase $\phi$ accumulated by the probe qubit through the interaction with the data qubits. In \cite{the paper}, the phase jitter is defined as $\phi + \delta$, where $\delta$ is a small deviation from $\frac{\pi}{2}$, which is the ideal phase accumulated through one quarter of the cycle. In the paper, it was found that a phase jitter of $4.4 \%$ did not have a substantial impact on the fault-tolerance threshold. We will therefore attempt to compare the phase error in our simulation with this value whenever possible. It should be noted, however, that the data we have access to usually concerns the entire run. We will therefore compare the phase error with $2\pi$ or $\pi$. We have made the assumption that the phase error stacks, such that the percentage is preserved. 
@@ -18,8 +18,8 @@ The fist error that we shall introduce is jitter present in the orbit performed 
 
 \begin{figure}[h]
   \centering
-    \includegraphics[width=0.5\textwidth]{../Figures/Circ_orbit_odd_100_dephasing.png}
-      \caption{ }
+    \includegraphics[width=0.5\textwidth]{../Figures/path_jit.pdf}
+      \caption{Graph representing the percentage of phase error as a function of phase jitter in the $y$-direction (red) and in the $z$-direction (blue). There is a stronger dependence in the $z$-direction due to the $1/r^3$ term in the Hamiltonian.}
       \label{fig:pathjitter}
 \end{figure}
 
@@ -45,26 +45,14 @@ As we discuss in more detail in Section \ref{sec:Outlook}, the impact of dephasi
 \begin{figure}[H]
 	\subfloat[]{\includegraphics[width=0.49\linewidth]{../Figures/abrupt-deph} \label{FIG:abr-deph}}
 	\subfloat[]{\includegraphics[width=0.49\linewidth]{../Figures/circ-deph} \label{FIG:circ-deph}}
-	\caption[oddeven]{}
+	\caption[oddeven]{The states of the probe and data qubits plotted in the Bloch sphere with a dephasing parameter of 100, which translates to a dephasing time of 10 ms. The phase of the probe qubit is not affected since no relaxation or excitation is taking place. The effect can however be seen in the probability of measuring the probe qubit in the $\ket{+}$ or $\ket{-}$ state. For complete dephasing, the probe qubit will become the maximally mixed state and the measurement outcomes are completely random. The states of the probe and data qubits plotted in the Bloch sphere with a dephasing parameter of 100, which translates to a dephasing time of 10 ms.}
 	\label{FIG:deph}
 \end{figure}
 
 
-\begin{figure}[h]
-  \centering
-    \includegraphics[width=0.5\textwidth]{../Figures/Circ_orbit_odd_100_dephasing.png}
-      \caption{The states of the probe and data qubits plotted in the Bloch sphere with a dephasing parameter of 100, which translates to a dephasing time of 10 ms. The phase of the probe qubit is not affected since no relaxation or excitation is taking place. The effect can however be seen in the probability of measuring the probe qubit in the $\ket{+}$ or $\ket{-}$ state. For complete dephasing, the probe qubit will become the maximally mixed state and the measurement outcomes are completely random. The states of the probe and data qubits plotted in the Bloch sphere with a dephasing parameter of 100, which translates to a dephasing time of 10 ms.}
-      \label{fig:BlochsphereDephasing}
-      
-\end{figure}
 
 
-\begin{figure}[!h]
-  \centering
-    \includegraphics[width=0.5\textwidth]{../Figures/Circ_orbit_odd_500_dephasing.png}
-      \caption{The states of the probe and data qubits plotted in the Bloch sphere with a dephasing parameter of 500, which translates to a dephasing time of 2 ms. The strong dephasing causes the probe qubit state to drift quickly towards the maximally mixed state. }
-      \label{fig:BlochsphereDephasing2}
-\end{figure}
+
 
 
 
