@@ -110,6 +110,7 @@ class Plotter(object):
         #Ticks go from pi/2 to pi/2 including the origin
 
         plt.xticks([ pi/2, 3*pi/4, pi, 5*pi/4, 3*pi/2, 7*pi/4, 2*pi, 9*pi/4, 5.*pi/2.], [r'$\frac{\pi}{2}$', r'$\frac{3\pi}{4}$', r'$\pi$', r'$\frac{5\pi}{4}$', r'$\frac{3\pi}{2}$', r'$\frac{7\pi}{4}$', r'$0  (2\pi)$', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$'])
+        #plt.yticks([])
 
 
 
@@ -212,7 +213,7 @@ class Plotter(object):
 
         # Given the expectation value for a sigmax measurement, we solve for the probailities of measuring |+> and |->
 
-        plus_prob = [((1/2.)*(E + sqrt(2-E**2))) for E in measurements]
+        plus_prob = [((1/2.)*(E + 1)) for E in measurements]
         min_prob = [(1. -p) for p in plus_prob]
         avg_exp = mean(measurements)
         plus_mean = mean(plus_prob)
