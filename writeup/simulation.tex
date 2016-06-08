@@ -1,21 +1,21 @@
 \section{The Simulation}
-In contrast to the large scale threshold analysis done by \citet{OGorman2016} this work focusses on the physical simulation of the building block of the surface code error detection - the stabilizer measurements which is done by measuring the parity of a group of qubits. On the smallest scale this is given by a group of four data qubits and one probe/ancillary qubit as shown in fig.\@ \ref{FIG:paper-parity}. 
+In contrast to the large scale threshold analysis done by \citet{OGorman2016} this work focuses on the physical simulation of the building block of the surface code error detection - the stabilizer measurements which is done by measuring the parity of a group of qubits. On the smallest scale this is given by a group of four data qubits and one probe/ancillary qubit as shown in fig.\@ \ref{FIG:paper-parity}. 
 
 \subsection{The dipole-dipole interaction}\label{sec:dipole-dipole}
 
-The interaction of the orbiting ancillary qubit with each data qubit is governed by the following Hamiltonian:
+The interaction of the orbiting ancillary qubit with each data qubit is governed by the Hamiltonian
 
 \begin{equation*}
-H = \mu_B B( g_1 \sigma_1^Z + g_2 \sigma_2^Z) + \frac{J}{r^3} ( \mathbf{\sigma_1} \cdot \mathbf{\sigma_2} - 3 ( \hat{\mathbf{r}} \cdot \mathbf{\sigma_1}) ( \hat{\mathbf{r}}\cdot \mathbf{\sigma_2}))
+H = \mu_B B( g_1 \sigma_1^Z + g_2 \sigma_2^Z) + \frac{J}{r^3} ( \mathbf{\sigma_1} \cdot \mathbf{\sigma_2} - 3 ( \hat{\mathbf{r}} \cdot \mathbf{\sigma_1}) ( \hat{\mathbf{r}}\cdot \mathbf{\sigma_2})).
 \end{equation*}
 
-First of all, there is the Zeeman part which accounts for the energy of each spin (data and probe) in an external magnetic field. The interaction is of magnetic dipole-dipole type with the interactions strength $J=\frac{\mu_0 g_e^2 \mu_B^2}{4\pi}$ and $\hat{\mathbf{r}}$ is the unit vector between the two spins. The magnetic dipole-dipole interaction is of long range compared to proposals based on the exchange interaction \cite{Kane1998a} which makes this approach very attractive as it lowers the enormous requirements on the qubit placement precision as shown by \citet{OGorman2016}. Nevertheless, the interaction scales with $1/r^3$ which makes a data to probe qubit distance on the order of several tenths of nanometres necessary to achieve a strong interaction. In order to avoid crosstalk between the data qubits in the plane the lattice spacing $D$ of the data qubits should be at least one order of magnitude larger than the data and probe spacing $d$. 
+First of all, there is the Zeeman part which accounts for the energy of each spin (data and probe) in an external magnetic field. The second interaction term is of magnetic dipole-dipole type with the interactions strength $J=\frac{\mu_0 g_e^2 \mu_B^2}{4\pi}$ and $\hat{\mathbf{r}}$ is the unit vector between the two spins. The magnetic dipole-dipole interaction is of long range compared to proposals based on the exchange interaction \cite{Kane1998a} which makes this approach very attractive as it reportedly lowers the enormous requirements on the qubit placement precision as shown by \citet{OGorman2016}. Nevertheless, the interaction scales with $1/r^3$ which makes a data to probe qubit distance on the order of several tens of nanometres necessary to achieve a strong interaction. In order to avoid crosstalk between the data qubits in the plane the lattice spacing $D$ of the data qubits should be at least one order of magnitude larger than the data and probe spacing $d$. 
 
-Our goal is to achieve a parity measurement using this interaction. The dipole-dipole term allows us to do a controlled phase gate between the data and probe qubit which is shown in \cite{OGorman2016} and can be seen from the dependence on both spin matrices $\mathbf{\sigma_1}$ and $\mathbf{\sigma_2}$. This means that depending on the data qubit state the probe qubit evolves in a different direction on the bloch sphere (acquires a different phase). 
+Our goal is to achieve a parity measurement using this interaction. The dipole-dipole term allows us to perform a controlled phase gate between the data and probe qubit which is shown in \cite{OGorman2016} and can be seen from the dependence on both spin matrices $\mathbf{\sigma_1}$ and $\mathbf{\sigma_2}$. This means that depending on the data qubit state the probe qubit evolves in a different direction on the bloch sphere, acquiring a measurably different phase. 
 
-In order to simulate the time evolution of both qubits under the effect of this Hamiltonian by solving the Schr\"odinger or master equation we need to transform into the interaction picture and apply the rotating wave approximation. This allows us to get rid of the fast dynamics given by the Zeeman term while maintaining the physical interaction which we are interested in. In our work simulations have been done using the master equation solver provided by the QuTiP library in Python \cite{Johansson2012,Johansson2013}.
+In order to simulate the time evolution of both qubits under the effect of this Hamiltonian by solving the Schr\"odinger or master equation, we need to transform into the interaction picture and apply the rotating wave approximation. This allows us to get rid of the fast dynamics governed by the Zeeman term while maintaining the physical interaction which we are interested in. In our work simulations have been done using the master equation solver provided by the QuTiP library in Python \cite{Johansson2012,Johansson2013}.
 
-In this approximation the interaction Hamiltonian is given by:
+In this approximation the interaction Hamiltonian is
 
 \begin{align*}
 	H_{int}&= \frac{J}{r^3} (1-3 \cdot \hat{r}_z^2) \cdot
@@ -33,8 +33,7 @@ In this approximation the interaction Hamiltonian is given by:
 	0 & 0 & 0 & 0 
 	\end{pmatrix}
 \end{align*}
-
-Here $\Delta=\mu_B B (g_1-g_2)$. Depending on the relation between $\Delta$ and $J/r^3$ the interaction will have a different character. 
+where $\Delta=\mu_B B (g_1-g_2)$. Depending on the relation between $\Delta$ and $J/r^3$ the interaction will have a different character. 
 To achieve a controlled phase gate on the probe qubit while keeping the data qubit unchanged we want to be in the regime where $\Delta \gg J/r^3$.
 In order to estimate what orders of magnitude we require to achieve this we performed simulations for various magnitudes of $\Delta d^3/ J$ where $d$ is the minimal interaction distance as shown in fig.\@ \ref{FIG:paper-parity}.
 
@@ -44,7 +43,7 @@ In order to estimate what orders of magnitude we require to achieve this we perf
 	\label{FIG:flip-flop}
 \end{figure}
 
-When $\Delta = J/d^3$ we observe a strong flip-flopping behaviour between the data (initialised in $\ket{0}$) and probe qubit (initialised in $\ket{+}$) as shown in the inset of fig.\@ \ref{FIG:flip-flop}. We want to avoid any change of the data qubit state. To quantify the flip-flopping we plot the angle theta the data qubit evolves for a given time for different magnitudes of $\Delta d^3/ J$ (see fig.\@ \ref{FIG:flip-flop}). Flip-flopping vanishes for $\Delta d^3/ J > 10^4$ preserving the data qubit state. This is achieved by using different species of qubits for the data and probe lattice (see Table. \ref{TAB:qubits}).
+When $\Delta = J/d^3$ we observe a strong flip-flopping behaviour between the data (initialised in $\ket{0}$) and probe qubit (initialised in $\ket{+}$) as shown in the inset of fig.\@ \ref{FIG:flip-flop}. We want to avoid any change of the data qubit state. To quantify the flip-flopping we plot the angle $\theta$ the data qubit evolves for a given time for different magnitudes of $\Delta d^3/ J$ (see fig.\@ \ref{FIG:flip-flop}). Flip-flopping vanishes for $\Delta d^3/ J > 10^4$ preserving the data qubit state. This is achieved by using different species of qubits for the data and probe lattice (see Table. \ref{TAB:qubits}).
 
 \subsection{The parity measurement}
 Having identified the regime where the dipole-dipole interaction is able to perform a controlled-phase gate, we move on to the demonstration of a parity measurement.
