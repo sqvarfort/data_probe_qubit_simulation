@@ -1,9 +1,9 @@
 
 \section{Introduction} \label{sec:Introduction}
 
-It is generally agreed upon that large-scale, universal quantum computing will require comprehensive error correction \cite{Wang2011,Fowler2012}. One such candidate is the so-called surface code, but the question remains how to physically implement such a system. 
+It is generally agreed upon that large-scale, universal quantum computing will require comprehensive error correction. One such candidate is the so-called surface code, but the question remains how to physically implement such a system. 
 
-In this report, we will build on a proposal for a silicon based surface code quantum computer \cite{the paper} and simulate a simple toy model that contains all the essential features. G'Orman \textit{et al}. performed rigorous fault-tolerant simulations and 
+In this report, we will build on a proposal for a silicon based surface code quantum computer and simulate a simple toy model that contains all the essential features. \citet{OGorman2016} performed rigorous fault-tolerant simulations and 
 
 
 
@@ -11,21 +11,16 @@ In this report, we will build on a proposal for a silicon based surface code qua
 The report is structured as follows: In thl then go e next and subsequent sections, we will introduce the surface code and the results obtained in \cite{the paper}. We will then go on review the methods used in the simulation and the choice for materials, which in turn affect the simulation parameters. Following that, we introduce various errors into our model in Section \ref{sec:errors} and show how they affect the performance of the system. Finally, we summarise our results in Section \ref{sec:conclusion} and provide a number of suggestions as how to the project could be continued. 
 
 \subsection{The surface code}
-The surface code is one of the most-well studied fault-tolerant codes \cite{something}. Its versatility, large code distance and large fault-tolerance threshold have contributed to various proposals \cite{some review} and some attempts at physical implementation \cite{Martinis?}. One key aspect of the surface code is its use of vertex and plaquette operators that perform stabiliser measurements on four data qubits at a time. If the stabiliser gives a measurement outcome $-1$, it means that the four data qubits contain an error, whereas a $+1$ outcome indicate that the qubit states are in the codespace. As a consequence, the stabiliser measurements cannot identify errors that correspond to logical operations. At the same time, the stabiliser allow us to actually perform logical operations, which means that a physical implementation of the surface code would not require individual addressing of the data qubits. 
+The surface code is one of the most-well studied fault-tolerant codes \cite{Wang2011,Fowler2012}. Its versatility, large code distance and large fault-tolerance threshold ($1.1\%$) have contributed to various proposals \cite{Fowler2012,Pica2014,Tosi2015,Hill2015,OGorman2016} and some attempts at physical implementation \cite{Barends2014,Kelly2015}. One key aspect of the surface code is its use of vertex and plaquette operators that perform stabiliser measurements on all data qubits using ancillary qubits. If one stabiliser gives a measurement outcome $-1$, it means that these specific four data qubits have undergone an error, whereas a $+1$ outcome indicate that the qubit states are in the codespace. As a consequence, the stabiliser measurements cannot identify errors that correspond to logical operations. At the same time, the stabiliser allow us to actually perform logical operations, which means that a physical implementation of the surface code would not require individual addressing of the data qubits. 
 
-The stabilisers measurements themselves are performed by letting the data qubits interact with one single probe qubit. The probe qubit is the measured, and its outcome tells us about the parity of the measurement, that is, whether none or two,  (even parity) one  or three (odd parity) errors have been detected. Of course, the stabiliser measurement can also fail, but this is taken into account in large-scale fault-tolerance calculations. 
+[NEXT PARAGRAPH UNECESSARY?]
+The stabilisers measurements require several data qubits to interact with one ancillary qubit. This probe qubit is then measured, and its outcome tells us about the parity of the measurement, that is, whether none or two,  (even parity) one  or three (odd parity) errors have been detected. Of course, the stabiliser measurement can also fail, but this is taken into account in large-scale fault-tolerance calculations. 
 
 
 
 
 \subsection{A physical implementation} \label{sec:PhysicalImplementation}
-In a paper in 2015, it awas proposed by G'Orman \textit{et al}. proposed a scheme for implementing the surface code in silicon \cite{the paper}.  To perform the stabiliser measurements, a probe qubit of a different dopant species is placed on a mobile slab above the data qubits. 
-
-
-The data qubits are dopants placed in silicon placed in a square pattern using the best dopant placement techniques available, which currently stand at [insert some error value and cite it].
-
-Each probe qubit performs a stabiliser measurement on four data qubits, a procedure which is performed by physically moving the overhead slab with the probe qubits. 
-
+In 2015, \citet{OGorman2016} proposed a scheme for implementing the surface code in silicon. In this proposal the stabiliser measurements are realised by a mechanical approach, where the data and probe qubit arrays are embedded in two separate layers (see FIG. \ref{FIG:paper-mems}). Both layers are brought into close contact ($d\ll D$) and a relative motion of one layer to the other leads to the probe qubits orbiting above the data qubits. This movement allows to perform the stabiliser measurement using a parity measurement where one probe qubit interacts with four data qubits throughout its orbit (see FIG. \ref{FIG:paper-parity}). 
 
 
 \begin{figure}[H]
@@ -36,11 +31,12 @@ Each probe qubit performs a stabiliser measurement on four data qubits, a proced
 	\label{FIG:paper}
 \end{figure}
 
+This scheme requires a high precision in qubit placement. Therefore, \citet{OGorman2016} performed large-scale fault-tolerance simulation to obtain thresholds on the qubit placement precision.
 
-The orbit can be performed in two different wasys: either through an abrupt orbit, where the probe qubit is moved rapidly from one data qubit to another, or through a smooth, circular orbit which brings the probe qubit directly on top of each of the data qubits. 
+The orbit and movement can be performed in many different ways. \citet{OGorman2016} present results for an abrupt orbit, where the probe qubit is moved rapidly from one data qubit to another, and a smooth, circular orbit.
 
-In Figure \ref{fig:thresholds} we see a large-scale fault-tolerance simulation which accounted for a large number of errors. Several thresholds were obtained, either for the abrupt or the circular orbit, and with respect to the data qubit placement accuracy. In each graph, the nature of the displacement is shown as either a `pillbox' or an ellipsoid shape. They found reasonable thresholds for each configuration, which shows that the general principle of this setup is valid. 
+Several thresholds were obtained with respect where a data qubit displacement distribution is modelled as either a `pillbox' or an ellipsoid shape.
+They found reasonable thresholds for each configuration compared to current qubit placement precisions offering good prospects for achieving logical qubit protection at the large scale. 
 
-If we were to implement such a system in the lab, we would probably start with the smallest possible building block, which in this case is the system consisting of four data qubits and 
+If we were to implement such a system in the lab, we would probably start with the smallest possible building block, which in this case is the system consisting of four data qubits and a single probe qubit to demonstrate a single parity measurement.
 
-For each parameter configuration. 
