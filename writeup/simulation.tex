@@ -46,11 +46,11 @@ In order to estimate what orders of magnitude we require to achieve this we perf
 When $\Delta = J/d^3$ we observe a strong flip-flopping behaviour between the data (initialised in $\ket{0}$) and probe qubit (initialised in $\ket{+}$) as shown in the inset of fig.\@ \ref{FIG:flip-flop}. We want to avoid any change of the data qubit state. To quantify the flip-flopping we plot the angle $\theta$ the data qubit evolves for a given time for different magnitudes of $\Delta d^3/ J$ (see fig.\@ \ref{FIG:flip-flop}). Flip-flopping vanishes for $\Delta d^3/ J > 10^4$ preserving the data qubit state. This is achieved by using different species of qubits for the data and probe lattice (see Table. \ref{TAB:qubits}).
 
 \subsection{The parity measurement}
-Having identified the regime where the dipole-dipole interaction is able to perform a controlled-phase gate, we move on to the demonstration of a parity measurement.
+Having identified the regime where the dipole-dipole interaction performs a controlled-phase gate, we move on to the demonstration of a parity measurement.
 
-The parity measurement should report 'even' when the number of data qubits pointing up and pointing down is even. And it should report 'odd' when the number of data qubits pointing up and pointing down is odd.
+The parity measurement should report `even' when the number of data qubits pointing up and pointing down is even. And it should report `odd' when the number of data qubits pointing up and pointing down is odd.
 
-Realising a parity measurement using the controlled-phase gate is done by initialising the probe qubit in the $\ket{+}$ state and timing the interacting of the probe qubit with every data qubit such that the probe qubit acquires a controlled phase of $\pi/2$ for every data qubit. In case of even parity the probe qubit will then always evolve into the $\ket{+}$ state (see fig.\@ \ref{FIG:even} for the case of all four qubits being initialised in $\ket{0}$) while odd parity brings the probe qubit to the $\ket{-}$ state (see fig.\@ \ref{FIG:even} where one of the four qubits has been initialised in $\ket{1}$). The parity is therefore obtained by measuring the probe qubit in the $x$-basis.    
+Realising a parity measurement using the controlled-phase gate is done by initialising the probe qubit in the $\ket{+}$ state and timing the interacting of the probe qubit with every data qubit such that the probe qubit acquires a controlled phase of $\pi/2$ for every data qubit. For even parity the probe qubit will evolve back into the $\ket{+}$ state (see fig.\@ \ref{FIG:even} for the case of all four qubits being initialised in $\ket{0}$) while odd parity evolves the probe qubit to the $\ket{-}$ state (see fig.\@ \ref{FIG:even} where one of the four qubits has been initialised in $\ket{1}$). The parity is therefore obtained by measuring the probe qubit in the $x$-basis.    
 
 
 \begin{figure}[H]
@@ -61,9 +61,9 @@ Realising a parity measurement using the controlled-phase gate is done by initia
 \end{figure}
 
 
-The orbit which the probe qubits take to perform the parity measurement can take any possible form. Our simulations include an abrupt movement where the probe qubit jumps directly from one data qubit to the next and so on (see fig.\@ \ref{FIG:paper-abrupt}). This is very unphysical but describes the optimal orbit as it reduces the parity measurement time to a minimum. In addition to that we simulate a circular orbit with a constant speed (see fig.\@ \ref{FIG:paper-circ}). An intermediate orbit between these two extreme cases will most likely be implemented in an experiment. 
+The orbit which the probe qubits take to perform the parity measurement can take any possible form. Our simulations include an abrupt movement where the probe qubit jumps directly from one data qubit to the next and so on (see fig.\@ \ref{FIG:paper-abrupt}). This is very unphysical but describes the optimal orbit as it reduces the measurement time to a minimum. In addition we simulate a circular orbit with a constant speed (see fig.\@ \ref{FIG:paper-circ}). An intermediate orbit between these two cases will most likely be implemented in an experiment. 
 
-The time each data qubit should interact with the probe qubit to realise a controlled $\pi/2$ rotation in the bloch sphere is obtained by varying the interaction time while monitoring the phase acquired by the probe qubit. This is done for every chosen orbit and an exemplary simulation is shown in fig.\@ \ref{FIG:get_tau} for the abrupt orbit. A rotation of $\pi/2$ is achieved for $\tau\approx 77\, \mu$s.
+The time for which each data qubit should interact with the probe qubit to realise a controlled $\pi/2$ rotation in the bloch sphere is obtained by varying the interaction time while monitoring the phase acquired by the probe qubit. This is done for every chosen orbit and an exemplary simulation is shown in fig.\@ \ref{FIG:get_tau} for the abrupt orbit. A rotation of $\pi/2$ is achieved for $\tau\approx 77\, \mu$s.
 
 \begin{figure}[H]
 	\begin{minipage}[t]{0.15\linewidth} 
