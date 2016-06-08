@@ -1,14 +1,12 @@
-\section{The Simulation}
+\section{The Simulation} \label{sec:simulation}
 In contrast to the large scale threshold analysis done by \citet{OGorman2016} this work focuses on the physical simulation of the building block of the surface code error detection - the stabilizer measurements which is done by measuring the parity of a group of qubits. On the smallest scale this is given by a group of four data qubits and one probe/ancillary qubit as shown in fig.\@ \ref{FIG:paper-parity}. 
 
 \subsection{The dipole-dipole interaction}\label{sec:dipole-dipole}
 
 The interaction of the orbiting ancillary qubit with each data qubit is governed by the Hamiltonian
-
 \begin{equation*}
 H = \mu_B B( g_1 \sigma_1^Z + g_2 \sigma_2^Z) + \frac{J}{r^3} ( \mathbf{\sigma_1} \cdot \mathbf{\sigma_2} - 3 ( \hat{\mathbf{r}} \cdot \mathbf{\sigma_1}) ( \hat{\mathbf{r}}\cdot \mathbf{\sigma_2})).
 \end{equation*}
-
 First of all, there is the Zeeman part which accounts for the energy of each spin (data and probe) in an external magnetic field. The second interaction term is of magnetic dipole-dipole type with the interactions strength $J=\frac{\mu_0 g_e^2 \mu_B^2}{4\pi}$ and $\hat{\mathbf{r}}$ is the unit vector between the two spins. The magnetic dipole-dipole interaction is of long range compared to proposals based on the exchange interaction \cite{Kane1998a} which makes this approach very attractive as it reportedly lowers the enormous requirements on the qubit placement precision as shown by \citet{OGorman2016}. Nevertheless, the interaction scales with $1/r^3$ which makes a data to probe qubit distance on the order of several tens of nanometres necessary to achieve a strong interaction. In order to avoid crosstalk between the data qubits in the plane the lattice spacing $D$ of the data qubits should be at least one order of magnitude larger than the data and probe spacing $d$. 
 
 Our goal is to achieve a parity measurement using this interaction. The dipole-dipole term allows us to perform a controlled phase gate between the data and probe qubit which is shown in \cite{OGorman2016} and can be seen from the dependence on both spin matrices $\mathbf{\sigma_1}$ and $\mathbf{\sigma_2}$. This means that depending on the data qubit state the probe qubit evolves in a different direction on the bloch sphere, acquiring a measurably different phase. 
