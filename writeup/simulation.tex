@@ -1,5 +1,5 @@
 \section{The Simulation} \label{sec:simulation}
-In contrast to the large scale threshold analysis done by \citet{OGorman2016} this work focuses on the physical simulation of the building block of the surface code error detection - the stabilizer measurements which is done by measuring the parity of a group of qubits. On the smallest scale this is given by a group of four data qubits and one probe/ancillary qubit as shown in fig.\@ \ref{FIG:paper-parity}. 
+In contrast to the large scale threshold analysis done by \citet{OGorman2016} this work focuses on the physical simulation of the building block of the surface code error detection -- the stabilizer measurements which is done by measuring the parity of a group of qubits. On the smallest scale this is given by a group of four data qubits and one probe/ancillary qubit as shown in fig.\@ \ref{FIG:paper-parity}. 
 
 \subsection{The dipole-dipole interaction}\label{sec:dipole-dipole}
 
@@ -48,7 +48,6 @@ Having identified the regime where the dipole-dipole interaction performs a cont
 
 The parity measurement should report `even' when the number of data qubits pointing up and pointing down is even. And it should report `odd' when the number of data qubits pointing up and pointing down is odd.
 
-Realising a parity measurement using the controlled-phase gate is done by initialising the probe qubit in the $\ket{+}$ state and timing the interacting of the probe qubit with every data qubit such that the probe qubit acquires a controlled phase of $\pi/2$ for every data qubit. For even parity the probe qubit will evolve back into the $\ket{+}$ state (see fig.\@ \ref{FIG:even} for the case of all four qubits being initialised in $\ket{0}$) while odd parity evolves the probe qubit to the $\ket{-}$ state (see fig.\@ \ref{FIG:even} where one of the four qubits has been initialised in $\ket{1}$). The parity is therefore obtained by measuring the probe qubit in the $x$-basis.    
 
 
 \begin{figure}[H]
@@ -58,10 +57,11 @@ Realising a parity measurement using the controlled-phase gate is done by initia
 	\label{FIG:evolution}
 \end{figure}
 
+Realising a parity measurement using the controlled-phase gate is done by initialising the probe qubit in the $\ket{+}$ state and timing the interacting of the probe qubit with every data qubit such that the probe qubit acquires a controlled phase of $\pi/2$ for every data qubit. For even parity the probe qubit will evolve back into the $\ket{+}$ state (see fig.\@ \ref{FIG:even} for the case of all four qubits being initialised in $\ket{0}$) while odd parity evolves the probe qubit to the $\ket{-}$ state (see fig.\@ \ref{FIG:even} where one of the four qubits has been initialised in $\ket{1}$). The parity is therefore obtained by measuring the probe qubit in the $x$-basis.    
 
 The orbit which the probe qubits take to perform the parity measurement can take any possible form. Our simulations include an abrupt movement where the probe qubit jumps directly from one data qubit to the next and so on (see fig.\@ \ref{FIG:paper-abrupt}). This is very unphysical but describes the optimal orbit as it reduces the measurement time to a minimum. In addition we simulate a circular orbit with a constant speed (see fig.\@ \ref{FIG:paper-circ}). An intermediate orbit between these two cases will most likely be implemented in an experiment. 
 
-The time each data qubit should interact with the probe qubit to realise a controlled $\pi/2$ rotation in the bloch sphere is obtained by varying the interaction time while monitoring the phase acquired by the probe qubit. This is done for every chosen orbit and an exemplary simulation is shown in fig.\@ \ref{FIG:get_tau} for the abrupt orbit. A rotation of $\pi/2$ is achieved for $\tau\approx \SI{77}{\micro s}$.
+
 
 
 \begin{figure}[H]
@@ -74,7 +74,6 @@ The time each data qubit should interact with the probe qubit to realise a contr
 	\label{FIG:abrupt_tau}
 \end{figure}
 
-In order to estimate the time a parity measurement would take in an experiment, we determine the parity measurement time for the abrupt and circular orbit for several data and probe qubit separations $d$ and data qubit lattice spacings $D$.
 
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{../Figures/tau_d_D}
@@ -82,8 +81,19 @@ In order to estimate the time a parity measurement would take in an experiment, 
 	\label{FIG:tau}
 \end{figure}
 
+
+The time each data qubit should interact with the probe qubit to realise a controlled $\pi/2$ rotation in the bloch sphere is obtained by varying the interaction time while monitoring the phase acquired by the probe qubit. This is done for every chosen orbit and an exemplary simulation is shown in fig.\@ \ref{FIG:get_tau} for the abrupt orbit. A rotation of $\pi/2$ is achieved for $\tau\approx \SI{77}{\micro s}$.
+
+
+
+
+In order to estimate the time a parity measurement would take in an experiment, we determine the parity measurement time for the abrupt and circular orbit for several data and probe qubit separations $d$ and data qubit lattice spacings $D$.
+
 The shortest parity measurement time $\tau=\SI{158}{\micro s}$ is achieved with the abrupt motion ($d=20\, $nm).
 The parameter $d$ has the strongest influence on the parity measurement time due to the $1/r^3$ dependence of the interaction.
 For a reasonable experimental implementation, we expect the parity measurement to be of the order of several milliseconds.
+
+
+
 
 \input{spin.tex} 

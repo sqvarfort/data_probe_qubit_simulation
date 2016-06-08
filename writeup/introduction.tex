@@ -1,6 +1,6 @@
-\section{Introduction} \label{sec:Introduction}
+\section{Introduction} \label{sec:introduction}
 
-It is generally agreed upon that large-scale, universal quantum computing will require comprehensive error correction. One such candidate is the so-called surface code, but the question remains how to physically implement such a system. In \cite{OGorman2016}, G'Orman \textit{et al}. proposed a method which relies on physically moving probe qubits across four data qubits to perform the stabiliser measurement. In the paper, they performed a large scale simulation and found reasonable fault-tolerance thresholds which suggest that the proposal is both viable and scalable. 
+It is generally agreed upon that large-scale, universal quantum computing will require comprehensive error correction. One such candidate is the so-called surface code, but the question remains how to physically implement such a system. In \cite{OGorman2016}, O'Gorman \textit{et al}. proposed a method which relies on physically moving probe qubits across four data qubits to perform the stabiliser measurement. In the paper, they performed a large scale simulation and found reasonable fault-tolerance thresholds which suggest that the proposal is both viable and scalable. 
 
 In this report, we will build the proposal for a silicon based surface code quantum computer in  \cite{OGorman2016} and simulate a simple model that contains all the essential features of the proposal. We will focus on four data qubit and one probe qubit, and introduce individual errors into the simulations to see how the performance of the system is affected. 
 The report is structured as follows: In the subsequent sections, we will introduce the surface code and the results obtained in \citet{OGorman2016}. We will then go on review the methods used in the simulation in section \@ \ref{sec:simulation} as well as review the spin species available for an eventual experimental implementation. Following that, in section \@ \ref{sec:errors} we introduce various errors into our model in and show how they affect the performance of the system. Finally, we summarise our results in section \@ \ref{sec:conclusions} and provide a number of suggestions regarding where future investigations can be concentrated. 
@@ -27,9 +27,7 @@ As mentioned in section \ref{sec:introduction},  \citet{OGorman2016} proposed a 
 	\label{FIG:paper}
 \end{figure}
 
-This scheme requires a high precision in qubit placement. Therefore, \citet{OGorman2016} performed large-scale fault-tolerance simulation to obtain thresholds on the qubit placement precision.
-
-The orbit and movement can be performed in many different ways. \citet{OGorman2016} present results for an abrupt orbit, where the probe qubit is moved rapidly from one data qubit to another, and a smooth, circular orbit.
+This scheme requires a high precision in qubit placement. Therefore, \citet{OGorman2016} performed large-scale fault-tolerance simulation to obtain thresholds on the qubit placement precision. The orbit and movement can be performed in many different ways. They presented results for an abrupt orbit, where the probe qubit is moved rapidly from one data qubit to another, and a smooth, circular orbit.
 
 Several thresholds were obtained with respect where a data qubit displacement distribution is modelled as either a `pillbox' (see fig.\@ \ref{fig:pillbox}) or an ellipsoid shape.
 They found reasonable thresholds for each configuration compared to current qubit placement precisions offering good prospects for achieving logical qubit protection at the large scale. 
