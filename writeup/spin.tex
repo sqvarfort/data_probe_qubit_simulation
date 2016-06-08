@@ -8,7 +8,8 @@ As shown in the previous sections we require $\Delta d^3/ J > 10^4$. This is ach
 For the data qubits we desire qubits with long coherence to maintain the quantum information throughout a large number of parity measurements. Furthermore, we only require global control for the data qubits during operation as logical operations on the encoded qubits can be performed using the stabilizer measurements.
 In case of the probe qubits we require coherence times which are longer than the time it takes to perform a parity measurement. In addition to that readout is very important and individual control is required.
 
-
+\bgroup
+\def\arraystretch{1.3}%
 \begin{table}[H]
 	\begin{tabular}{lrrrr}
 		\hline
@@ -28,6 +29,8 @@ In case of the probe qubits we require coherence times which are longer than the
 	\caption{Summary of coherence times of various spin qubit systems. The spin species as well as the measurement temperature is given. RT stands for room temperature while CT refers to clock transitions. For donors in Silicon we distinguish between near surface dopants read out using a single-electron-transistor (SET) and bulk dopants. The numbers in superscript refer to fig.\@ \ref{fig:phaseplot}.}
 	\label{TAB:qubits}
 \end{table}
+\egroup
+
 
 This illustrates that coherence is an important parameter for choosing a spin system. Dephasing is a reversible loss of coherence due to inhomogeneous broadening which is characterised by the dephasing time $T_2^*$ which is usually much shorter than a millisecond (see Table.\@ \ref{TAB:qubits}). Luckily we should be able to combine the parity measurement with spin echo or even dynamical decoupling techniques enhancing coherence to the more generous time $T_2$ which represents irreversible loss of coherence.
 
