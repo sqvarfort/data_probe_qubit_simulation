@@ -7,7 +7,13 @@ In this section, we will present three types of errors that we implemented in th
 \subsection{Benchmarking}
 There are two different ways to quantify error, and we shall here quickly review them as they will be used extensively in the following sections. 
 
-The first way to quantify error is to look at the phase $\phi$ accumulated by the probe qubit through the interaction with the data qubits. In \cite{the paper}, the phase jitter is defined as $\phi + \delta$, where $\delta$ is a small deviation from $\frac{\pi}{2}$, which is the ideal phase accumulated through one quarter of the cycle. In the paper, it was found that a phase jitter of $4.4 \%$ did not have a substantial impact on the fault-tolerance threshold. We will therefore attempt to compare the phase error in our simulation with this value whenever possible. It should be noted, however, that the data we have access to usually concerns the entire run. We will therefore compare the phase error with $2\pi$ or $\pi$. We have made the assumption that the phase error stacks, such that the percentage is preserved. 
+The first way to quantify error is to look at the phase $\phi$ accumulated by the probe qubit through the interaction with the data qubits. In \cite{the paper}, the phase jitter is defined as $\phi + \delta$, where $\delta$ is a small deviation from $\frac{\pi}{2}$, which is the ideal phase accumulated through one quarter of the cycle. In the paper, it was found that a phase jitter of $4.4 \%$ did not have a substantial impact on the fault-tolerance threshold. We will therefore attempt to compare the phase error in our simulation with this value whenever possible. It should be noted, however, that the data we have access to usually concerns the entire run. We will therefore compare the phase error with $2\pi$ or $\pi$. We have made the assumption that the phase error stacks, such that the phase error of $\frac{\pi}{2}$ is the same percentage as the phase error of $2\pi$ that we observe. 
+
+The second way to quantify errors is to look at the measurement probability of correctly identifying the stabiliser state  $\ket{\psi}$, where the probability is given by $|\braket{+|\psi}|^2$ in the case of an even parity measurement and $|\braket{- |\psi}|^2$ in the case of an odd parity measurement. The need for this measure arises for example when we introduce a dephasing term in the Lindblad equation. A dephasing operator will not cause any phase error to appear since dephasing only decreases the magnitude of the Bloch vector and not its direction. Therefore, the probability of successfully identifying the stabiliser state becomes a good indicator of performance. It ranges from unity when the probe qubit state is completely pure and without phase error to 0.5 when the state has completely decohered and the measurements give entirely random outcomes. 
+
+With these two measures in mind, let us look at the errors we introduced into the simulation and their effect on the final state. 
+
+
 
 
 %\clearpage
@@ -57,12 +63,12 @@ As we discuss in more detail in Section \ref{sec:Outlook}, the impact of dephasi
 
 
 
-\begin{figure*}[h]
+\begin{figure}[h]
 	\centering
-	\includegraphics[width=\textwidth]{../Figures/dephasing_plot.png}
+	\includegraphics[width=\linewidth]{../Figures/dephasing.pdf}
 		\caption{A graph showing the relationship between the dephasing parameter $\Gamma$ and the probability $P(\ket{-})$ of measuring the probe qubit in the $\ket{-}$ state. In this simulation, one of the data qubits have undergone a bit-flip error. As the dephasing parameter increases, the probe qubit moves towards the maximally mixed state and the probability of measuring $\ket{-}$ goes towards 0.5.}
 		\label{fig:phaseplot}
-\end{figure*}
+\end{figure}
 
 
 
