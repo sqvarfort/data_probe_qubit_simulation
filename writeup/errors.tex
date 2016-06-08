@@ -6,7 +6,6 @@ In our simulation, there are two significant ways to quantify errors, and we sha
 
 The first way to quantify an error is to look at the phase $\phi$ accumulated by the probe qubit through the interaction with the data qubits. \citet{OGorman2016} present a general phase jitter as a collective error for randomness in the interaction. They define this as $\phi + \delta$, where $\delta$ is a small deviation from $\frac{\pi}{2}$.  In the paper, it was found that a phase jitter of $4.4 \%$ did not have a substantial impact on the fault-tolerance threshold. We will therefore attempt to compare the phase error in our simulation with this value whenever possible. It should be noted, however, that the data we have access to usually concerns the entire run. We will therefore compare the phase error with $2\pi$ or $\pi$. We have made the assumption that the phase error for one quarter run stacks, such that after the full orbit the phase error of $\frac{\pi}{2}$ is the same percentage as the phase error of $2\pi$ that we observe. 
 
-<<<<<<< HEAD
 The second way to quantify errors is to look at the probability of correctly identifying the stabiliser state  $\ket{\psi}$ through measurement of the probe qubit. As already mentioned, the outcome of the stabiliser measurement depends on whether we find $\ket{\psi}$ to be either in the $\ket{+}$ state or the $\ket{-}$ state. The probability $p$ is given by $|\braket{+|\psi}|^2$ in the case of an even parity measurement and $|\braket{- |\psi}|^2$ in the case of an odd parity measurement. The need for this measure arises for example when we introduce a dephasing term in the Lindblad equation. A dephasing operator will not cause any phase error to appear since dephasing only decreases the magnitude of the Bloch vector and not its direction. Therefore, the probability $p_{\mathrm{succ}}$ of successfully identifying the stabiliser state becomes a good indicator of performance. It ranges from $p_{\mathrm{succ}} = 1$ when the probe qubit state is completely pure and without phase error to $p_{succ} = 50 \%$ when the state has completely decohered and the stabiliser measurement becomes inherently random. The probability of failure is subsequently given by $p_{\mathrm{f}} =1- p_{\mathrm{succ}} $, and this is the error that we will eventually compare with the probability of failure quoted for the surface code threshold. 
 
 With these two measures in mind, let us look at the errors we introduced into the simulation and their effect on the performance of the system. 
@@ -34,7 +33,7 @@ From the graph it also becomes clear that jitter in the $z$-direction has the gr
 
 
 
-\subsection{Dephasing}
+\subsection{Dephasing}\label{sec:dephasing}
 Next, we investigated the influence of dephasing on the measurement probabilities. In order to simulate dephasing, which is the gradual reduction of the Bloch vector in the $x$--$y$ plane towards the origin of the Bloch sphere, we introduced a Lindblad operator into the master equation. The operator is given by 
 \beq
 L  = \sqrt{\Gamma} \sigma_z,
