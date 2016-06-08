@@ -64,7 +64,7 @@ Realising a parity measurement using the controlled-phase gate is done by initia
 
 The orbit which the probe qubits take to perform the parity measurement can take any possible form. Our simulations include an abrupt movement where the probe qubit jumps directly from one data qubit to the next and so on (see fig.\@ \ref{FIG:paper-abrupt}). This is very unphysical but describes the optimal orbit as it reduces the parity measurement time to a minimum. In addition to that we simulate a circular orbit with a constant speed (see fig.\@ \ref{FIG:paper-circ}). An intermediate orbit between these two extreme cases will most likely be implemented in an experiment. 
 
-The time each data qubit should interact with the probe qubit to realise a controlled $\pi/2$ rotation in the bloch sphere is obtained by varying the interaction time while monitoring the phase acquired by the probe qubit. This is done for every chosen orbit and an exemplary simulation is shown in fig.\@ \ref{FIG:get_tau} for the abrupt orbit. A rotation of $\pi/2$ is achieved for $\tau\approx 77\, \mu$s.
+The time each data qubit should interact with the probe qubit to realise a controlled $\pi/2$ rotation in the bloch sphere is obtained by varying the interaction time while monitoring the phase acquired by the probe qubit. This is done for every chosen orbit and an exemplary simulation is shown in fig.\@ \ref{FIG:get_tau} for the abrupt orbit. A rotation of $\pi/2$ is achieved for $\tau\approx \SI{77}{\micro s}$.
 
 \begin{figure}[H]
 	\begin{minipage}[t]{0.15\linewidth} 
@@ -72,7 +72,7 @@ The time each data qubit should interact with the probe qubit to realise a contr
 	\subfloat[]{\includegraphics[width=\linewidth]{../Figures/circ} \label{FIG:paper-circ}}
 	\end{minipage}
 	\subfloat[]{\includegraphics[width=0.85\linewidth]{../Figures/abrupt_find_tau_full.pdf} \label{FIG:get_tau}}
-	\caption{(a) Schematic of the abrupt orbit. Direct copy from \cite{OGorman2016}. (b) Schematic of the circular orbit. Direct copy from \cite{OGorman2016}. (c) We obtain the optimal interaction duration to implement a $\pi/2$ rotation by varying the evolution time while monitoring the phase acquired by a probe qubit initialised in the $\ket{+}$ state. Here we show the example of the abrupt orbit with $d=40\, $nm and we find $\tau\approx 77\, \mu$s.}
+	\caption{(a) Schematic of the abrupt orbit. Direct copy from \cite{OGorman2016}. (b) Schematic of the circular orbit. Direct copy from \cite{OGorman2016}. (c) We obtain the optimal interaction duration to implement a $\pi/2$ rotation by varying the evolution time while monitoring the phase acquired by a probe qubit initialised in the $\ket{+}$ state. Here we show the example of the abrupt orbit with $d=40\, $nm and we find $\tau\approx \SI{77}{\micro s}$.}
 	\label{FIG:abrupt_tau}
 \end{figure}
 
@@ -84,7 +84,7 @@ In order to estimate the time a parity measurement would take in an experiment, 
 	\label{FIG:tau}
 \end{figure}
 
-The shortest parity measurement time $\tau=158\, \mu$s is achieved with the abrupt motion ($d=20\, $nm).
+The shortest parity measurement time $\tau=\SI{158}{\micro s}$ is achieved with the abrupt motion ($d=20\, $nm).
 The parameter $d$ has the strongest influence on the parity measurement time due to the $1/r^3$ dependence of the interaction.
 For a reasonable experimental implementation, we expect the parity measurement to be of the order of several milliseconds.
 
