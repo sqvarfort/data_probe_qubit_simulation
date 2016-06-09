@@ -1,20 +1,20 @@
-\section{The Simulation} \label{sec:simulation}
-In contrast to the large scale threshold analysis done by \citet{OGorman2016} this work focuses on the physical simulation of the building block of the surface code error detection -- the stabilizer measurements which is done by measuring the parity of a group of four qubits as shown in fig.\@ \ref{FIG:paper-parity}.  In our work we used the master equation solver provided by the QuTiP library in Python \cite{Johansson2012,Johansson2013}.
+\section{The simulation} \label{sec:simulation}
+In contrast to the large scale threshold analysis done by \citet{OGorman2016} this work focuses on the physical simulation of the building block of surface code error detection -- the stabiliser measurements which are done by measuring the parity of a group of four qubits as shown in fig.\@ \ref{FIG:paper-parity}.  Our work used the master equation solver provided by the QuTiP library in Python \cite{Johansson2012,Johansson2013}.
 
 \subsection{The dipole-dipole interaction}\label{sec:dipole-dipole}
 
 The interaction of the orbiting ancillary qubit with each data qubit is governed by the Hamiltonian
 \begin{equation*}
-H = \mu_B B( g_1 \sigma_1^Z + g_2 \sigma_2^Z) + \frac{J}{r^3} ( \mathbf{\sigma_1} \cdot \mathbf{\sigma_2} - 3 ( \hat{\mathbf{r}} \cdot \mathbf{\sigma_1}) ( \hat{\mathbf{r}}\cdot \mathbf{\sigma_2})).
+H = \mu_{\textrm{B}} B( g_1 \sigma_1^Z + g_2 \sigma_2^Z) + \frac{J}{r^3} ( \mathbf{\sigma_1} \cdot \mathbf{\sigma_2} - 3 ( \hat{\mathbf{r}} \cdot \mathbf{\sigma_1}) ( \hat{\mathbf{r}}\cdot \mathbf{\sigma_2})).
 \end{equation*}
-First of all, there is the Zeeman part which accounts for the energy of each spin (data and probe) in an external magnetic field $B$. The interaction term is of magnetic dipole-dipole type where $J=\frac{\mu_0 g_e^2 \mu_B^2}{4\pi}$ is the interaction strength and $\hat{\mathbf{r}}$ is the unit vector between the two spins. The magnetic dipole-dipole interaction is of long range compared to proposals based on the exchange interaction \cite{Kane1998a} which makes this approach very attractive as it reportedly lowers the enormous requirements on the qubit placement precision as shown by \citet{OGorman2016}. Nevertheless, the interaction scales with $1/r^3$ which makes a data to probe qubit distance on the order of several tens of nanometres necessary to achieve a strong interaction. In order to avoid crosstalk between the data qubits in the plane the lattice spacing $D$ of the data qubits should be at least one order of magnitude larger than the data and probe spacing $d$. 
+First of all, there is the Zeeman part which accounts for the energy of each spin (data and probe) in an external magnetic field $B$. The interaction term is of magnetic dipole-dipole type where $J=\frac{\mu_0 g_{\textrm{e}}^2 \mu_{\textrm{B}}^2}{4\pi}$ is the interaction strength and $\hat{\mathbf{r}}$ is the unit vector between the two spins. The magnetic dipole-dipole interaction is of long range compared to proposals based on the exchange interaction \cite{Kane1998a} which makes this approach very attractive as it reportedly lowers the enormous requirements on the qubit placement precision as shown by \citet{OGorman2016}. Nevertheless, the interaction scales with $1/r^3$ which makes a data to probe qubit distance on the order of several tens of nanometres necessary to achieve a strong interaction. In order to avoid crosstalk between the data qubits in the plane the lattice spacing $D$ of the data qubits should be at least one order of magnitude larger than the data and probe spacing $d$. 
 
 Our goal is to achieve a parity measurement using this interaction. The dipole-dipole term allows us to perform a controlled phase gate between the data and probe qubit which is shown in \cite{OGorman2016} and can be seen from the dependence on both spin matrices $\mathbf{\sigma_1}$ and $\mathbf{\sigma_2}$. This means that depending on the data qubit state the probe qubit evolves in a different direction on the Bloch sphere, acquiring a measurably different phase. 
 
-In order to simulate the time evolution of both qubits under the effect of this Hamiltonian by solving the Schr\"odinger or master equation, we need to transform into the interaction picture and apply the rotating wave approximation. This allows us to get rid of the fast dynamics governed by the Zeeman term while retaining the interesting physical interaction. In this approximation the interaction Hamiltonian is
+In order to simulate the time evolution of both qubits under the effect of this Hamiltonian by solving the Schr\"odinger or master equation, we need to transform into the interaction picture and apply the rotating wave approximation. This allows us to get rid of the fast dynamics governed by the Zeeman term while retaining the interesting interaction. In this approximation the interaction Hamiltonian is
 
 \begin{align*}
-	H_{int}&= \frac{J}{r^3} (1-3 \cdot \hat{r}_z^2) \cdot
+	H_{\textrm{int}}&= \frac{J}{r^3} (1-3 \cdot \hat{r}_z^2) \cdot
 	\begin{pmatrix}
 	1 & 0 & 0 & 0 \\
 	0 & -1 & 0 & 0 \\
@@ -29,7 +29,7 @@ In order to simulate the time evolution of both qubits under the effect of this 
 	0 & 0 & 0 & 0 
 	\end{pmatrix}
 \end{align*}
-where $\Delta=\mu_B B (g_1-g_2)$. Depending on the relation between $\Delta$ and $J/r^3$ the interaction will have a different character.
+where $\Delta=\mu_{\textrm{B}} B (g_1-g_2)$. Depending on the relation between $\Delta$ and $J/r^3$ the interaction will have a different character.
 To achieve a controlled phase gate on the probe qubit while keeping the data qubit unchanged we want to be in the regime where $\Delta \gg J/r^3$.
 In order to estimate what orders of magnitude we require to achieve this we performed simulations for various magnitudes of $\Delta d^3/ J$ where $d$ is the minimal interaction distance as shown in fig.\@ \ref{FIG:paper-parity}.
 
@@ -42,20 +42,20 @@ In order to estimate what orders of magnitude we require to achieve this we perf
 When $\Delta = J/d^3$ we observe a strong flip-flopping behaviour between the data (initialised in $\ket{0}$) and probe qubit (initialised in $\ket{+}$) as shown in the inset of fig.\@ \ref{FIG:flip-flop}. We want to avoid any change of the data qubit state. To quantify the flip-flopping we plot the angle $\Theta$ the data qubit evolves for a given time for different magnitudes of $\Delta d^3/ J$ (see fig.\@ \ref{FIG:flip-flop}). Flip-flopping vanishes for $\Delta d^3/ J > 10^4$ preserving the data qubit state. This is achieved by using different species of qubits for the data and probe lattice (see table\@ \ref{TAB:qubits}).
 
 \subsection{The parity measurement}
-Having identified the regime where the dipole-dipole interaction performs a controlled-phase gate, we move on to the demonstration of a parity measurement. The parity measurement should report `even' parity when the number of data qubits pointing up and pointing down is even. And it should report `odd' when the number of data qubits pointing up and pointing down is odd.
+Having identified the regime where the dipole-dipole interaction performs a controlled-phase gate, we move on to the demonstration of a parity measurement. This should report `even' parity when the number of data qubits pointing up and pointing down is even. And it should report `odd' when the number of data qubits pointing up and pointing down is odd.
 
 
 
 \begin{figure}[H]
 	\subfloat[]{\includegraphics[width=0.49\linewidth]{../Figures/perfect_evolution_even_edit} \label{FIG:even}}
 	\subfloat[]{\includegraphics[width=0.49\linewidth]{../Figures/perfect_evolution_odd_edit} \label{FIG:odd}}
-	\caption[oddeven]{Demonstration of the parity measurement using the controlled  $\tfrac{\pi}{2}$ phase gate and initialisation of the probe qubit in the $\ket{+}$ state. \textbf{(a)} All data qubits are initialised in the $\ket{0}$ state (black) representing an even parity configuration. The probe qubit undergoes a $2\pi$ evolution back to  the $\ket{+}$ state. \textbf{(b)} Now the last qubit is initialised in the $\ket{1}$ state (red). As a result of this the probe qubit evolves into the $\ket{-}$ state. Any other odd or even configuration will result in the same final state. The parity is extracted by measuring the probe qubit in the $x$-basis. The four different colours indicate the interaction with the four data qubits.}
+	\caption[oddeven]{Demonstration of the parity measurement using the controlled  $\tfrac{\pi}{2}$ phase gate and initialisation of the probe qubit in the $\ket{+}$ state. \textbf{(a)} All data qubits are initialised in the $\ket{0}$ state (black) representing an even parity configuration. The probe qubit undergoes a $2\pi$ evolution back to  the $\ket{+}$ state. \textbf{(b)} Now the last qubit is initialised in the $\ket{1}$ state (red), representing a bit-flip. As a result of this the probe qubit evolves into the $\ket{-}$ state. Any other odd or even configuration will result in the same final state. The parity is extracted by measuring the probe qubit in the $x$-basis. The four different colours indicate the interaction with the four data qubits.}
 	\label{FIG:evolution}
 \end{figure}
 
-Realising a parity measurement using the controlled-phase gate is done by initialising the probe qubit in the $\ket{+}$ state and timing the interacting of the probe qubit with every data qubit such that the probe qubit acquires a controlled phase of $\tfrac{\pi}{2}$ during the interaction with each of the data qubits. For even parity the probe qubit will evolve back into the $\ket{+}$ state (see fig.\@ \ref{FIG:even} for the case of all four qubits being initialised in $\ket{0}$) while odd parity evolves the probe qubit to the $\ket{-}$ state (see fig.\@ \ref{FIG:even} where one of the four qubits has been initialised in $\ket{1}$). The parity is therefore obtained by measuring the probe qubit in the $x$-basis.    
+Realising a parity measurement using the controlled-phase gate is done by initialising the probe qubit in the $\ket{+}$ state and timing the interacting of the probe qubit with every data qubit such that the probe qubit acquires a controlled phase of $\tfrac{\pi}{2}$ during the interaction with each of the data qubits. For even parity the probe qubit will evolve back into the $\ket{+}$ state (see fig.\@ \ref{FIG:even} for the case of all four qubits being initialised in $\ket{0}$) while odd parity evolves the probe qubit to the $\ket{-}$ state (see fig.\@ \ref{FIG:even} where one of the four qubits has been initialised in $\ket{1}$ representing a bit-flip). The parity is therefore obtained by measuring the probe qubit in the $x$-basis.    
 
-The probe qubits orbit can take any possible form. Our simulations include an abrupt movement where the probe qubit jumps directly from one data qubit to the next (see fig.\@ \ref{FIG:paper-abrupt}). This is very unphysical but describes the optimal orbit as it reduces the measurement time to a minimum. In addition we simulate a circular orbit with a constant speed (see fig.\@ \ref{FIG:paper-circ}). An intermediate orbit between these two cases will most likely be implemented in an experiment. 
+The probe qubits orbit can take any possible form. Our simulations include an abrupt movement where the probe qubit jumps directly from one data qubit to the next (see fig.\@ \ref{FIG:paper-abrupt}). This is rather unphysical but describes the optimal orbit as it reduces the measurement time to a minimum. In addition we simulate a circular orbit with a constant speed (see fig.\@ \ref{FIG:paper-circ}). An optimal orbit will likely have some character of each of these orbits.
 
 
 
@@ -78,7 +78,7 @@ The probe qubits orbit can take any possible form. Our simulations include an ab
 \end{figure}
 
 
-The time each data qubit should interact with the probe qubit to realise a controlled $\tfrac{\pi}{2}$ rotation in the Bloch sphere is obtained by varying the interaction time while monitoring the phase accumulated by the probe qubit. This is done for every chosen orbit and an example simulation is shown in fig.\@ \ref{FIG:get_tau} for the abrupt orbit. A rotation of $\tfrac{\pi}{2}$ is achieved for $\tau\approx \SI{77}{\micro s}$.
+The time for which each data qubit should interact with the probe qubit to realise a controlled $\tfrac{\pi}{2}$ rotation is obtained by varying the interaction time while monitoring the phase accumulated by the probe qubit. This is done for every chosen orbit and an example simulation is shown in fig.\@ \ref{FIG:get_tau} for the abrupt orbit. A rotation of $\tfrac{\pi}{2}$ is achieved for $\tau\approx \SI{77}{\micro s}$.
 
 
 
