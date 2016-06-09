@@ -30,7 +30,7 @@ twocolumn,
 %frontmatterverbose, 
 %preprint,
 %showpacs,preprintnumbers,
-%nofootinbib,
+nofootinbib,
 %nobibnotes,
 %bibnotes,
  amsmath,amssymb,
@@ -104,7 +104,8 @@ twocolumn,
 \preprint{APS/123-QED}
 
 \title{Simulating an implementation of the surface code in silicon }% Force line breaks with \\
-\thanks{The authors would like to thank Dan Browne and John Morton for fruitful discussions. }%
+%\thanks{The authors would like to thank Dan Browne and John Morton for fruitful discussions. }%
+\let\thefootnote\relax\footnote{The authors would like to thank Dan Browne and John Morton for fruitful discussions. } % gets rid of the pointless asterisk in the title
 
 \author{Gavin Dold}
 \author{Sofia Qvarfort}
@@ -134,6 +135,8 @@ Department of Physics and Astronomy, University College London
 \maketitle
 \tableofcontents
 %\tableofcontents
+
+
 
 \input{introduction.tex}
 
