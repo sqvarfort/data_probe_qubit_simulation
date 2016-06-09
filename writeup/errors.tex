@@ -49,7 +49,7 @@ It is clear that dephasing has a much more severe impact for the circular orbit,
 \end{figure}
 
 
-However, since dephasing does not affect the phase accumulated after the full run, we do not end up with a phase error. Therefore, the only accurate measure of errors due to dephasing is the measurement probability $p_{\mathrm{succ}}$. We ran simulations for both the abrupt and circular orbit using the $T_2$ and $T_2^*$ values given in Table \ref{TAB:qubits} as input parameters for the dephasing time. The results are shown in fig.\@ \ref{fig:dephasingplot}, where each data point refers to an entry in the table. 
+However, since dephasing does not affect the phase accumulated after the full run, we do not end up with a phase error. Therefore, the only accurate measure of errors due to dephasing is the measurement probability $p_{\mathrm{succ}}$. We ran simulations for both the abrupt and circular orbit using the $T_2$ and $T_2^*$ values given in table\@ \ref{TAB:qubits} as input parameters for the dephasing time. The results are shown in fig.\@ \ref{fig:dephasingplot}, where each data point refers to an entry in the table. 
 
 We can compare the probability of correctly measuring the stabiliser in the $\ket{-}$ state with the surface code fault-tolerance threshold of $1.1\%$, which translates into a success probability of $98.9$\%. Looking at the values displayed in fig.\@ \ref{fig:dephasingplot}, we find that only the clock transition in bismuth leaves us below the fault-tolerance threshold. For the circular orbit, bismuth $(1)$ has a success probability of  99.9\% after one entire run. The next best value is obtained for NV centres at room temperature $(2)$ which give us a success probability of 57.7\% in the case for the circular orbit, and 92.1\% for the abrupt orbit. Both of these probabilities are below the surface code threshold. 
 
@@ -64,7 +64,7 @@ As we discuss in more detail in Section \ref{sec:conclusions}, the impact of dep
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1.05\linewidth]{../Figures/dephasing.pdf}
-		\caption{A graph showing the relationship between the dephasing parameter $\Gamma$ and the probability $P(\ket{-})$ of measuring the probe qubit in the $\ket{-}$ state.  The blue data points represent an abrupt orbit and the green data points a circular orbit. Each number refers to a dephasing time found in Table\@ \ref{TAB:qubits}. }
+		\caption{A graph showing the relationship between the dephasing parameter $\Gamma$ and the probability $P(\ket{-})$ of measuring the probe qubit in the $\ket{-}$ state.  The blue data points represent an abrupt orbit and the green data points a circular orbit. Each number refers to a dephasing time found in table\@ \ref{TAB:qubits}. }
 		\label{fig:dephasingplot}
 \end{figure}
 
